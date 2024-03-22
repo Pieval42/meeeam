@@ -1,12 +1,17 @@
-//import { useState } from 'react'
 import Accueil from './Accueil'
-import '/src/assets/style/App.css'
+import MainTemplate from './MainTemplate'
+
+import '/src/style/css/App.css'
 
 function App() {
 
+  const isLogged = true;
+  
   return (
-    <Accueil />
-  )
+    <>
+      {isLogged ? <MainTemplate /> : <Accueil />}
+    </>
+  );
 }
 
 export default App

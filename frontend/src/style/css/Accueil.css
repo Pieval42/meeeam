@@ -1,0 +1,42 @@
+.accueil {
+  margin-top: 2rem;
+}
+.accueil,
+.accueil > .card {
+  min-height: calc(100vh - 4rem);
+}
+
+.logo {
+  will-change: filter;
+  transition: filter 1000ms;
+  max-height: 100px;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #de0a00);
+  
+}
+
+@keyframes logo-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo {
+      animation: 1.5s infinite alternate-reverse logo-zoom;
+  }
+}
+
+@media screen and (max-height: 510px) {
+  .accueil {
+    height: auto;
+  }
+  .logo {
+    max-height: 65px;
+  }
+}
+    
