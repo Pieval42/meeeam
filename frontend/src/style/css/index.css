@@ -42,7 +42,7 @@ h2{
 .btn-custom-primary,
 .btn-custom-secondary {
   border-radius: 8px;
-  border: 1px solid #8f8f8f;
+  border: 1px solid #495057;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -72,7 +72,7 @@ h2{
 .btn-custom-secondary:hover {
   background-color: #8f8f8f;
   border-color: #d8d8d8;
-  box-shadow: 0 0 0 0.15rem rgba(216,216,216,1);
+  box-shadow: 0 0 0 0.15rem rgba(216,216,216,.5);
 }
 .btn-custom-secondary:focus,
 .btn-custom-secondary:focus-visible {
@@ -81,7 +81,7 @@ h2{
 
 .form-control:focus {
   border-color: #d8d8d8;
-  box-shadow: 0 0 0 0.25rem rgba(216,216,216,.5);
+  box-shadow: 0 0 0 0.15rem rgba(216,216,216,.5);
 }
 
 .form-check-input:checked {

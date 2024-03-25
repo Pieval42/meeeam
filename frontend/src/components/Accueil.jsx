@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
@@ -16,6 +18,15 @@ export default function Accueil() {
   const [showInscription, setShowInscription] = useState(false);
   const handleHideInscription = () => setShowInscription(false);
   const handleShowInscription = () => setShowInscription(true);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loggedIn = sessionStorage.getItem("loggedIn");
+    if (loggedIn) {
+      navigate("../profil/");
+    }
+  }, [navigate]);
 
   return (
     <>

@@ -1,17 +1,34 @@
-import Accueil from './Accueil'
-import MainTemplate from './MainTemplate'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Accueil from "./Accueil";
+// import Profil from "./Profil";
+import Deconnexion from "./Deconnexion";
 
-import '/src/style/css/App.css'
+import "/src/style/css/App.css";
+import MainTemplate from "./MainTemplate";
+
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Accueil />,
+  },
+  {
+    path: "profil/",
+    element: <MainTemplate />,
+  },
+  {
+    path: "deconnexion/",
+    element: <Deconnexion />,
+  },
+]);
 
 function App() {
-
-  const isLogged = true;
-  
   return (
     <>
-      {isLogged ? <MainTemplate /> : <Accueil />}
+      <RouterProvider router={router} />
     </>
   );
 }
 
-export default App
+export default App;
