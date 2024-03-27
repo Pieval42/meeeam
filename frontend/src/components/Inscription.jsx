@@ -111,7 +111,7 @@ export default function Inscription({
             setApiResponse(response.data.message);
             setTimeout(() => {
               setApiResponse("");
-              navigate("../profil/");
+              navigate("../main/profil/");
             }, 7000);
           } else {
             setError(response.data.message);

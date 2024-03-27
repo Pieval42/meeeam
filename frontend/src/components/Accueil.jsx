@@ -43,7 +43,7 @@ export default function Accueil() {
   useEffect(() => {
     const loggedIn = sessionStorage.getItem("loggedIn");
     if (loggedIn) {
-      navigate("../profil/");
+      navigate("../main/profil/");
     }
   }, [navigate]);
 
