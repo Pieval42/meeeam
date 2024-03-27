@@ -79,7 +79,7 @@ h2{
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.form-control:focus {
+.form-select:focus, .form-control:focus {
   border-color: #d8d8d8;
   box-shadow: 0 0 0 0.15rem rgba(216,216,216,.5);
 }

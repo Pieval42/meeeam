@@ -74,8 +74,7 @@ class UtilisateurManager extends Model {
         
     }
     
-    public function creerUtilisateur($pseudo, $nom, $prenom, $date_naissance, $email, $mot_de_passe, $id_genre, $id_ville) {
-        $this->convertirDate($date_naissance);
+    public function creerUtilisateur($pseudo, $nom, $prenom, $date_naissance, $email, $mot_de_passe, $id_genre=null, $id_ville=null) {
         $req = "
             INSERT INTO utilisateur
             (pseudo_utilisateur, nom_utilisateur, prenom_utilisateur, date_naissance, email_utilisateur, mot_de_passe, id_genre_utilisateur, id_ville_utilisateur)
@@ -91,7 +90,6 @@ class UtilisateurManager extends Model {
         $stmt->bindValue(':id_genre', $id_genre, PDO::PARAM_STR);
         $stmt->bindValue(':id_ville', $id_ville, PDO::PARAM_INT);
         $stmt->execute();
-        $stmt->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt->closeCursor();
         $utilisateur = $this->getLastUtilisateur();
         $id_utilisateur = $utilisateur->getIdUtilisateur();
@@ -153,7 +151,7 @@ class UtilisateurManager extends Model {
         $stmt->bindValue(':pseudo', $pseudo,PDO::PARAM_STR);
         $stmt->bindValue(':nom', $nom, PDO::PARAM_STR);
         $stmt->bindValue(':prenom', $prenom, PDO::PARAM_STR);
-        $stmt->bindValue(':date_naissance', $this->convertirDate($date_naissance), PDO::PARAM_STR);
+        $stmt->bindValue(':date_naissance', $date_naissance, PDO::PARAM_STR);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->bindValue(':mot_de_passe', $mot_de_passe, PDO::PARAM_STR);
         $stmt->bindValue(':id_genre', $id_genre, PDO::PARAM_INT);

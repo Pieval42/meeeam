@@ -92,9 +92,7 @@ function ModalConnexion({
                 onChange={handlePasswordChange}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Rester connecté" />
-            </Form.Group>
+            
             <Row className="justify-content-between">
               <Col xs="auto">
                 <Button

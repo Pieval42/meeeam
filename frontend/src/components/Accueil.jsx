@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 import Container from "react-bootstrap/Container";
@@ -11,13 +12,31 @@ import Bienvenue from "./Bienvenue";
 import Inscription from "./Inscription";
 
 export default function Accueil() {
+  const [listePays, setListePays] = useState([]);
+  const [error, setError] = useState("");
+
   const [showConnexion, setShowConnexion] = useState(false);
   const handleCloseConnexion = () => setShowConnexion(false);
   const handleShowConnexion = () => setShowConnexion(true);
 
   const [showInscription, setShowInscription] = useState(false);
   const handleHideInscription = () => setShowInscription(false);
-  const handleShowInscription = () => setShowInscription(true);
+  const handleShowInscription = () => {
+    axios
+      .get("http://localhost:42600/backend/index.php/pays")
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === "success") {
+          setListePays(response.data.data);
+        } else {
+          setError(response.data.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    setShowInscription(true);
+  }
 
   const navigate = useNavigate();
 
@@ -53,6 +72,8 @@ export default function Accueil() {
             showInscription={showInscription}
             handleHideInscription={handleHideInscription}
             handleShowConnexion={handleShowConnexion}
+            listePays={listePays}
+            error={error}
           />
         </Card>
       </Container>

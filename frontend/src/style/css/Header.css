@@ -30,12 +30,3 @@
         background-color: #8f8f8f;
     }
 }
-
-@media screen and (min-width: 992px) {
-    .header .navbar-expand-lg .navbar-nav .dropdown-menu[data-bs-popper] {
-        position: absolute;
-        top: 115%;
-        left: calc(-35px - 2em);
-
-    }
-}
