@@ -35,7 +35,7 @@ export default function Accueil() {
         handleCloseConnexion={handleCloseConnexion}
         handleShowInscription={handleShowInscription}
       />
-      <Container fluid className="accueil p-0">
+      <Container className="accueil p-0 w-100">
         <Card className="h-100 w-100 m-0">
           <Card.Header className="row w-100 m-0 p-4">
             <Card.Img

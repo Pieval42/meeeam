@@ -1,5 +1,41 @@
 .header {
     position: sticky;
     width: 100%;
+    height: 56px;
     margin: 0;
+}
+
+@media screen and (max-width:992px) {
+    #basic-navbar-nav {
+        position: absolute;
+        top: 56px;
+        right: 0;
+        min-width: 180px;
+        background-color: #2B3035;
+        border: 1px solid #495057;
+        border-radius: 10px;
+    }
+
+    #basic-navbar-nav .navbar-nav .nav-link {
+        border-bottom: 1px solid #8f8f8f;
+        border-radius: 10px;
+        margin: 0.2em;
+    }
+
+    #basic-navbar-nav .navbar-nav .nav-link:hover {
+        background-color: #8f8f8f;
+    }
+
+    .navbar-toggler:hover {
+        background-color: #8f8f8f;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .header .navbar-expand-lg .navbar-nav .dropdown-menu[data-bs-popper] {
+        position: absolute;
+        top: 115%;
+        left: calc(-35px - 2em);
+
+    }
 }

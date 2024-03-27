@@ -203,7 +203,7 @@ export default function Inscription({
                     value={nom}
                     onChange={handleNomChange}
                     type="text"
-                    placeholder="Votre prénom"
+                    placeholder="Votre nom"
                     name="nom"
                     autoComplete="family-name"
                     required

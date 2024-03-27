@@ -5,3 +5,7 @@
   padding: 0 2rem;
   text-align: center;
 }
+
+.dropdown-menu .dropdown-item:active{
+  background-color: #8f8f8f;
+}

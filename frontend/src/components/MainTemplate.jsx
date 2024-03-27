@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 import Header from "./Header";
 
+import Container from "react-bootstrap/esm/Container";
+import Col from "react-bootstrap/esm/Col";
+import Row from "react-bootstrap/esm/Row";
+
 import "/src/style/css/MainTemplate.css";
 
 export default function MainTemplate() {
@@ -12,7 +16,7 @@ export default function MainTemplate() {
 
   const navigate = useNavigate();
   const userData = JSON.parse(sessionStorage.getItem("userData"));
-  const username = userData?.username;
+  const pseudo = userData?.pseudo_utilisateur;
 
   useEffect(() => {
     const loggedIn = sessionStorage.getItem("loggedIn");
@@ -38,9 +42,9 @@ export default function MainTemplate() {
     setSearchItem(searchTerm);
 
     const filteredItems = apiUsers.filter((user) => 
-        user.prenom_utilisateur.toLowerCase().includes(searchTerm.toLowerCase())
-        || user.nom_utilisateur.toLowerCase().includes(searchTerm.toLowerCase())
-        || user.pseudo_utilisateur.toLowerCase().includes(searchTerm.toLowerCase())
+        user.prenom_utilisateur.toLowerCase().startsWith(searchTerm.toLowerCase())
+        || user.nom_utilisateur.toLowerCase().startsWith(searchTerm.toLowerCase())
+        || user.pseudo_utilisateur.toLowerCase().startsWith(searchTerm.toLowerCase())
     );
       setFilteredUsers(filteredItems);
     }
@@ -49,14 +53,23 @@ export default function MainTemplate() {
       <Header
         searchItem={searchItem}
         handleInputChange={handleInputChange}
-        username={username}
+        pseudo={pseudo}
       />
       {searchItem !== "" && (
-        <ul>
-          {filteredUsers.map((user) => (
-            <li key={user.id_utilisateur}>{user.pseudo_utilisateur} {user.prenom_utilisateur} {user.nom_utilisateur}</li>
-          ))}
-        </ul>
+        <Container>
+        <Row>
+          <Col>
+            {filteredUsers.map((user) => (
+              <div key={user.id_utilisateur}>
+                <a>
+                  {user.pseudo_utilisateur} {user.prenom_utilisateur}{" "}
+                  {user.nom_utilisateur}
+                </a>
+              </div>
+            ))}
+          </Col>
+        </Row>
+      </Container>
       )}
     </>
   );
