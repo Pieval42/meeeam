@@ -49,7 +49,7 @@ function ModalConnexion({
             JSON.stringify(response.data.data),
           );
 
-          window.location.href = "profil/";
+          window.location.href = "main/profil/";
         } else {
           setError(response.data.message);
         }
