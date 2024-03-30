@@ -4,7 +4,7 @@ require_once __DIR__ . "/../" . 'models/PageProfilManager.class.php';
 require_once __DIR__ . "/../" . 'models/UtilisateurManager.class.php';
 require_once __DIR__ . "/../" . 'models/RequeteManager.class.php';
 require_once __DIR__ . "/../" . 'models/VilleManager.class.php';
-
+require_once __DIR__ . "/../" . 'models/SiteWebManager.class.php';
 
 class InscriptionController extends BaseController
 {
@@ -12,6 +12,7 @@ class InscriptionController extends BaseController
     private $utilisateurManager;
     private $requeteManager;
     private $villeManager;
+    private $siteWebManager;
 
     public function __construct()
     {
@@ -19,6 +20,7 @@ class InscriptionController extends BaseController
         $this->utilisateurManager = new UtilisateurManager;
         $this->requeteManager = new RequeteManager;
         $this->villeManager = new VilleManager;
+        $this->siteWebManager = new SiteWebManager;
     }
 
     public function inscription()
@@ -73,6 +75,7 @@ class InscriptionController extends BaseController
                 $this->requeteManager = new RequeteManager;
                 $this->utilisateurManager = new UtilisateurManager;
                 $this->villeManager = new VilleManager;
+                $this->siteWebManager = new SiteWebManager;
                 
                 if ($nom_ville && $code_postal && $id_pays) {
                     $ville = $this->villeManager->getVille($nom_ville, $code_postal);
@@ -100,6 +103,16 @@ class InscriptionController extends BaseController
                 } else if ($nom_ville && !$code_postal && $id_pays) {
                     echo $this->createResponse('error', 'Code postal de la ville manquant.');
                     exit;
+                }
+
+                if ($adresse_web) {
+                    $site_web = $this->siteWebManager->getSiteWeb($adresse_web);
+                    if ($site_web) {
+                        $adresse_site_web = $adresse_web;
+                    } else {
+                        $site_web = $this->siteWebManager->creerSiteWeb($adresse_web);
+                        $adresse_site_web = $adresse_web;
+                    }
                 }
                 
                 $utilisateur = $this->utilisateurManager->creerUtilisateur($pseudo, $nom, $prenom, $date_de_naissance, $email, $encrypted_password, $id_genre, $id_ville);

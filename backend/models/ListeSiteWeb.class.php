@@ -1,6 +1,6 @@
 <?php
 
-class Lister {
+class ListeSiteWeb {
     private $id_utilisateur_site_web;
     private $adresse_site_web_liste;
 
