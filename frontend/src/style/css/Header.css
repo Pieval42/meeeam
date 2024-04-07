@@ -1,8 +1,8 @@
 .header {
     position: sticky;
-    width: 100%;
+    top: 0;
     height: 56px;
-    margin: 0;
+    z-index: 9999;
 }
 
 @media screen and (max-width:992px) {

@@ -1,0 +1,28 @@
+small.date-heure {
+    font-size: 0.7em;
+}
+
+.correspondants {
+    transition: 
+    background-color 0.5s;
+}
+
+.correspondants:hover {
+    background-color: #8f8f8f;
+}
+
+.correspondants.selected {
+    background-color: #8f8f8f;
+}
+
+.conversation {
+    height: calc(100vh - 100px);
+}
+
+.body-conversation {
+    overflow: auto;
+}
+
+textarea.form-control {
+    resize: none;
+}

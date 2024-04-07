@@ -22,7 +22,7 @@ import Button from "react-bootstrap/esm/Button";
 export default function Header({ searchItem, handleInputChange, pseudo }) {
   return (
     <>
-      <Container fluid className="header w-100 m-0 p-0">
+      <Container className="header">
         <Navbar expand="lg" className="bg-body-tertiary w-100" sticky="top">
           <Container fluid className="justify-content-center">
             <Row className="w-100">

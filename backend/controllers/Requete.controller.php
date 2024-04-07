@@ -62,7 +62,7 @@ class RequeteController extends BaseController
                     $pseudo_utilisateur = $utilisateur->getPseudoUtilisateur();
                     $_SESSION['id_utilisateur'] = $id_utilisateur;
                     
-                    echo $this->createResponse('success', 'Connexion réussie.', ['id_utilisateur_req' => $_SESSION['id_utilisateur'], 'id_page_profil' => $id_page_profil, 'pseudo_utilisateur' => $pseudo_utilisateur]);
+                    echo $this->createResponse('success', 'Connexion réussie.', ['id_utilisateur' => $_SESSION['id_utilisateur'], 'id_page_profil' => $id_page_profil, 'pseudo_utilisateur' => $pseudo_utilisateur]);
                 } else {
                     echo $this->createResponse('error', "Adresse e-mail et/ou mot de passe incorrect", []);
                     exit;

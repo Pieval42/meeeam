@@ -16,7 +16,7 @@ class PageProfilManager extends Model {
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
 
-        return $res;
+        return $res["id_page_profil"];
     }
 
     public function creerPageProfil($id_utilisateur) {

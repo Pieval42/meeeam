@@ -21,7 +21,7 @@ class PaysController extends BaseController
 
             echo $this->createResponse(
                 'success',
-                'Votre compte a été crée avec succès!',
+                'Liste de pays chargée',
                 $liste_pays
             );
         } else {

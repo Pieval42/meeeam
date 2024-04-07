@@ -353,7 +353,8 @@ export default function Inscription({
                 {errorPays && (
                   <Form.Text className="text-warning">{errorPays}</Form.Text>
                 )}
-                <Col xs={12} sm={6} xl={4}>
+                <Form.Group
+                  as={Col} xs={12} sm={6} xl={4} controlId="formPays">
                   <Form.Label>Pays: </Form.Label>
                   <Form.Select
                     aria-label="ListePays"
@@ -367,7 +368,7 @@ export default function Inscription({
                         </option>
                       ))}
                   </Form.Select>
-                </Col>
+                </Form.Group>
                 <Form.Group
                   as={Col}
                   xs={12}

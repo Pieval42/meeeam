@@ -8,13 +8,13 @@ class MessagePrive {
     private $id_groupe_discussion_message_prive;
     private $id_destinataire_prive;
 
-    public function __construct($id_expediteur_prive, $id_message_prive, $contenu_message, $date_heure_message, $id_groupe_discussion_message_prive, $id_destinataire_prive) {
-        $this->id_expediteur_prive = $id_expediteur_prive;
+    public function __construct($id_message_prive, $id_expediteur_prive, $contenu_message, $date_heure_message, $id_destinataire_prive, $id_groupe_discussion_message_prive) {
         $this->id_message_prive = $id_message_prive;
+        $this->id_expediteur_prive = $id_expediteur_prive;
         $this->contenu_message = $contenu_message;
         $this->date_heure_message = $date_heure_message;
-        $this->id_groupe_discussion_message_prive = $id_groupe_discussion_message_prive;
         $this->id_destinataire_prive = $id_destinataire_prive;
+        $this->id_groupe_discussion_message_prive = $id_groupe_discussion_message_prive;
     }
 
     public function getIdExpediteurPrive() {
