@@ -104,6 +104,7 @@ class InscriptionController extends BaseController
                 
                 $utilisateur = $this->utilisateurManager->creerUtilisateur($pseudo, $nom, $prenom, $date_de_naissance, $email, $encrypted_password, $id_genre, $id_ville);
                 $id_utilisateur = $utilisateur->getIdUtilisateur();
+                $this->pageProfilManager->creerPageProfil($id_utilisateur);
                 $this->requeteManager->creerRequete($id_utilisateur, $_SERVER['REMOTE_ADDR'], $encrypted_password, $email, "inscription");
 
                 echo $this->createResponse(

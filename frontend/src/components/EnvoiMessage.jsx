@@ -9,6 +9,10 @@ import Button from "react-bootstrap/esm/Button";
 export default function EnvoiMessage({
   id_utilisateur,
   correspondant,
+  listeCorrespondants,
+  setListeCorrespondants,
+  setChangementListe,
+  changementListe,
 }) {
   const [error, setError] = useState("");
 
@@ -18,7 +22,8 @@ export default function EnvoiMessage({
     const msg = e.target.value;
     setMessageAEnvoyer(msg);
   };
-  const placeholder = "Écrire à " + correspondant[0];
+  const corresp = correspondant[0] ? correspondant[0] : "..."
+  const placeholder = "Écrire à " + corresp;
 
   
 
@@ -34,6 +39,11 @@ export default function EnvoiMessage({
         if (response.data.status === "success") {
           console.log(response);
           setMessageAEnvoyer("");
+          let listeModifiee = listeCorrespondants;
+          let correspondantDansListe = listeCorrespondants.find((c) => c[1] === correspondant[1]) ? true : false;
+          !correspondantDansListe && listeModifiee.splice(0, 0, correspondant);
+          setListeCorrespondants(listeModifiee);
+          setChangementListe(changementListe + 1);
         } else {
           setError(response.data.message);
           console.log(error);
@@ -66,5 +76,8 @@ export default function EnvoiMessage({
 EnvoiMessage.propTypes = {
   correspondant: PropTypes.array.isRequired,
   id_utilisateur: PropTypes.number.isRequired,
-  scroll: PropTypes.object,
+  listeCorrespondants: PropTypes.array.isRequired,
+  setListeCorrespondants: PropTypes.func.isRequired,
+  setChangementListe: PropTypes.func.isRequired,
+  changementListe: PropTypes.number.isRequired,
 };

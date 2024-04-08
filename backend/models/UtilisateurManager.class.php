@@ -47,6 +47,41 @@ class UtilisateurManager extends Model {
         return $utilisateurs;
     }
 
+    public function searchUtilisateurs($search) {
+        $search .= "%";
+        $req = "
+            SELECT * FROM utilisateur
+            WHERE pseudo_utilisateur LIKE :search
+            OR prenom_utilisateur LIKE :search
+            OR nom_utilisateur LIKE :search
+            OR CONCAT(prenom_utilisateur, ' ', nom_utilisateur) LIKE :search
+            OR CONCAT(nom_utilisateur, ' ', prenom_utilisateur) LIKE :search
+            ORDER BY pseudo_utilisateur ASC
+        ";
+        $stmt = $this->getBdd()->prepare($req);
+        
+        $stmt->bindValue(':search', $search, PDO::PARAM_STR);
+        $stmt->execute();
+        $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        foreach ($utilisateurs as $utilisateur){
+            $u = new Utilisateur(
+                $utilisateur['id_utilisateur'],
+                $utilisateur['pseudo_utilisateur'],
+                $utilisateur['nom_utilisateur'],
+                $utilisateur['prenom_utilisateur'],
+                $utilisateur['date_naissance'],
+                $utilisateur['email_utilisateur'],
+                $utilisateur['mot_de_passe'],
+                $utilisateur['date_inscription'],
+                $utilisateur['id_genre_utilisateur'],
+                $utilisateur['id_ville_utilisateur']
+            );
+            $this->ajoutUtilisateur($u);
+        }
+        return $utilisateurs;
+    }
+
     public function getLastUtilisateur() {
         $req = "
             SELECT * FROM utilisateur

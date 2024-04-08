@@ -21,9 +21,9 @@ export default function MessagesConversation({
       axios
         .get(
           "http://localhost:42600/backend/index.php/messages?id_utilisateur=" +
-            id_utilisateur +
+          encodeURIComponent(id_utilisateur) +
             "&id_utilisateur_2=" +
-            correspondant[1],
+            encodeURIComponent(correspondant[1]),
         )
         .then((response) => {
           console.log(response);

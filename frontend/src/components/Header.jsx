@@ -19,7 +19,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import "/src/style/css/Header.css";
 import Button from "react-bootstrap/esm/Button";
 
-export default function Header({ searchItem, handleInputChange, pseudo }) {
+export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
   return (
     <>
       <Container className="header">
@@ -58,8 +58,8 @@ export default function Header({ searchItem, handleInputChange, pseudo }) {
                     <Form.Control
                       id="search-bar"
                       type="text"
-                      value={searchItem}
-                      onChange={handleInputChange}
+                      // value={searchItem}
+                      // onChange={handleInputChange}
                       placeholder="Rechercher..."
                     />
                     <Button type="submit" variant="custom-secondary">
@@ -133,7 +133,7 @@ export default function Header({ searchItem, handleInputChange, pseudo }) {
 }
 
 Header.propTypes = {
-  handleInputChange: PropTypes.func.isRequired,
-  searchItem: PropTypes.string,
+  // handleInputChange: PropTypes.func.isRequired,
+  // searchItem: PropTypes.string,
   pseudo: PropTypes.string,
 };

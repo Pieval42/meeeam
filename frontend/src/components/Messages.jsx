@@ -10,14 +10,13 @@ import Button from "react-bootstrap/esm/Button";
 
 import "/src/style/css/Messages.css";
 import Conversation from "./Conversation";
-import EnvoiMessage from "./EnvoiMessage";
 
 export default function Messages() {
   const [error, setError] = useState("");
   const [listeCorrespondants, setListeCorrespondants] = useState([]);
   const [correspondant, setCorrespondant] = useState([]);
-  const [nouvelleConversation, setNouvelleConversation] = useState(false);
-
+  const [showConversation, setShowConversation] = useState(false);
+  const [changementListe, setChangementListe] = useState(0);
 
   const userData = JSON.parse(sessionStorage.getItem("userData"));
   const id_utilisateur = userData?.id_utilisateur;
@@ -29,7 +28,7 @@ export default function Messages() {
     axios
       .get(
         "http://localhost:42600/backend/index.php/messages?id_utilisateur=" +
-          id_utilisateur,
+        encodeURIComponent(id_utilisateur),
       )
       .then((response) => {
         if (!ignore) {
@@ -59,14 +58,19 @@ export default function Messages() {
     return () => {
       ignore = true;
     };
-  }, [id_utilisateur, pseudo_utilisateur]);
+  }, [id_utilisateur, pseudo_utilisateur, changementListe]);
+
+  useEffect(() => {
+    correspondant.length > 0 && setShowConversation(true);
+  }, [correspondant, setShowConversation])
 
   function handleShowConversation(id_correspondant, pseudo_correspondant) {
     setCorrespondant([pseudo_correspondant, id_correspondant]);
   }
 
   const handleNouvelleConversation = () => {
-    setNouvelleConversation(true);
+    setCorrespondant([]);
+    setShowConversation(true);
   } 
 
   return (
@@ -109,30 +113,16 @@ export default function Messages() {
               </Card.Body>
             </Card>
           </Col>
-          {correspondant.length > 0 && (
+          {showConversation && (
             <Conversation
               correspondant={correspondant}
+              setCorrespondant={setCorrespondant}
+              listeCorrespondants={listeCorrespondants}
+              setListeCorrespondants={setListeCorrespondants}
               id_utilisateur={id_utilisateur}
+              setChangementListe={setChangementListe}
+              changementListe={changementListe}
             />
-          )}
-          {nouvelleConversation && (
-            <Col xs={9} className="h-100">
-              <Card className="h-100 mb-3">
-                <Card.Header>
-                  Conversation avec{" "}
-                  
-                  </Card.Header>
-                <Card.Body className="body-conversation"></Card.Body>
-                <Card.Footer>
-                  {correspondant.length > 0 && (
-                    <EnvoiMessage
-                      correspondant={correspondant}
-                      id_utilisateur={id_utilisateur}
-                    />
-                  )}
-                </Card.Footer>
-              </Card>
-            </Col>
           )}
         </Row>
       </Container>
