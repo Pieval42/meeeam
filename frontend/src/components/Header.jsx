@@ -33,7 +33,9 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
                 xl={4}
                 className="d-flex justify-content-start"
               >
-                <Navbar.Brand href="../profil/">
+                <Navbar.Brand>
+                <Link to={"profil/"} className="nav-link">
+                     
                   <img
                     alt="Logo Meeeam"
                     src="/images/logo.svg"
@@ -41,6 +43,7 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
                     height="30"
                     className="d-inline-block align-top"
                   />
+                    </Link>
                 </Navbar.Brand>
               </Col>
               <Col
@@ -102,22 +105,29 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
                       <Dropdown.Toggle as={NavLink} className="text-truncate">{pseudo}</Dropdown.Toggle>
                       <Dropdown.Menu id="dropdown-pseudo">
                         <Dropdown.Item
-                          href="../profil/"
-                          className="nav-link text-center"
+                          
+                          className="text-center"
                         >
+                          <Link to={"profil/"} className="nav-link">
                           Profil
+                          </Link>
                         </Dropdown.Item>
                         <Dropdown.Item
-                          href="../parametres/"
-                          className="nav-link text-center"
+                          
+                          className="text-center"
                         >
+                          <Link to={"parametres/"} className="nav-link">
                           Paramètres
+                          </Link>
+                          
                         </Dropdown.Item>
                         <Dropdown.Item
-                          href="../deconnexion/"
                           className="nav-link text-center"
                         >
+                          <Link to={"deconnexion/"} className="nav-link">
                           Déconnexion
+                          </Link>
+                          
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>

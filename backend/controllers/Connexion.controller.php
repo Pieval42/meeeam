@@ -4,7 +4,7 @@ require_once __DIR__ . "/../" . '/models/RequeteManager.class.php';
 require_once __DIR__ . "/../" . '/models/PageProfilManager.class.php';
 require_once __DIR__ . "/../" . '/models/UtilisateurManager.class.php';
 
-class RequeteController extends BaseController
+class ConnexionController extends BaseController
 {
     private $requeteManager;
     private $pageProfilManager;
@@ -16,7 +16,6 @@ class RequeteController extends BaseController
         $this->utilisateurManager = new UtilisateurManager;
     }
 
-    //Processing API requests
     public function connexion()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -49,11 +48,11 @@ class RequeteController extends BaseController
                     PASSWORD_DEFAULT
                 );
 
-                $this->requeteManager->creerRequete($utilisateur->getIdUtilisateur(), $_SERVER['REMOTE_ADDR'], $mot_de_passe_hash, $email, "connexion");
+                $this->requeteManager->creerRequete($utilisateur ? $utilisateur->getIdUtilisateur() : null, $_SERVER['REMOTE_ADDR'], $mot_de_passe_hash, $email, "connexion");
 
                 $requete = $this->requeteManager->getRequetesByEmail($email);
 
-                $mot_de_passe_utilisateur = $utilisateur->getMotDePasse();
+                $mot_de_passe_utilisateur = $utilisateur ? $utilisateur->getMotDePasse() : null;
 
                 if (password_verify($mot_de_passe, $mot_de_passe_utilisateur)) {
                     session_start();

@@ -1,7 +1,7 @@
 import { /*useState, */useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 
-import Header from "./Header";
+import Header from "../components/Header";
 
 // import Container from "react-bootstrap/esm/Container";
 // import Col from "react-bootstrap/esm/Col";

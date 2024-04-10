@@ -1,8 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from "react";
+import { useContext } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-// import { Form as FormRouter } from "react-router-dom";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -10,46 +9,38 @@ import Button from "react-bootstrap/Button";
 
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import { authContext } from "../contexts/contexts";
 
 function ModalConnexion({
   showConnexion,
   handleCloseConnexion,
   handleShowInscription,
+  error,
+  setError,
 }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  // const [showPassword, setShowPassword] = useState(false);
+
+  const context = useContext(authContext);
 
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    context.setEmail(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+    context.setMotDePasse(event.target.value);
   };
-
-  // const handleShowPassword = () => {
-  //   setShowPassword(!showPassword);
-  // };
-
+  
   const handleSubmit = (event) => {
     event.preventDefault();
+
     axios
       .post("http://localhost:42600/backend/index.php/connexion", {
-        email: email,
-        mot_de_passe: password,
+        email: context.email,
+        mot_de_passe: context.motDePasse,
       })
       .then((response) => {
         console.log(response);
         if (response.data.status === "success") {
-          sessionStorage.setItem("loggedIn", true);
-          sessionStorage.setItem(
-            "userData",
-            JSON.stringify(response.data.data),
-          );
-
-          window.location.href = "main/profil/";
+          context.setInfosUtilisateurs(response.data.data);
         } else {
           setError(response.data.message);
         }
@@ -136,6 +127,8 @@ ModalConnexion.propTypes = {
   handleCloseConnexion: PropTypes.func.isRequired,
   handleShowInscription: PropTypes.func.isRequired,
   showConnexion: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  setError: PropTypes.func.isRequired,
 };
 
 export default ModalConnexion;

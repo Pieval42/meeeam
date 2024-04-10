@@ -9,7 +9,7 @@ import ListGroup from "react-bootstrap/esm/ListGroup";
 import Button from "react-bootstrap/esm/Button";
 
 import "/src/style/css/Messages.css";
-import Conversation from "./Conversation";
+import Conversation from "../components/Conversation";
 
 export default function Messages() {
   const [error, setError] = useState("");

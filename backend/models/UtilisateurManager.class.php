@@ -161,18 +161,22 @@ class UtilisateurManager extends Model {
         $stmt->execute();
         $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
-        return  new Utilisateur(
-            $utilisateur['id_utilisateur'],
-            $utilisateur['pseudo_utilisateur'],
-            $utilisateur['nom_utilisateur'],
-            $utilisateur['prenom_utilisateur'],
-            $utilisateur['date_naissance'],
-            $utilisateur['email_utilisateur'],
-            $utilisateur['mot_de_passe'],
-            $utilisateur['date_inscription'],
-            $utilisateur['id_genre_utilisateur'],
-            $utilisateur['id_ville_utilisateur']
-        );
+        if($utilisateur === false){
+            return $utilisateur;
+        } else {
+            return  new Utilisateur(
+                $utilisateur['id_utilisateur'],
+                $utilisateur['pseudo_utilisateur'],
+                $utilisateur['nom_utilisateur'],
+                $utilisateur['prenom_utilisateur'],
+                $utilisateur['date_naissance'],
+                $utilisateur['email_utilisateur'],
+                $utilisateur['mot_de_passe'],
+                $utilisateur['date_inscription'],
+                $utilisateur['id_genre_utilisateur'],
+                $utilisateur['id_ville_utilisateur']
+            );
+        }
     }
 
     public function updateUtilisateur($id, $pseudo, $nom, $prenom, $date_naissance, $email, $mot_de_passe, $id_genre, $id_ville) {

@@ -7,7 +7,7 @@ import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 
 import "/src/style/css/Accueil.css";
-import ModalConnexion from "./ModalConnexion";
+import ModalConnexion from "../components/ModalConnexion";
 import Bienvenue from "./Bienvenue";
 import Inscription from "./Inscription";
 
@@ -16,7 +16,10 @@ export default function Accueil() {
   const [error, setError] = useState("");
 
   const [showConnexion, setShowConnexion] = useState(false);
-  const handleCloseConnexion = () => setShowConnexion(false);
+  const handleCloseConnexion = () => {
+    setShowConnexion(false);
+    setError("");
+  };
   const handleShowConnexion = () => setShowConnexion(true);
 
   const [showInscription, setShowInscription] = useState(false);
@@ -43,7 +46,7 @@ export default function Accueil() {
   useEffect(() => {
     const loggedIn = sessionStorage.getItem("loggedIn");
     if (loggedIn) {
-      navigate("../main/profil/");
+      // navigate("../../main/profil/");
     }
   }, [navigate]);
 
@@ -53,6 +56,8 @@ export default function Accueil() {
         showConnexion={showConnexion}
         handleCloseConnexion={handleCloseConnexion}
         handleShowInscription={handleShowInscription}
+        error={error}
+        setError={setError}
       />
       <Container className="accueil p-0 w-100">
         <Card className="h-100 w-100 m-0">
