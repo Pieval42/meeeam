@@ -1,15 +1,26 @@
+/* eslint-disable react/no-unescaped-entities */
 // import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
+// import { authContext } from '../contexts/contexts';
+import { useNavigate } from "react-router-dom";
 
 export default function Deconnexion() {
 
-  const { deconnexion } = useAuth();
+  const context = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    deconnexion
-  }, [deconnexion])
+    localStorage.removeItem("Bearer");
+    setTimeout(navigate("/"),5000);
+    // context.setToken("")
+  }, [context, navigate])
+
+  return (
+    <div>
+      Vous avez été déconnecté, vous allez être redirigés vers l'accueil
+    </div>
+  )
 
   // const { setToken } = useAuth();
   // const navigate = useNavigate();

@@ -111,7 +111,7 @@ export default function Inscription({
             setApiResponse(response.data.message);
             setTimeout(() => {
               setApiResponse("");
-              navigate("../profil/");
+              navigate("/");
             }, 7000);
           } else {
             setError(response.data.message);
@@ -274,7 +274,7 @@ export default function Inscription({
                       delay={{ show: 250, hide: 400 }}
                       overlay={
                         <Tooltip id="tooltip-mdp">
-                          Votre mot de passe doit contenir au moins 12
+                          Votre mot de passe doit contenir au moins 10
                           caractères, dont au moins une minuscule, une
                           majuscule, un chiffre et un caractère spécial.
                         </Tooltip>

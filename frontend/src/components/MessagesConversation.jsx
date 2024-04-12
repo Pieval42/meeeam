@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
+import { authContext } from "../contexts/contexts";
 
 export default function MessagesConversation({
   id_utilisateur,
@@ -15,6 +16,8 @@ export default function MessagesConversation({
     `conversation_${id_utilisateur}${correspondant[1]}`,
   );
   
+  const context = useContext(authContext);
+
   useEffect(() => {
     messagesCache && setListeMessages(JSON.parse(messagesCache)); 
     function updateMessages() {
@@ -24,6 +27,11 @@ export default function MessagesConversation({
           encodeURIComponent(id_utilisateur) +
             "&id_utilisateur_2=" +
             encodeURIComponent(correspondant[1]),
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
+              },
+            },
         )
         .then((response) => {
           console.log(response);
@@ -65,7 +73,7 @@ export default function MessagesConversation({
         
     const intervalId = setInterval(updateMessages, 1000);
     return () => clearInterval(intervalId);
-  }, [id_utilisateur, correspondant, error, setListeMessages, messagesCache]);
+  }, [id_utilisateur, correspondant, error, setListeMessages, messagesCache, context]);
 
 
 

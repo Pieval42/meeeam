@@ -9,17 +9,32 @@ export default function AuthProvider({ children }) {
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
   const [status, setStatus] = useState("inconnu");
+  const [token, setToken] = useState({});
 
   const contextValue = useMemo(() => ({
-    infosUtilisateurs, setInfosUtilisateurs, email, setEmail, motDePasse, setMotDePasse, status, setStatus
-  }), [infosUtilisateurs, email, motDePasse, status]);
+    infosUtilisateurs, setInfosUtilisateurs, email, setEmail, motDePasse, setMotDePasse, status, setStatus, token, setToken
+  }), [infosUtilisateurs, email, motDePasse, status, token]);
 
-  const auth = useAuth(contextValue);
-
+  const auth = useAuth();
+  
   useEffect(() => {
-    setStatus(auth)
-  }, [auth, contextValue])
-
+    const tokenEncoded = localStorage.getItem("Bearer");
+    if(tokenEncoded) {
+      const base64Url = tokenEncoded.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+  
+      setToken(jsonPayload ? JSON.parse(jsonPayload) : null);
+    }
+  }, [infosUtilisateurs])
+  
+  useEffect(() => {
+    // setToken(JSON.parse(auth.jsonPayload))
+    setStatus(auth.status)
+  }, [auth, token])
+  
   // Provide the authentication context to the children components
   return (
     <authContext.Provider

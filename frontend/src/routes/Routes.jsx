@@ -8,26 +8,20 @@ import Amis from "../pages/Amis";
 import Messages from "../pages/Messages";
 import Parametres from "../pages/Parametres";
 import Deconnexion from "../components/Deconnexion";
-import { useContext, useEffect } from "react";
-import { authContext } from "../contexts/contexts";
 import { useAuth } from "../hooks/useAuth";
 
 const Routes = () => {
-  const context = useContext(authContext);
 
-  const auth = useAuth(context.infosUtilisateurs);
+  const auth = useAuth();
   
-  useEffect(() => {
-        context.setStatus(auth);
-  }, [auth, context])
-  
-    // // Define public routes accessible to all users
-    // const routesForPublic = [
-    //   {
-    //     path: "/",
-    //     element: <Accueil></Accueil>,
-    //   },
-    // ];
+    // Define public routes accessible to all users
+    const routesForPublic = [
+      {
+        path: "/",
+        element: <Accueil></Accueil>,
+      },
+      
+    ];
   
     // Define routes accessible only to authenticated users
     const routesForAuthenticatedOnly = [
@@ -39,7 +33,7 @@ const Routes = () => {
         ),
         children: [
           {
-            path: "profil/",
+            index: true,
             element: <Profil />,
           },
           {
@@ -67,16 +61,16 @@ const Routes = () => {
     ];
   
     // Define routes accessible only to non-authenticated users
-    const routesForNotAuthenticatedOnly = [
-      {
-        path: "/",
-        element: <Accueil />,
-      },
-    ];
+    // const routesForNotAuthenticatedOnly = [
+    //   {
+    //     path: "/",
+    //     element: <Accueil />,
+    //   },
+    // ];
   
     // Combine and conditionally include routes based on authentication status
     const router = createBrowserRouter([
-      ...(context.status === "connecte" ? routesForAuthenticatedOnly : routesForNotAuthenticatedOnly),
+      ...(auth.status === "connecte" ? routesForAuthenticatedOnly : routesForPublic),
     ]);
   
     // Provide the router configuration using RouterProvider

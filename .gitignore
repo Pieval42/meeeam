@@ -129,6 +129,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Composer
+backend/vendor/
+
 #Fichiers persos
 documentation/suivi_installations.txt
 /.vscode/

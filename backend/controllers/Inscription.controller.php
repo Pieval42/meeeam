@@ -58,9 +58,9 @@ class InscriptionController extends BaseController
                     }
                 }
 
-                $regexp = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])(?=.{12,})/';
+                $regexp = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])(?=.{10,64})/';
                 if (!preg_match($regexp, $password)) {
-                    echo $this->createResponse('error', 'Mot de passe trop faible. Votre mot de passe doit contenir au moins 12 caractères, dont au moins une minuscule, une majuscule, un chiffre et un caractère spécial.');
+                    echo $this->createResponse('error', 'Mot de passe trop faible. Votre mot de passe doit contenir au moins 10 caractères, dont au moins une minuscule, une majuscule, un chiffre et un caractère spécial.');
                     exit;
                 }
 
@@ -122,6 +122,8 @@ class InscriptionController extends BaseController
                 echo $this->createResponse('error', 'Mauvaise requête.', []);
                 exit;
             }
+        } elseif($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            header('HTTP/1.1 200 OK');
         }
     }
 }

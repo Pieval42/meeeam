@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
 
 
@@ -40,15 +39,6 @@ export default function Accueil() {
       });
     setShowInscription(true);
   }
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const loggedIn = sessionStorage.getItem("loggedIn");
-    if (loggedIn) {
-      // navigate("../../main/profil/");
-    }
-  }, [navigate]);
 
   return (
     <>

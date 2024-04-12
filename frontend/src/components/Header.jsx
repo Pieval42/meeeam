@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import NavItem from "react-bootstrap/NavItem";
-import NavLink from "react-bootstrap/NavLink";
+// import NavLink from "react-bootstrap/NavLink";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 //import NavDropdown from "react-bootstrap/NavDropdown";
@@ -34,7 +34,7 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
                 className="d-flex justify-content-start"
               >
                 <Navbar.Brand>
-                <Link to={"profil/"} className="nav-link">
+                <Link to={"/"} className="nav-link">
                      
                   <img
                     alt="Logo Meeeam"
@@ -102,13 +102,13 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
                     </Link>
 
                     <Dropdown as={NavItem} align={{ lg: 'end' }}>
-                      <Dropdown.Toggle as={NavLink} className="text-truncate">{pseudo}</Dropdown.Toggle>
+                      <Dropdown.Toggle className="text-truncate dropdown-btn-custom">{pseudo}</Dropdown.Toggle>
                       <Dropdown.Menu id="dropdown-pseudo">
                         <Dropdown.Item
                           
                           className="text-center"
                         >
-                          <Link to={"profil/"} className="nav-link">
+                          <Link to={"/"} className="nav-link">
                           Profil
                           </Link>
                         </Dropdown.Item>
