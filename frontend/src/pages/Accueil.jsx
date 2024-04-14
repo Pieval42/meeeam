@@ -1,13 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 
-
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 
 import "/src/style/css/Accueil.css";
 import ModalConnexion from "../components/ModalConnexion";
-import Bienvenue from "./Bienvenue";
+import Bienvenue from "../components/Bienvenue";
 import Inscription from "./Inscription";
 
 export default function Accueil() {
@@ -38,7 +37,7 @@ export default function Accueil() {
         console.error(error);
       });
     setShowInscription(true);
-  }
+  };
 
   return (
     <>

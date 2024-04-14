@@ -34,16 +34,15 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
                 className="d-flex justify-content-start"
               >
                 <Navbar.Brand>
-                <Link to={"/"} className="nav-link">
-                     
-                  <img
-                    alt="Logo Meeeam"
-                    src="/images/logo.svg"
-                    width="30"
-                    height="30"
-                    className="d-inline-block align-top"
-                  />
-                    </Link>
+                  <Link to={"/"} className="nav-link">
+                    <img
+                      alt="Logo Meeeam"
+                      src="/images/logo.svg"
+                      width="30"
+                      height="30"
+                      className="d-inline-block align-top"
+                    />
+                  </Link>
                 </Navbar.Brand>
               </Col>
               <Col
@@ -101,33 +100,28 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
                       Messages
                     </Link>
 
-                    <Dropdown as={NavItem} align={{ lg: 'end' }}>
-                      <Dropdown.Toggle className="text-truncate dropdown-btn-custom">{pseudo}</Dropdown.Toggle>
+                    <Dropdown as={NavItem} align={{ lg: "end" }}>
+                      <Dropdown.Toggle className="text-truncate dropdown-btn-custom">
+                        {pseudo}
+                      </Dropdown.Toggle>
                       <Dropdown.Menu id="dropdown-pseudo">
-                        <Dropdown.Item
-                          
-                          className="text-center"
-                        >
+                        <Dropdown.Item as="div" className="text-center">
                           <Link to={"/"} className="nav-link">
-                          Profil
+                            Profil
                           </Link>
                         </Dropdown.Item>
-                        <Dropdown.Item
-                          
-                          className="text-center"
-                        >
+                        <Dropdown.Item as="div" className="text-center">
                           <Link to={"parametres/"} className="nav-link">
-                          Paramètres
+                            Paramètres
                           </Link>
-                          
                         </Dropdown.Item>
                         <Dropdown.Item
+                          as="div"
                           className="nav-link text-center"
                         >
                           <Link to={"deconnexion/"} className="nav-link">
-                          Déconnexion
+                            Déconnexion
                           </Link>
-                          
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>

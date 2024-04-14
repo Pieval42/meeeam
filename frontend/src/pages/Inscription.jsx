@@ -125,7 +125,6 @@ export default function Inscription({
       setApiResponse("");
       setError("Les 2 mots de passe ne correspondent pas.");
     }
-    // window.location.href = "/";
   };
 
   if (showInscription) {
@@ -353,8 +352,7 @@ export default function Inscription({
                 {errorPays && (
                   <Form.Text className="text-warning">{errorPays}</Form.Text>
                 )}
-                <Form.Group
-                  as={Col} xs={12} sm={6} xl={4} controlId="formPays">
+                <Form.Group as={Col} xs={12} sm={6} xl={4} controlId="formPays">
                   <Form.Label>Pays: </Form.Label>
                   <Form.Select
                     aria-label="ListePays"

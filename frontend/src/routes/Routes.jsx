@@ -9,28 +9,53 @@ import Messages from "../pages/Messages";
 import Parametres from "../pages/Parametres";
 import Deconnexion from "../components/Deconnexion";
 import { useAuth } from "../hooks/useAuth";
+import { useContext, useEffect, useMemo } from "react";
+import { authContext } from "../contexts/contexts";
+import PageDeconnexion from "../pages/PageDeconnexion";
+import PageErreurAuthentification from "../pages/PageErreurAuthentification";
 
 const Routes = () => {
-
   const auth = useAuth();
-  
-    // Define public routes accessible to all users
-    const routesForPublic = [
+  const context = useContext(authContext);
+
+  useEffect(() => {}, [context.status]);
+
+  // Define public routes accessible to all users
+  const routesForPublic = useMemo(() => {
+    return [
       {
         path: "/",
         element: <Accueil></Accueil>,
       },
-      
+      {
+        path: "pages/",
+        element: <PageErreurAuthentification />,
+      },
+      {
+        path: "amis/",
+        element: <PageErreurAuthentification />,
+      },
+      {
+        path: "messages/",
+        element: <PageErreurAuthentification />,
+      },
+      {
+        path: "parametres/",
+        element: <PageErreurAuthentification />,
+      },
+      {
+        path: "deconnexion/",
+        element: <PageDeconnexion />,
+      },
     ];
-  
-    // Define routes accessible only to authenticated users
-    const routesForAuthenticatedOnly = [
+  }, []);
+
+  // Define routes accessible only to authenticated users
+  const routesForAuthenticatedOnly = useMemo(() => {
+    return [
       {
         path: "/",
-        element: (
-          <ProtectedRoute>
-          </ProtectedRoute>
-        ),
+        element: <ProtectedRoute></ProtectedRoute>,
         children: [
           {
             index: true,
@@ -59,22 +84,25 @@ const Routes = () => {
         ],
       },
     ];
-  
-    // Define routes accessible only to non-authenticated users
-    // const routesForNotAuthenticatedOnly = [
-    //   {
-    //     path: "/",
-    //     element: <Accueil />,
-    //   },
-    // ];
-  
-    // Combine and conditionally include routes based on authentication status
-    const router = createBrowserRouter([
-      ...(auth.status === "connecte" ? routesForAuthenticatedOnly : routesForPublic),
-    ]);
-  
-    // Provide the router configuration using RouterProvider
-    return <RouterProvider router={router} />;
-  };
-  
-  export default Routes;
+  }, []);
+
+  // Define routes accessible only to non-authenticated users
+  // const routesForNotAuthenticatedOnly = [
+  //   {
+  //     path: "/",
+  //     element: <Accueil />,
+  //   },
+  // ];
+
+  // Combine and conditionally include routes based on authentication status
+  const router = createBrowserRouter([
+    ...(auth.status === "connecte"
+      ? routesForAuthenticatedOnly
+      : routesForPublic),
+  ]);
+
+  // Provide the router configuration using RouterProvider
+  return <RouterProvider router={router} />;
+};
+
+export default Routes;

@@ -1,45 +1,21 @@
-/* eslint-disable react/no-unescaped-entities */
-// import axios from 'axios';
-import { useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
-// import { authContext } from '../contexts/contexts';
+import { useContext, useEffect } from 'react';
+import { authContext } from '../contexts/contexts';
 import { useNavigate } from "react-router-dom";
+import PageDeconnexion from '../pages/PageDeconnexion';
 
 export default function Deconnexion() {
 
-  const context = useAuth();
+  const context = useContext(authContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.removeItem("Bearer");
-    setTimeout(navigate("/"),5000);
-    // context.setToken("")
+    context.setStatus("nonConnecte");
+    context.setToken("");
+    context.setInfosUtilisateurs(null);
   }, [context, navigate])
 
   return (
-    <div>
-      Vous avez été déconnecté, vous allez être redirigés vers l'accueil
-    </div>
+    <PageDeconnexion />
   )
-
-  // const { setToken } = useAuth();
-  // const navigate = useNavigate();
-
-  // const handleLogout = () => {
-  //   setToken();
-  //   navigate("/", { replace: true });
-  // };
-
-  // setTimeout(() => {
-  //   handleLogout();
-  // }, 3 * 1000);
-  
-  // axios.post('http://localhost:42600/backend/index.php/connexion')
-  // .then(() => {
-  //   sessionStorage.clear();
-  //   navigate("/");
-  // })
-  // .catch((error) => {
-  //    console.error(error);
-  // });
 }
