@@ -17,8 +17,8 @@ export default function MainTemplate() {
 
   // const navigate = useNavigate();
   const context = useContext(authContext);
-  const infosUtilisateurs = context.token;
-  const pseudo = infosUtilisateurs.pseudo_utilisateur;
+  const infosUtilisateurs = context ? context.token : null;
+  const pseudo = infosUtilisateurs ? infosUtilisateurs.pseudo_utilisateur : "...";
 
   // useEffect(() => {
   //   const status = context.status;
