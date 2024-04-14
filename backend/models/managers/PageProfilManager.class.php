@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Model.class.php';
-require_once 'PageProfil.class.php';
+require_once __DIR__ . "/../" . 'Model.class.php';
+require_once __DIR__ . "/../" . 'PageProfil.class.php';
 
 class PageProfilManager extends Model {
 

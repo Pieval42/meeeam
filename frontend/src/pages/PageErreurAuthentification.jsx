@@ -1,6 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
-import Button from "react-bootstrap/esm/Button";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+import Button from "react-bootstrap/esm/Button";
 
 export default function PageDeconnexion() {
   const navigate = useNavigate();
@@ -8,9 +10,16 @@ export default function PageDeconnexion() {
   const handleGoToAccueil = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    setTimeout(() => {navigate("/")}, 5000);
+  }, [navigate]);
+
   return (
     <div>
-      Vous devez être connecté pour voir cette page
+      Vous devez être connecté pour voir cette page.
+      <br/>
+      Vous allez être redirigé vers l'accueil.
       <div>
         <Button variant="custom-primary" onClick={handleGoToAccueil}>
           Retourner à l'accueil

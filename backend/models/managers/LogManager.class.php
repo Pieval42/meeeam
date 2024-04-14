@@ -1,24 +1,10 @@
 <?php
+require_once __DIR__ . "/../" . 'Model.class.php';
+require_once __DIR__ . "/../" . 'LogUtilisateur.class.php';
+require_once __DIR__ . "/../" . 'Utilisateur.class.php';
 
-require_once 'Model.class.php';
-require_once 'LogUtilisateur.class.php';
-require_once 'Utilisateur.class.php';
-
-class ConnexionManager extends Model {
-    // private $connexion;
+class LogManager extends Model {
     
-    // public function ajoutConnexion($connexion){
-    //     $this->connexion = $connexion;
-    // }
-
-    // public function creerConnexion() {
-        
-    // }
-    
-    // public function getConnexion(){
-    //     return $this->connexion;
-    // }
-
     public function creerLogConnexion($id_utilisateur, $adresse_ip) {
         $req = "
             INSERT INTO log_utilisateur

@@ -1,8 +1,8 @@
 <?php
 require_once 'BaseController.controller.php';
-require_once __DIR__ . "/../" . '/models/RequeteManager.class.php';
-require_once __DIR__ . "/../" . '/models/PageProfilManager.class.php';
-require_once __DIR__ . "/../" . '/models/UtilisateurManager.class.php';
+require_once __DIR__ . "/../" . '/models/managers/RequeteManager.class.php';
+require_once __DIR__ . "/../" . '/models/managers/PageProfilManager.class.php';
+require_once __DIR__ . "/../" . '/models/managers/UtilisateurManager.class.php';
 
 use Nowakowskir\JWT\Exceptions\InsecureTokenException;
 use Nowakowskir\JWT\Exceptions\UndefinedAlgorithmException;

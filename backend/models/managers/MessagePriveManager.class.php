@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Model.class.php';
-require_once 'MessagePrive.class.php';
+require_once __DIR__ . "/../" . 'Model.class.php';
+require_once __DIR__ . "/../" . 'MessagePrive.class.php';
 
 class MessagePriveManager extends Model {
     private $message_prive;

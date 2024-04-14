@@ -17,10 +17,6 @@ class Ville {
         return $this->id_ville;
     }
 
-    public function setIdVille($id_ville) {
-        $this->id_ville = $id_ville;
-    }
-
     public function getNomVille() {
         return $this->nom_ville;
     }

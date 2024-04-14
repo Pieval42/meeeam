@@ -1,10 +1,22 @@
 <?php
 
-require_once 'Model.class.php';
-require_once 'Ville.class.php';
+require_once __DIR__ . "/../" . 'Model.class.php';
+require_once __DIR__ . "/../" . 'Ville.class.php';
 
 class VilleManager extends Model
 {
+    private $ville;
+
+    private function creerObjetVille($ville)
+    {
+        $this->ville = new Ville(
+            $ville['id_ville'],
+            $ville['nom_ville'],
+            $ville['code_postal'],
+            $ville['id_pays_ville']
+        );
+    }
+
     public function getVille($nom_ville, $code_postal)
     {
         $req = "
@@ -20,12 +32,8 @@ class VilleManager extends Model
         $stmt->closeCursor();
 
         if ($ville) {
-            return new Ville(
-                $ville['id_ville'],
-                $ville['nom_ville'],
-                $ville['code_postal'],
-                $ville['id_pays_ville']
-            );
+            $this->creerObjetVille($ville);
+            return $this->ville;
         } else {
             return null;
         }
@@ -48,17 +56,15 @@ class VilleManager extends Model
         $villes = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
 
+        $allVilles = [];
+
         if ($villes) {
             foreach ($villes as $ville) {
-                $v = new Ville(
-                    $ville['id_ville'],
-                    $ville['nom_ville'],
-                    $ville['code-postal'],
-                    $ville['id_pays_ville']
-                );
+                $this->creerObjetVille($ville);
+                $allVilles[] = $this->ville;
             }
         }
-        return $villes;
+        return $allVilles;
     }
 
     public function creerVille($nom_ville, $code_postal, $id_pays_ville)
@@ -73,21 +79,14 @@ class VilleManager extends Model
         $stmt->bindValue(':code_postal', $code_postal, PDO::PARAM_INT);
         $stmt->bindValue(':id_pays_ville', $id_pays_ville, PDO::PARAM_INT);
         $stmt->execute();
-        $id_ville = $stmt->lastInsertId('ville');
         $stmt->closeCursor();
-        $ville = $this->getVilleById($id_ville);
+        $ville = $this->getVille($nom_ville, $code_postal);
         if ($ville) {
-            return new Ville(
-                $ville['id_ville'],
-                $ville['nom_ville'],
-                $ville['code_postal'],
-                $ville['id_pays_ville']
-            );
+            return $ville;
         } else {
             return null;
         }
     }
-
 
     public function getVilleById($id)
     {
@@ -98,12 +97,8 @@ class VilleManager extends Model
         $ville = $stmt->fetch(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
         if ($ville) {
-            return new Ville(
-                $ville['id_ville'],
-                $ville['nom_ville'],
-                $ville['code_postal'],
-                $ville['id_pays_ville']
-            );
+            $this->creerObjetVille($ville);
+            return $this->ville;
         } else {
             return null;
         }

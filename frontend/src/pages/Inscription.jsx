@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
 
@@ -11,7 +10,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 
@@ -32,12 +30,10 @@ export default function Inscription({
   const [id_genre, setGenre] = useState("I");
   const [ville, setVille] = useState("");
   const [code_postal, setCodePostal] = useState("");
-  const [id_pays, setIdPays] = useState("");
+  const [id_pays, setIdPays] = useState(0);
   const [siteWeb, setSiteWeb] = useState("");
   const [apiResponse, setApiResponse] = useState("");
   const [error, setError] = useState("");
-
-  const navigate = useNavigate();
 
   const handlePseudoChange = (event) => {
     setPseudo(event.target.value);
@@ -111,7 +107,7 @@ export default function Inscription({
             setApiResponse(response.data.message);
             setTimeout(() => {
               setApiResponse("");
-              navigate("/");
+              window.location.reload();
             }, 7000);
           } else {
             setError(response.data.message);
@@ -358,7 +354,7 @@ export default function Inscription({
                     aria-label="ListePays"
                     onChange={handlePaysChange}
                   >
-                    <option>Choisir un pays:</option>
+                    <option value={0}>Choisir un pays:</option>
                     {listePays &&
                       listePays.map((pays) => (
                         <option key={pays.id_pays} value={pays.id_pays}>

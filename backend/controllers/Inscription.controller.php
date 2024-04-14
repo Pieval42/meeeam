@@ -1,10 +1,11 @@
 <?php
 require_once 'BaseController.controller.php';
-require_once __DIR__ . "/../" . 'models/PageProfilManager.class.php';
-require_once __DIR__ . "/../" . 'models/UtilisateurManager.class.php';
-require_once __DIR__ . "/../" . 'models/RequeteManager.class.php';
-require_once __DIR__ . "/../" . 'models/VilleManager.class.php';
-
+require_once __DIR__ . "/../" . 'models/managers/PageProfilManager.class.php';
+require_once __DIR__ . "/../" . 'models/managers/UtilisateurManager.class.php';
+require_once __DIR__ . "/../" . 'models/managers/RequeteManager.class.php';
+require_once __DIR__ . "/../" . 'models/managers/VilleManager.class.php';
+require_once __DIR__ . "/../" . 'models/managers/SiteWebManager.class.php';
+require_once __DIR__ . "/../" . 'models/managers/ListerManager.class.php';
 
 class InscriptionController extends BaseController
 {
@@ -12,6 +13,8 @@ class InscriptionController extends BaseController
     private $utilisateurManager;
     private $requeteManager;
     private $villeManager;
+    private $siteWebManager;
+    private $listerManager;
 
     public function __construct()
     {
@@ -19,6 +22,8 @@ class InscriptionController extends BaseController
         $this->utilisateurManager = new UtilisateurManager;
         $this->requeteManager = new RequeteManager;
         $this->villeManager = new VilleManager;
+        $this->siteWebManager = new SiteWebManager;
+        $this->listerManager = new ListerManager;
     }
 
     public function inscription()
@@ -68,15 +73,12 @@ class InscriptionController extends BaseController
                     $password,
                     PASSWORD_DEFAULT
                 );
-              
-                $this->pageProfilManager = new PageProfilManager;
-                $this->requeteManager = new RequeteManager;
-                $this->utilisateurManager = new UtilisateurManager;
-                $this->villeManager = new VilleManager;
+
+                $id_pays === 0 && $id_pays = null;
                 
                 if ($nom_ville && $code_postal && $id_pays) {
                     $ville = $this->villeManager->getVille($nom_ville, $code_postal);
-                    if ($ville->getIdVille()) {
+                    if ($ville) {
                         $id_ville = $ville->getIdVille();
                     } else {
                         $ville = $this->villeManager->creerVille($nom_ville, $code_postal, $id_pays);
@@ -101,9 +103,11 @@ class InscriptionController extends BaseController
                     echo $this->createResponse('error', 'Code postal de la ville manquant.');
                     exit;
                 }
-                
+
                 $utilisateur = $this->utilisateurManager->creerUtilisateur($pseudo, $nom, $prenom, $date_de_naissance, $email, $encrypted_password, $id_genre, $id_ville);
                 $id_utilisateur = $utilisateur->getIdUtilisateur();
+                $this->siteWebManager->creerSiteWeb($site_web);
+                $this->listerManager->creerCorrespondance($id_utilisateur, $site_web);
                 $this->pageProfilManager->creerPageProfil($id_utilisateur);
                 $this->requeteManager->creerRequete($id_utilisateur, $_SERVER['REMOTE_ADDR'], $encrypted_password, $email, "inscription");
 

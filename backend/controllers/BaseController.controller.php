@@ -5,7 +5,7 @@ use Nowakowskir\JWT\TokenEncoded;
 
 require_once __DIR__ . "/../" . '/config/config.php';
 require_once __DIR__ . "/../" . '/config/config_requetes.php';
-require_once __DIR__ . "/../" . '/models/RequeteManager.class.php';
+require_once __DIR__ . "/../" . '/models/managers/RequeteManager.class.php';
 
 class BaseController
 {

@@ -1,13 +1,19 @@
+/* eslint-disable react/no-unescaped-entities */
+import { useEffect } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 
-/* eslint-disable react/no-unescaped-entities */
 export default function PageDeconnexion() {
   const navigate = useNavigate();
 
   const handleGoToAccueil = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    setTimeout(() => {navigate("/")}, 5000);
+  }, [navigate]);
+
   return (
     <div>
       Vous avez été déconnecté, vous allez être redirigé vers l'accueil.

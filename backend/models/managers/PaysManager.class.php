@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Model.class.php';
-require_once 'Pays.class.php';
+require_once __DIR__ . "/../" . 'Model.class.php';
+require_once __DIR__ . "/../" . 'Pays.class.php';
 
 class PaysManager extends Model
 {

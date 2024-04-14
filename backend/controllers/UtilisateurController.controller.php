@@ -1,6 +1,6 @@
 <?php
 require_once 'BaseController.controller.php';
-require_once __DIR__ . "/../" . '/models/UtilisateurManager.class.php';
+require_once __DIR__ . "/../" . '/models/managers/UtilisateurManager.class.php';
 
 class UtilisateurController extends BaseController
 {

@@ -1,7 +1,7 @@
 <?php
 require_once 'BaseController.controller.php';
-require_once __DIR__ . "/../" . 'models/MessagePriveManager.class.php';
-require_once __DIR__ . "/../" . 'models/UtilisateurManager.class.php';
+require_once __DIR__ . "/../" . 'models/managers/MessagePriveManager.class.php';
+require_once __DIR__ . "/../" . 'models/managers/UtilisateurManager.class.php';
 
 class MessagePriveController extends BaseController
 {
@@ -41,7 +41,7 @@ class MessagePriveController extends BaseController
                     }
                 }
 
-                if($id_utilisateur === $tokenPayload['id_utilisateur']) {
+                if($id_expediteur_prive === $tokenPayload['id_utilisateur']) {
                     $messagePrive = $this->messagePriveManager->creerMessagePrive($id_expediteur_prive, $contenu_message, $id_destinataire_prive);
                     $id_message_prive = $messagePrive->getIdMessagePrive();
                     $pseudos = $this->getPseudos($id_expediteur_prive, $id_destinataire_prive);
