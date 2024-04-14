@@ -1,5 +1,8 @@
 <?php
 
+use Nowakowskir\JWT\JWT;
+use Nowakowskir\JWT\TokenEncoded;
+
 require_once __DIR__ . "/../" . '/config/config.php';
 require_once __DIR__ . "/../" . '/config/config_requetes.php';
 require_once __DIR__ . "/../" . '/models/RequeteManager.class.php';
@@ -60,13 +63,14 @@ class BaseController
     }
 
     //Output values
-    protected function createResponse($status, $message, $data = [])
+    protected function createResponse($status, $message, $data = [], $token = null)
     {
         $response =
         [
             'status' => $status,
             'message' => $message,
-            'data' => $data
+            'data' => $data,
+            'token' => $token,
         ];
         return json_encode($response);
     }
@@ -118,5 +122,38 @@ class BaseController
     {
 
         return base64_encode($input);
+    }
+    
+    private function validateToken($token)
+    {
+        if (preg_match('/Bearer\s(\S+)/', $token, $matches)) {
+            $token = $matches[1];
+        } else {
+            echo $this->createResponse('error', 'Token invalide', []);
+            return false;
+        }
+
+        isset($token) ? $tokenEncoded = new TokenEncoded($token) : null;
+
+        try {
+            $tokenEncoded->validate(PUBLIC_KEY, JWT::ALGORITHM_RS256);
+        } catch(Exception $e) {
+            echo $this->createResponse('error', $e->getMessage(), []);
+            exit;
+        }
+
+        return $tokenEncoded;
+    }
+    
+    protected function getTokenPayload($token) 
+    {
+        $tokenEncoded = $this->validateToken($token);
+
+        if($tokenEncoded) {
+            $payload = $tokenEncoded->decode()->getPayload();
+            return $payload;
+        }
+
+        return null;
     }
 }

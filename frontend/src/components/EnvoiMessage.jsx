@@ -25,8 +25,6 @@ export default function EnvoiMessage({
   const corresp = correspondant[0] ? correspondant[0] : "..."
   const placeholder = "Écrire à " + corresp;
 
-  
-
   const submitMessage = async (e) => {
     e.preventDefault();
     axios
@@ -34,7 +32,13 @@ export default function EnvoiMessage({
         id_expediteur_prive: id_utilisateur,
         contenu_message: messageAEnvoyer,
         id_destinataire_prive: correspondant[1],
-      })
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
+        },
+      },
+    )
       .then((response) => {
         if (response.data.status === "success") {
           console.log(response);

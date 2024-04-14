@@ -4,19 +4,26 @@ require_once __DIR__ . "/../" . '/models/RequeteManager.class.php';
 require_once __DIR__ . "/../" . '/models/PageProfilManager.class.php';
 require_once __DIR__ . "/../" . '/models/UtilisateurManager.class.php';
 
-class RequeteController extends BaseController
+use Nowakowskir\JWT\Exceptions\InsecureTokenException;
+use Nowakowskir\JWT\Exceptions\UndefinedAlgorithmException;
+use Nowakowskir\JWT\JWT;
+use Nowakowskir\JWT\TokenDecoded;
+use Nowakowskir\JWT\TokenEncoded;
+
+
+class ConnexionController extends BaseController
 {
     private $requeteManager;
     private $pageProfilManager;
     private $utilisateurManager;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->requeteManager = new RequeteManager;
         $this->pageProfilManager = new PageProfilManager;
         $this->utilisateurManager = new UtilisateurManager;
     }
 
-    //Processing API requests
     public function connexion()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -49,20 +56,32 @@ class RequeteController extends BaseController
                     PASSWORD_DEFAULT
                 );
 
-                $this->requeteManager->creerRequete($utilisateur->getIdUtilisateur(), $_SERVER['REMOTE_ADDR'], $mot_de_passe_hash, $email, "connexion");
+                $this->requeteManager->creerRequete($utilisateur ? $utilisateur->getIdUtilisateur() : null, $_SERVER['REMOTE_ADDR'], $mot_de_passe_hash, $email, "connexion");
 
                 $requete = $this->requeteManager->getRequetesByEmail($email);
 
-                $mot_de_passe_utilisateur = $utilisateur->getMotDePasse();
+                $mot_de_passe_utilisateur = $utilisateur ? $utilisateur->getMotDePasse() : null;
 
                 if (password_verify($mot_de_passe, $mot_de_passe_utilisateur)) {
-                    session_start();
+
                     $id_utilisateur = $requete['id_utilisateur_req'];
                     $id_page_profil = $this->pageProfilManager->getPageProfilByIdUtilisateur($id_utilisateur);
                     $pseudo_utilisateur = $utilisateur->getPseudoUtilisateur();
-                    $_SESSION['id_utilisateur'] = $id_utilisateur;
-                    
-                    echo $this->createResponse('success', 'Connexion réussie.', ['id_utilisateur' => $_SESSION['id_utilisateur'], 'id_page_profil' => $id_page_profil, 'pseudo_utilisateur' => $pseudo_utilisateur]);
+
+                    $tokenDecoded = new TokenDecoded(['sub' => 'auth', 'exp' => time() + 3600, 'id_utilisateur' => $id_utilisateur, 'id_page_profil' => $id_page_profil, 'pseudo_utilisateur' => $pseudo_utilisateur], ['alg' => 'RS256', 'typ'=> 'JWT']);
+                    try {
+                        $tokenEncoded = $tokenDecoded->encode(PRIVATE_KEY, JWT::ALGORITHM_RS256);
+                    } catch(InsecureTokenException $e) {
+                        echo $this->createResponse('error', $e, []);
+                        exit;
+                    } catch(UndefinedAlgorithmException $e) {
+                        echo $this->createResponse('error', $e, []);
+                        exit;
+                    }
+
+                    $token = $tokenEncoded->toString();
+
+                    echo $this->createResponse('success', 'Connexion réussie.', ['id_utilisateur' => $id_utilisateur, 'id_page_profil' => $id_page_profil, 'pseudo_utilisateur' => $pseudo_utilisateur], $token);
                 } else {
                     echo $this->createResponse('error', "Adresse e-mail et/ou mot de passe incorrect", []);
                     exit;
@@ -71,6 +90,8 @@ class RequeteController extends BaseController
                 echo $this->createResponse('error', 'Mauvaise requête.', []);
                 exit;
             }
+        } elseif($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            header('HTTP/1.1 200 OK');
         }
     }
 }

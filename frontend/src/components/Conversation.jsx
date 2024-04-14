@@ -35,6 +35,7 @@ export default function Conversation({
     nouveauCorrespondant.length > 0 && setCorrespondant(nouveauCorrespondant);
   }, [setCorrespondant, nouveauCorrespondant]);
 
+
   const handleInputChange = (e) => {
     const searchTerm = e.target.value;
     setSearchItem(searchTerm);
@@ -43,6 +44,12 @@ export default function Conversation({
         .get(
           "http://localhost:42600/backend/index.php/listeUtilisateurs?search=" +
             encodeURIComponent(searchTerm),
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
+              Accept: "application/json",
+            },
+          },
         )
         .then((response) => {
           console.log(response);
@@ -51,10 +58,12 @@ export default function Conversation({
             // const indexUtilisateurActuel = listeRecue.findIndex((user) => user.id_utilisateur === id_utilisateur);
             // console.log(indexUtilisateurActuel);
             // listeRecue = listeRecue.splice(indexUtilisateurActuel, 1);
-            listeRecue = listeRecue.filter((user) => {return user.id_utilisateur !== id_utilisateur});
+            listeRecue = listeRecue.filter((user) => {
+              return user.id_utilisateur !== id_utilisateur;
+            });
             setListeUtilisateurs(listeRecue);
           } else {
-            setError(response.data.message);
+            setError(JSON.stringify(response.data.message));
           }
         })
         .catch((error) => {
@@ -69,7 +78,10 @@ export default function Conversation({
   const handleSelectUtilisateur = (e) => {
     setSearchItem("");
     setListeUtilisateurs([]);
-    setNouveauCorrespondant([e.target.getAttribute("pseudo"), parseInt(e.target.getAttribute("id"))]);
+    setNouveauCorrespondant([
+      e.target.getAttribute("pseudo"),
+      parseInt(e.target.getAttribute("id")),
+    ]);
   };
 
   return (

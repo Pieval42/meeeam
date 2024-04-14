@@ -1,15 +1,21 @@
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { authContext } from '../contexts/contexts';
+import { useNavigate } from "react-router-dom";
+import PageDeconnexion from '../pages/PageDeconnexion';
 
 export default function Deconnexion() {
+
+  const context = useContext(authContext);
   const navigate = useNavigate();
-  
-  axios.post('http://localhost:42600/backend/index.php/connexion')
-  .then(() => {
-    sessionStorage.clear();
-    navigate("/");
-  })
-  .catch((error) => {
-     console.error(error);
-  });
+
+  useEffect(() => {
+    localStorage.removeItem("Bearer");
+    context.setStatus("nonConnecte");
+    context.setToken("");
+    context.setInfosUtilisateurs(null);
+  }, [context, navigate])
+
+  return (
+    <PageDeconnexion />
+  )
 }

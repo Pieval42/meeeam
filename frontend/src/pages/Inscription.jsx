@@ -111,7 +111,7 @@ export default function Inscription({
             setApiResponse(response.data.message);
             setTimeout(() => {
               setApiResponse("");
-              navigate("../main/profil/");
+              navigate("/");
             }, 7000);
           } else {
             setError(response.data.message);
@@ -125,7 +125,6 @@ export default function Inscription({
       setApiResponse("");
       setError("Les 2 mots de passe ne correspondent pas.");
     }
-    // window.location.href = "/";
   };
 
   if (showInscription) {
@@ -274,7 +273,7 @@ export default function Inscription({
                       delay={{ show: 250, hide: 400 }}
                       overlay={
                         <Tooltip id="tooltip-mdp">
-                          Votre mot de passe doit contenir au moins 12
+                          Votre mot de passe doit contenir au moins 10
                           caractères, dont au moins une minuscule, une
                           majuscule, un chiffre et un caractère spécial.
                         </Tooltip>
@@ -353,8 +352,7 @@ export default function Inscription({
                 {errorPays && (
                   <Form.Text className="text-warning">{errorPays}</Form.Text>
                 )}
-                <Form.Group
-                  as={Col} xs={12} sm={6} xl={4} controlId="formPays">
+                <Form.Group as={Col} xs={12} sm={6} xl={4} controlId="formPays">
                   <Form.Label>Pays: </Form.Label>
                   <Form.Select
                     aria-label="ListePays"

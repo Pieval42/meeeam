@@ -1,29 +1,31 @@
-import { /*useState, */useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom";
+import { /*useState, */useContext } from "react";
+import { Outlet } from "react-router-dom";
 
-import Header from "./Header";
+import Header from "../components/Header";
 
 // import Container from "react-bootstrap/esm/Container";
 // import Col from "react-bootstrap/esm/Col";
 // import Row from "react-bootstrap/esm/Row";
 
 import "/src/style/css/MainTemplate.css";
+import { authContext } from "../contexts/contexts";
 
 export default function MainTemplate() {
   // const [apiUsers, setApiUsers] = useState([]);
   // const [searchItem, setSearchItem] = useState("");
   // const [filteredUsers, setFilteredUsers] = useState([]);
 
-  const navigate = useNavigate();
-  const userData = JSON.parse(sessionStorage.getItem("userData"));
-  const pseudo = userData?.pseudo_utilisateur;
+  // const navigate = useNavigate();
+  const context = useContext(authContext);
+  const infosUtilisateurs = context.token;
+  const pseudo = infosUtilisateurs.pseudo_utilisateur;
 
-  useEffect(() => {
-    const loggedIn = sessionStorage.getItem("loggedIn");
-    if (!loggedIn) {
-      navigate("/");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const status = context.status;
+  //   if (status === "connecte") {
+  //     navigate("profil/");
+  //   }
+  // }, [context.status, navigate]);
 
   // useEffect(() => {
   //   fetch("http://localhost:42600/backend/index.php/listeUtilisateurs", {

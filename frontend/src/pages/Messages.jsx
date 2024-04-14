@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import Card from "react-bootstrap/Card";
@@ -9,7 +9,8 @@ import ListGroup from "react-bootstrap/esm/ListGroup";
 import Button from "react-bootstrap/esm/Button";
 
 import "/src/style/css/Messages.css";
-import Conversation from "./Conversation";
+import Conversation from "../components/Conversation";
+import { authContext } from "../contexts/contexts";
 
 export default function Messages() {
   const [error, setError] = useState("");
@@ -18,9 +19,10 @@ export default function Messages() {
   const [showConversation, setShowConversation] = useState(false);
   const [changementListe, setChangementListe] = useState(0);
 
-  const userData = JSON.parse(sessionStorage.getItem("userData"));
-  const id_utilisateur = userData?.id_utilisateur;
-  const pseudo_utilisateur = userData?.pseudo_utilisateur;
+  const context = useContext(authContext);
+  const infosUtilisateurs = context ? context.token : undefined;
+  const id_utilisateur = context ? infosUtilisateurs.id_utilisateur : undefined;
+  const pseudo_utilisateur = context ? infosUtilisateurs.pseudo_utilisateur : undefined;
 
   useEffect(() => {
     let ignore = false;
@@ -29,6 +31,11 @@ export default function Messages() {
       .get(
         "http://localhost:42600/backend/index.php/messages?id_utilisateur=" +
         encodeURIComponent(id_utilisateur),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
+          },
+        },
       )
       .then((response) => {
         if (!ignore) {
@@ -58,7 +65,7 @@ export default function Messages() {
     return () => {
       ignore = true;
     };
-  }, [id_utilisateur, pseudo_utilisateur, changementListe]);
+  }, [id_utilisateur, pseudo_utilisateur, changementListe, context]);
 
   useEffect(() => {
     correspondant.length > 0 && setShowConversation(true);

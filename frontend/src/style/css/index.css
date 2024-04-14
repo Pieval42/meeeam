@@ -109,6 +109,21 @@ hr {
   top: 0;
 }
 
+div > button:first-child.dropdown-btn-custom,
+div > button:first-child.dropdown-btn-custom:focus,
+div > button:first-child.dropdown-btn-custom:focus-visible {
+  background-color: transparent;
+  color: var(--bs-nav-link-color);
+  border: none;
+}
+
+div > button:first-child.dropdown-btn-custom:active,
+div > button:first-child.dropdown-btn-custom:hover,
+div > button:first-child.dropdown-btn-custom.show {
+  background-color: #8f8f8f;
+  color: var(--bs-body-color);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #242424;

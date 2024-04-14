@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . "/config/config_requetes.php";
 require __DIR__ . "/config/config.php";
+require __DIR__ . '/vendor/autoload.php';
+
 try {
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $uri = explode('/', $uri);
@@ -15,8 +17,8 @@ try {
         $objFeedController->{$strMethodName}();
     }
     if ($uri[3] == 'connexion') {
-        require PROJECT_ROOT_PATH . "/controllers/Requete.controller.php";
-        $objFeedController = new RequeteController();
+        require PROJECT_ROOT_PATH . "/controllers/Connexion.controller.php";
+        $objFeedController = new ConnexionController();
         $strMethodName = $uri[3];
         $objFeedController->{$strMethodName}();
     }
@@ -54,3 +56,4 @@ try {
 } catch (Exception $e) {
     echo json_encode($e->getMessage());
 }
+?>

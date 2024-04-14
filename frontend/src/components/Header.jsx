@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import NavItem from "react-bootstrap/NavItem";
-import NavLink from "react-bootstrap/NavLink";
+// import NavLink from "react-bootstrap/NavLink";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 //import NavDropdown from "react-bootstrap/NavDropdown";
@@ -33,14 +33,16 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
                 xl={4}
                 className="d-flex justify-content-start"
               >
-                <Navbar.Brand href="../profil/">
-                  <img
-                    alt="Logo Meeeam"
-                    src="/images/logo.svg"
-                    width="30"
-                    height="30"
-                    className="d-inline-block align-top"
-                  />
+                <Navbar.Brand>
+                  <Link to={"/"} className="nav-link">
+                    <img
+                      alt="Logo Meeeam"
+                      src="/images/logo.svg"
+                      width="30"
+                      height="30"
+                      className="d-inline-block align-top"
+                    />
+                  </Link>
                 </Navbar.Brand>
               </Col>
               <Col
@@ -98,26 +100,28 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
                       Messages
                     </Link>
 
-                    <Dropdown as={NavItem} align={{ lg: 'end' }}>
-                      <Dropdown.Toggle as={NavLink} className="text-truncate">{pseudo}</Dropdown.Toggle>
+                    <Dropdown as={NavItem} align={{ lg: "end" }}>
+                      <Dropdown.Toggle className="text-truncate dropdown-btn-custom">
+                        {pseudo}
+                      </Dropdown.Toggle>
                       <Dropdown.Menu id="dropdown-pseudo">
-                        <Dropdown.Item
-                          href="../profil/"
-                          className="nav-link text-center"
-                        >
-                          Profil
+                        <Dropdown.Item as="div" className="text-center">
+                          <Link to={"/"} className="nav-link">
+                            Profil
+                          </Link>
+                        </Dropdown.Item>
+                        <Dropdown.Item as="div" className="text-center">
+                          <Link to={"parametres/"} className="nav-link">
+                            Paramètres
+                          </Link>
                         </Dropdown.Item>
                         <Dropdown.Item
-                          href="../parametres/"
+                          as="div"
                           className="nav-link text-center"
                         >
-                          Paramètres
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          href="../deconnexion/"
-                          className="nav-link text-center"
-                        >
-                          Déconnexion
+                          <Link to={"deconnexion/"} className="nav-link">
+                            Déconnexion
+                          </Link>
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>

@@ -24,6 +24,8 @@ class PaysController extends BaseController
                 'Liste de pays chargée',
                 $liste_pays
             );
+        } elseif($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            header('HTTP/1.1 200 OK');
         } else {
             echo $this->createResponse('error', 'Mauvaise requête.', []);
             exit;
