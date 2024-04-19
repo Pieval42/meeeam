@@ -10,6 +10,7 @@ export default function AuthProvider({ children }) {
   const [motDePasse, setMotDePasse] = useState("");
   const [status, setStatus] = useState("inconnu");
   const [token, setToken] = useState({});
+  const [erreurAuthentification, setErreurAuthentification] = useState(undefined);
 
   const contextValue = useMemo(
     () => ({
@@ -23,12 +24,14 @@ export default function AuthProvider({ children }) {
       setStatus,
       token,
       setToken,
+      erreurAuthentification,
+      setErreurAuthentification,
     }),
-    [infosUtilisateurs, email, motDePasse, status, token],
+    [infosUtilisateurs, email, motDePasse, status, token, erreurAuthentification],
   );
 
   const auth = useAuth();
-  const tokenPayload = decodeToken();
+  const tokenPayload = auth.status === "connecte" ? decodeToken() : null;
 
   useEffect(() => {
     setToken(tokenPayload ? JSON.parse(tokenPayload) : null);
@@ -36,7 +39,8 @@ export default function AuthProvider({ children }) {
 
   useEffect(() => {
     setStatus(auth.status);
-  }, [auth, token]);
+    auth.status === "connecte" && setErreurAuthentification(false);
+  }, [auth, token, erreurAuthentification]);
 
   // Provide the authentication context to the children components
   return (

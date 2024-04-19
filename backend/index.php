@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . "/config/config_requetes.php";
 require __DIR__ . "/config/config.php";
+require_once __DIR__ . "/config/config_requetes.php";
 require __DIR__ . '/vendor/autoload.php';
 
 try {

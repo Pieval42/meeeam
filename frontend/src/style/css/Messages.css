@@ -2,6 +2,10 @@ small.date-heure {
     font-size: 0.7em;
 }
 
+.liste-correspondants {
+    overflow: auto;
+}
+
 .correspondants {
     transition: 
     background-color 0.5s;
@@ -15,7 +19,8 @@ small.date-heure {
     background-color: #8f8f8f;
 }
 
-.conversation {
+.conversation,
+div.card-correspondants {
     height: calc(100vh - 100px);
 }
 

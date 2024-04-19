@@ -117,28 +117,27 @@ class BaseController
         return true;
     }
 
-    //Encrypt
-    protected function xorEncrypt($input)
+    protected function validateToken($token)
     {
-
-        return base64_encode($input);
-    }
-    
-    private function validateToken($token)
-    {
-        if (preg_match('/Bearer\s(\S+)/', $token, $matches)) {
-            $token = $matches[1];
-        } else {
-            echo $this->createResponse('error', 'Token invalide', []);
-            return false;
-        }
-
-        isset($token) ? $tokenEncoded = new TokenEncoded($token) : null;
-
         try {
-            $tokenEncoded->validate(PUBLIC_KEY, JWT::ALGORITHM_RS256);
+            if (preg_match('/Bearer\s(\S+)/', $token, $matches)) {
+
+            $token = $matches[1];
+
+            } else {
+                throw new Exception('Token invalide');
+            }
+
+            if(isset($token) && $token !== "null") {
+                $tokenEncoded = new TokenEncoded($token);
+                $tokenEncoded->validate(PUBLIC_KEY, JWT::ALGORITHM_RS256);
+            } else {
+                throw new Exception('Token invalide ou expiré');
+            }
+
         } catch(Exception $e) {
-            echo $this->createResponse('error', $e->getMessage(), []);
+            echo $this->createResponse('error', 'Token invalide : ' . $e->getMessage(), []);
+            header('HTTP/1.1 498 Token expired/invalid');
             exit;
         }
 

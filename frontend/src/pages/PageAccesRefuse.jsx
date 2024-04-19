@@ -1,10 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect } from "react";
+import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 
-import Button from "react-bootstrap/esm/Button";
-
-export default function PageErreurAuthentification() {
+export default function PageAccesRefuse() {
   const navigate = useNavigate();
 
   const handleGoToAccueil = () => {
@@ -17,7 +16,7 @@ export default function PageErreurAuthentification() {
 
   return (
     <div>
-      Session expirée, veuillez vous connecter.
+      Vous n'avez pas l'autorisation de voir cette page, veuillez vous connecter.
       <br/>
       Vous allez être redirigé vers l'accueil.
       <div>

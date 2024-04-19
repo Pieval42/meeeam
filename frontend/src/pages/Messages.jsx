@@ -11,6 +11,7 @@ import Button from "react-bootstrap/esm/Button";
 import "/src/style/css/Messages.css";
 import Conversation from "../components/Conversation";
 import { authContext } from "../contexts/contexts";
+import { useNavigate } from "react-router-dom";
 
 export default function Messages() {
   const [error, setError] = useState("");
@@ -23,6 +24,8 @@ export default function Messages() {
   const infosUtilisateurs = context ? context.token : undefined;
   const id_utilisateur = context ? infosUtilisateurs.id_utilisateur : undefined;
   const pseudo_utilisateur = context ? infosUtilisateurs.pseudo_utilisateur : undefined;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
@@ -59,13 +62,17 @@ export default function Messages() {
         }
       })
       .catch((error) => {
-        console.error(error);
+        if(error.response.status === 498) {
+          context.setErreurAuthentification(true);
+        } else {
+          console.error(error);
+        }
       });
 
     return () => {
       ignore = true;
     };
-  }, [id_utilisateur, pseudo_utilisateur, changementListe, context]);
+  }, [id_utilisateur, pseudo_utilisateur, changementListe, context, navigate]);
 
   useEffect(() => {
     correspondant.length > 0 && setShowConversation(true);
@@ -86,9 +93,9 @@ export default function Messages() {
       <Container className="conversation mt-3">
         <Row className="h-100">
           <Col xs={3}>
-            <Card className="h-100 mb-3">
+            <Card className="mb-3 card-correspondants">
               <Card.Header>Conversations</Card.Header>
-              <Card.Body>
+              <Card.Body  className="h-100 liste-correspondants">
                 <Button
                   onClick={handleNouvelleConversation}
                   className="btn-custom-primary mb-3 w-100"

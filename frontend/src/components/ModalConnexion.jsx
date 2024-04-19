@@ -38,15 +38,9 @@ function ModalConnexion({
         email: context.email,
         mot_de_passe: context.motDePasse,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
-        },
-      },
     )
       .then((response) => {
         console.log(response);
-        console.log(document.cookie);
         if (response.data.status === "success") {
           context.setInfosUtilisateurs(response.data.data);
           localStorage.setItem("Bearer", response.data.token);

@@ -11,14 +11,12 @@ import Deconnexion from "../components/Deconnexion";
 import { useAuth } from "../hooks/useAuth";
 import { useContext, useEffect, useMemo } from "react";
 import { authContext } from "../contexts/contexts";
-import PageDeconnexion from "../pages/PageDeconnexion";
-import PageErreurAuthentification from "../pages/PageErreurAuthentification";
 
 const Routes = () => {
   const auth = useAuth();
   const context = useContext(authContext);
 
-  useEffect(() => {}, [context.status]);
+  useEffect(() => {}, [context.status, context.erreurAuthentification]);
 
   // Define public routes accessible to all users
   const routesForPublic = useMemo(() => {
@@ -29,23 +27,23 @@ const Routes = () => {
       },
       {
         path: "pages/",
-        element: <PageErreurAuthentification />,
+        element: <Deconnexion />,
       },
       {
         path: "amis/",
-        element: <PageErreurAuthentification />,
+        element: <Deconnexion />,
       },
       {
         path: "messages/",
-        element: <PageErreurAuthentification />,
+        element: <Deconnexion />,
       },
       {
         path: "parametres/",
-        element: <PageErreurAuthentification />,
+        element: <Deconnexion />,
       },
       {
         path: "deconnexion/",
-        element: <PageDeconnexion />,
+        element: <Deconnexion />,
       },
     ];
   }, []);
@@ -85,14 +83,6 @@ const Routes = () => {
       },
     ];
   }, []);
-
-  // Define routes accessible only to non-authenticated users
-  // const routesForNotAuthenticatedOnly = [
-  //   {
-  //     path: "/",
-  //     element: <Accueil />,
-  //   },
-  // ];
 
   // Combine and conditionally include routes based on authentication status
   const router = createBrowserRouter([

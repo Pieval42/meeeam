@@ -1,9 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import { authContext } from "../contexts/contexts";
+import { useNavigate } from "react-router-dom";
 
 export default function MessagesConversation({
   id_utilisateur,
@@ -11,49 +12,43 @@ export default function MessagesConversation({
   listeMessages,
   setListeMessages,
 }) {
-  const [error, setError] = useState("");
+  const [errorMessage, setError] = useState("");
   const messagesCache = localStorage.getItem(
     `conversation_${id_utilisateur}${correspondant[1]}`,
   );
-  
+  const [firstRender, setFirstRender] = useState(true);
+
   const context = useContext(authContext);
 
-  useEffect(() => {
-    messagesCache && setListeMessages(JSON.parse(messagesCache)); 
-    function updateMessages() {
-      axios
-        .get(
-          "http://localhost:42600/backend/index.php/messages?id_utilisateur=" +
+  const navigate = useNavigate();
+
+  const updateMessages = useCallback(() => {
+    axios
+      .get(
+        "http://localhost:42600/backend/index.php/messages?id_utilisateur=" +
           encodeURIComponent(id_utilisateur) +
-            "&id_utilisateur_2=" +
-            encodeURIComponent(correspondant[1]),
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
-              },
-            },
-        )
-        .then((response) => {
-          console.log(response);
-          if (response.data.status === "success") {
-            let messages = response.data.data;
-            messages.forEach((msg) => {
-              let dhm = msg.date_heure_message.split(/[- :]/);
-              msg.date_heure_message = new Date(
-                Date.UTC(dhm[0], dhm[1] - 1, dhm[2], dhm[3], dhm[4], dhm[5]),
-              ).toLocaleString("fr-FR", { timeZone: "CET" });
-            });
-            
-            if (messagesCache) {
-              if (JSON.stringify(messages) === messagesCache) {
-                return
-              } else {
-                setListeMessages(messages);
-                localStorage.setItem(
-                  `conversation_${id_utilisateur}${correspondant[1]}`,
-                  JSON.stringify(messages),
-                );
-              }
+          "&id_utilisateur_2=" +
+          encodeURIComponent(correspondant[1]),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response);
+        if (response.data.status === "success") {
+          let messages = response.data.data;
+          messages.forEach((msg) => {
+            let dhm = msg.date_heure_message.split(/[- :]/);
+            msg.date_heure_message = new Date(
+              Date.UTC(dhm[0], dhm[1] - 1, dhm[2], dhm[3], dhm[4], dhm[5]),
+            ).toLocaleString("fr-FR", { timeZone: "CET" });
+          });
+
+          if (messagesCache) {
+            if (JSON.stringify(messages) === messagesCache) {
+              return;
             } else {
               setListeMessages(messages);
               localStorage.setItem(
@@ -62,20 +57,55 @@ export default function MessagesConversation({
               );
             }
           } else {
-            setError(response.data.message);
-            console.log(error);
+            setListeMessages(messages);
+            localStorage.setItem(
+              `conversation_${id_utilisateur}${correspondant[1]}`,
+              JSON.stringify(messages),
+            );
           }
-        })
-        .catch((error) => {
+        } else {
+          setError(response.data.message);
+          console.log(errorMessage);
+        }
+      })
+      .catch((error) => {        
+        if(error.response.status === 498) {
+          context.setErreurAuthentification(true);
+        } else {
           console.error(error);
-        });
+        }
+      });
+  }, [context, correspondant, errorMessage, id_utilisateur, messagesCache, setListeMessages]);
+
+  const autoriserActualisation = useRef(false);
+
+  useEffect(() => {
+    autoriserActualisation.current = true;
+  }, [correspondant]);
+
+  useEffect(() => {
+    let ignore = false;
+    if (!ignore) {
+      (firstRender || autoriserActualisation.current) && updateMessages();
+      setFirstRender(false);
+      autoriserActualisation.current = false;
     }
-        
-    const intervalId = setInterval(updateMessages, 1000);
-    return () => clearInterval(intervalId);
-  }, [id_utilisateur, correspondant, error, setListeMessages, messagesCache, context]);
+    return () => {
+      ignore = true;
+    };
+  }, [firstRender, updateMessages]);
 
+  useEffect(() => {
+    if (autoriserActualisation) {
+      messagesCache && setListeMessages(JSON.parse(messagesCache));
+      const intervalId = setInterval(updateMessages, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [messagesCache, setListeMessages, updateMessages]);
 
+  useEffect(() => {
+    context.erreurAuthentification === true && navigate("../deconnexion");
+  }, [context.erreurAuthentification, navigate])
 
   return (
     <>
@@ -91,7 +121,10 @@ export default function MessagesConversation({
               <small className="date-heure">{message.date_heure_message}</small>
             </Col>
           ) : (
-            <Col xs={6} className="bg-warning-subtle bg-gradient rounded py-2 mb-1">
+            <Col
+              xs={6}
+              className="bg-warning-subtle bg-gradient rounded py-2 mb-1"
+            >
               {message.contenu_message}
               <br></br>
               <small className="date-heure">{message.date_heure_message}</small>

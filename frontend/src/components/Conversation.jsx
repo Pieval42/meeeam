@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
@@ -10,6 +10,7 @@ import EnvoiMessage from "./EnvoiMessage";
 import MessagesConversation from "./MessagesConversation";
 import Form from "react-bootstrap/esm/Form";
 import ListGroup from "react-bootstrap/esm/ListGroup";
+import { authContext } from "../contexts/contexts";
 
 export default function Conversation({
   correspondant,
@@ -27,8 +28,10 @@ export default function Conversation({
   const [listeUtilisateurs, setListeUtilisateurs] = useState([]);
   const [nouveauCorrespondant, setNouveauCorrespondant] = useState([]);
 
+  const context = useContext(authContext);
+
   useEffect(() => {
-    scroll.current.scrollIntoView({ behavior: "auto" });
+    scroll.current.scrollIntoView({ behavior: "auto", block: "end" });
   }, [scroll, listeMessages]);
 
   useEffect(() => {
@@ -67,7 +70,11 @@ export default function Conversation({
           }
         })
         .catch((error) => {
-          console.error(error);
+          if(error.response.status === 498) {
+            context.setErreurAuthentification(true);
+          } else {
+            console.error(error);
+          }
         });
     } else {
       setSearchItem("");
@@ -128,7 +135,7 @@ export default function Conversation({
               </ListGroup>
             </Card>
           )}
-        <Card.Body className="body-conversation">
+        <Card.Body className="body-conversation pb-0">
           {correspondant.length > 0 && (
             <MessagesConversation
               id_utilisateur={id_utilisateur}

@@ -1,6 +1,7 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { authContext } from "../contexts/contexts";
 
 import Form from "react-bootstrap/esm/Form";
 import InputGroup from "react-bootstrap/esm/InputGroup";
@@ -15,15 +16,17 @@ export default function EnvoiMessage({
   changementListe,
 }) {
   const [error, setError] = useState("");
-
   const [messageAEnvoyer, setMessageAEnvoyer] = useState("");
+
+  const corresp = correspondant[0] ? correspondant[0] : "..."
+  const placeholder = "Écrire à " + corresp;
+
+  const context = useContext(authContext);
 
   const handleMessageChange = (e) => {
     const msg = e.target.value;
     setMessageAEnvoyer(msg);
   };
-  const corresp = correspondant[0] ? correspondant[0] : "..."
-  const placeholder = "Écrire à " + corresp;
 
   const submitMessage = async (e) => {
     e.preventDefault();
@@ -54,7 +57,11 @@ export default function EnvoiMessage({
         }
       })
       .catch((error) => {
-        console.error(error);
+        if(error.response.status === 498) {
+          context.setErreurAuthentification(true);
+        } else {
+          console.error(error);
+        }
       });
   };
 

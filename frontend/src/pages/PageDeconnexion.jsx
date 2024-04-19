@@ -16,7 +16,9 @@ export default function PageDeconnexion() {
 
   return (
     <div>
-      Vous avez été déconnecté, vous allez être redirigé vers l'accueil.
+      Vous avez été déconnecté.
+      <br/>
+      Vous allez être redirigé vers l'accueil.
       <div>
         <Button variant="custom-primary" onClick={handleGoToAccueil}>
           Retourner à l'accueil
