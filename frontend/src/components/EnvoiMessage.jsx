@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { authContext } from "../contexts/contexts";
@@ -17,8 +17,18 @@ export default function EnvoiMessage({
 }) {
   const [error, setError] = useState("");
   const [messageAEnvoyer, setMessageAEnvoyer] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  const corresp = correspondant[0] ? correspondant[0] : "..."
+  useEffect(() => {
+    if(correspondant[0]) {
+      setButtonDisabled(false)
+    } else {
+      setButtonDisabled(true);
+      setMessageAEnvoyer("");
+    }
+  }, [correspondant])
+
+  const corresp = correspondant[0] ? correspondant[0] : "...";
   const placeholder = "Écrire à " + corresp;
 
   const context = useContext(authContext);
@@ -28,8 +38,19 @@ export default function EnvoiMessage({
     setMessageAEnvoyer(msg);
   };
 
+  const handleKeyDown = (e) => {
+    if(e.key === 'Enter'){
+      if(e.shiftKey) {
+        return
+      } else {
+        e.preventDefault();
+        correspondant[0] && submitMessage();
+      }
+    }
+  };
+
   const submitMessage = async (e) => {
-    e.preventDefault();
+    e && e.preventDefault();
     axios
       .post("http://localhost:42600/backend/index.php/messages/envoyer", {
         id_expediteur_prive: id_utilisateur,
@@ -75,8 +96,9 @@ export default function EnvoiMessage({
           placeholder={placeholder}
           value={messageAEnvoyer}
           onChange={handleMessageChange}
+          onKeyDown={handleKeyDown}
         />
-        <Button className="btn-custom-primary" id="button-addon2" type="submit">
+        <Button className="btn-custom-primary" id="button-addon2" type="submit" disabled={buttonDisabled}>
           Envoyer
         </Button>
       </InputGroup>
