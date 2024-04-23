@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `abonnement`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class Abonnement {
     private $id_abonnement;
     private $date_souscription;
@@ -55,3 +62,4 @@ class Abonnement {
         $this->id_utilisateur_abonnement = $id_utilisateur_abonnement;
     }
 }
+?>

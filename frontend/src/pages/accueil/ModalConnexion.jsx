@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useContext } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
+import { axiosInstance } from "../../config/axiosConfig";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { authContext } from "../contexts/contexts";
+import { authContext } from "../../contexts/contexts";
 
 function ModalConnexion({
   showConnexion,
@@ -18,7 +18,6 @@ function ModalConnexion({
   error,
   setError,
 }) {
-
   const context = useContext(authContext);
 
   const handleEmailChange = (event) => {
@@ -32,13 +31,11 @@ function ModalConnexion({
   const handleSubmit = (event) => {
     event.preventDefault();
 
-
-    axios
-      .post("http://localhost:42600/backend/index.php/connexion", {
+    axiosInstance
+      .post("/connexion", {
         email: context.email,
         mot_de_passe: context.motDePasse,
-      },
-    )
+      })
       .then((response) => {
         console.log(response);
         if (response.data.status === "success") {
@@ -87,7 +84,7 @@ function ModalConnexion({
                 onChange={handlePasswordChange}
               />
             </Form.Group>
-            
+
             <Row className="justify-content-between">
               <Col xs="auto">
                 <Button

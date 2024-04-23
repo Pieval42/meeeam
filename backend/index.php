@@ -1,59 +1,91 @@
 <?php
+/**
+ *  API du réseau social Meeeam
+ *
+ *  Ce projet est réalisé dans le cadre de mes études en BTS SIO SLAM
+ * 
+ * @author  Pierrick Valentin
+ *
+ * @version 1.0.0
+ * 
+ */
+
+/**
+ *  index.php
+ * 
+ *  Point d'entrée de l'API
+ * 
+ *  Analyse de l'URL appelée et routage vers les méthodes souhaitées
+ * 
+ */
+
 require __DIR__ . "/config/config.php";
 require_once __DIR__ . "/config/config_requetes.php";
 require __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . "/controllers/BaseController.controller.php";
 
 try {
+    //  Décomposition de l'URL en plusieurs segments
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $uri = explode('/', $uri);
-    if ((isset($uri[3]) && $uri[3] != ('listeUtilisateurs' || 'connexion' || 'inscription' || 'pays' || 'messages'))) {
-        header("HTTP/1.1 404 Not Found");
-        exit();
-    }
-    if ($uri[3] == 'listeUtilisateurs') {
-        require PROJECT_ROOT_PATH . "/controllers/UtilisateurController.controller.php";
-        $objFeedController = new UtilisateurController();
-        $strMethodName = $uri[3];
-        $objFeedController->{$strMethodName}();
-    }
-    if ($uri[3] == 'connexion') {
-        require PROJECT_ROOT_PATH . "/controllers/Connexion.controller.php";
-        $objFeedController = new ConnexionController();
-        $strMethodName = $uri[3];
-        $objFeedController->{$strMethodName}();
-    }
-    if ($uri[3] == 'pays') {
-        require PROJECT_ROOT_PATH . "/controllers/Pays.controller.php";
-        $objFeedController = new PaysController();
-        $strMethodName = $uri[3];
-        $objFeedController->{$strMethodName}();
-    }
-    if ($uri[3] == 'inscription') {
-        try {
-            require PROJECT_ROOT_PATH . "/controllers/Inscription.controller.php";
-            $objFeedController = new InscriptionController();
-            $strMethodName = $uri[3];
-            $objFeedController->{$strMethodName}();
-        } catch (Error $e) {
-            $e->getMessage();
-        }
-    }
-    if ($uri[3] == 'messages') {
-        try {
-            require PROJECT_ROOT_PATH . "/controllers/MessagePrive.controller.php";
-            $objFeedController = new MessagePriveController();
-            if(isset($uri[4]) && $uri[4] === "envoyer") {
-                $strMethodName = "envoyerMessagePrive";
+    
+    /**
+     * Fonction d'appel de la méthode demandée par l'URL
+     *
+     * @param  string   $controllerName Nom du contrôleur correspondant
+     * @param  string   $methodName     Nom de la méthode correspondant
+     * 
+     * @return void
+     */
+    function setEndpoint($controllerName, $methodName) {
+        require PROJECT_ROOT_PATH . "/controllers/" . $controllerName . ".controller.php";
+        $className = $controllerName . "Controller";
+        $controller = new $className();
 
-            } else {
-                $strMethodName = "getMessagesPrives";
-            }
-            $objFeedController->{$strMethodName}();
-        } catch (Error $e) {
-            $e->getMessage();
-        }
+        $controller->{$methodName}();
     }
+
+    switch ($uri[3]) {
+        case 'listeUtilisateurs':
+            $controllerName = "Utilisateur";
+            $methodName = $uri[3];
+            break;
+
+        case 'connexion':
+            $controllerName = "Connexion";
+            $methodName = $uri[3];
+            break;
+        
+        case 'pays':
+            $controllerName = "Pays";
+            $methodName = $uri[3];
+            break;
+        
+        case 'inscription':
+            $controllerName = "Inscription";
+            $methodName = $uri[3];
+            break;
+        
+        case 'messages':
+            $controllerName = "MessagePrive";
+            if(!isset($uri[4])) {
+                header("HTTP/1.1 404 Not Found");
+                throw new Exception("URL Invalide");
+            } else {
+                $methodName = $uri[4] . $controllerName;
+            }
+            break;
+
+        default:
+            header("HTTP/1.1 404 Not Found");
+            throw new Exception("URL Invalide");
+            break;
+    }
+
+    setEndpoint($controllerName, $methodName);
+
 } catch (Exception $e) {
-    echo json_encode($e->getMessage());
+    $baseController = new BaseController();
+    $baseController->createResponse("error", $e->getMessage());
 }
 ?>

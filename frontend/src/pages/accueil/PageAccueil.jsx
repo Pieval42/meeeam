@@ -1,15 +1,13 @@
 import { useState } from "react";
-import axios from "axios";
-
+import { axiosInstance } from "../../config/axiosConfig";
+import Bienvenue from "./Bienvenue";
+import Inscription from "./Inscription";
+import ModalConnexion from "./ModalConnexion";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import "/src/style/css/PageAccueil.css";
 
-import "/src/style/css/Accueil.css";
-import ModalConnexion from "../components/ModalConnexion";
-import Bienvenue from "../components/Bienvenue";
-import Inscription from "./Inscription";
-
-export default function Accueil() {
+export default function PageAccueil() {
   const [listePays, setListePays] = useState([]);
   const [error, setError] = useState("");
 
@@ -23,8 +21,8 @@ export default function Accueil() {
   const [showInscription, setShowInscription] = useState(false);
   const handleHideInscription = () => setShowInscription(false);
   const handleShowInscription = () => {
-    axios
-      .get("http://localhost:42600/backend/index.php/pays")
+    axiosInstance
+      .get("/pays")
       .then((response) => {
         console.log(response);
         if (response.data.status === "success") {

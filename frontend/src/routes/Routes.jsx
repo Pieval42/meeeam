@@ -1,16 +1,15 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute";
-
-import Accueil from "../pages/Accueil";
-import Profil from "../pages/Profil";
-import Pages from "../pages/Pages";
-import Amis from "../pages/Amis";
-import Messages from "../pages/Messages";
-import Parametres from "../pages/Parametres";
-import Deconnexion from "../components/Deconnexion";
 import { useAuth } from "../hooks/useAuth";
 import { useContext, useEffect, useMemo } from "react";
 import { authContext } from "../contexts/contexts";
+import PageAccueil from "../pages/accueil/PageAccueil";
+import PageProfil from "../pages/profil/PageProfil";
+import PagePages from "../pages/pages/PagePages";
+import PageAmis from "../pages/amis/PageAmis";
+import PageMessages from "../pages/messages/PageMessages";
+import PageParametres from "../pages/parametres/PageParametres";
+import Deconnexion from "../pages/deconnexion/Deconnexion";
 
 const Routes = () => {
   const auth = useAuth();
@@ -23,7 +22,7 @@ const Routes = () => {
     return [
       {
         path: "/",
-        element: <Accueil></Accueil>,
+        element: <PageAccueil></PageAccueil>,
       },
       {
         path: "pages/",
@@ -57,23 +56,23 @@ const Routes = () => {
         children: [
           {
             index: true,
-            element: <Profil />,
+            element: <PageProfil />,
           },
           {
             path: "pages/",
-            element: <Pages />,
+            element: <PagePages />,
           },
           {
             path: "amis/",
-            element: <Amis />,
+            element: <PageAmis />,
           },
           {
             path: "messages/",
-            element: <Messages />,
+            element: <PageMessages />,
           },
           {
             path: "parametres/",
-            element: <Parametres />,
+            element: <PageParametres />,
           },
           {
             path: "deconnexion/",

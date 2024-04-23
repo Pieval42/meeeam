@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `genre`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class Genre {
     private $id_genre;
     private $libelle_genre;
@@ -25,3 +32,4 @@ class Genre {
         $this->libelle_genre = $libelle_genre;
     }
 }
+?>

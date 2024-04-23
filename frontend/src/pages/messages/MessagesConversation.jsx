@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
-import { authContext } from "../contexts/contexts";
+import { authContext } from "../../contexts/contexts";
 import { useNavigate } from "react-router-dom";
+import { decodeHtmlSpecialChars } from "../../utils/htmlSpecialChars";
+import { axiosInstance } from "../../config/axiosConfig";
 
 export default function MessagesConversation({
   id_utilisateur,
@@ -12,7 +13,7 @@ export default function MessagesConversation({
   listeMessages,
   setListeMessages,
 }) {
-  const [errorMessage, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const messagesCache = localStorage.getItem(
     `conversation_${id_utilisateur}${correspondant[1]}`,
   );
@@ -23,17 +24,12 @@ export default function MessagesConversation({
   const navigate = useNavigate();
 
   const updateMessages = useCallback(() => {
-    axios
+    axiosInstance
       .get(
-        "http://localhost:42600/backend/index.php/messages?id_utilisateur=" +
+        "/messages/get?id_utilisateur=" +
           encodeURIComponent(id_utilisateur) +
           "&id_utilisateur_2=" +
           encodeURIComponent(correspondant[1]),
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
-          },
-        },
       )
       .then((response) => {
         console.log(response);
@@ -44,35 +40,28 @@ export default function MessagesConversation({
             msg.date_heure_message = new Date(
               Date.UTC(dhm[0], dhm[1] - 1, dhm[2], dhm[3], dhm[4], dhm[5]),
             ).toLocaleString("fr-FR", { timeZone: "CET" });
+            msg.contenu_message = decodeHtmlSpecialChars(msg.contenu_message);
           });
 
-          if (messagesCache) {
-            if (JSON.stringify(messages) === messagesCache) {
+          if (messagesCache && JSON.stringify(messages) === messagesCache) {
               return;
-            } else {
-              setListeMessages(messages);
-              localStorage.setItem(
-                `conversation_${id_utilisateur}${correspondant[1]}`,
-                JSON.stringify(messages),
-              );
-            }
-          } else {
-            setListeMessages(messages);
-            localStorage.setItem(
-              `conversation_${id_utilisateur}${correspondant[1]}`,
-              JSON.stringify(messages),
-            );
-          }
+          } 
+          setListeMessages(messages);
+          localStorage.setItem(
+            `conversation_${id_utilisateur}${correspondant[1]}`,
+            JSON.stringify(messages),
+          );
+          
         } else {
-          setError(response.data.message);
-          console.log(errorMessage);
+          setErrorMessage(response.data.message);
+          console.log(response.data.message);
         }
       })
       .catch((error) => {        
         if(error.response.status === 498) {
           context.setErreurAuthentification(true);
         } else {
-          console.error(error);
+          console.error(error.message);
         }
       });
   }, [context, correspondant, errorMessage, id_utilisateur, messagesCache, setListeMessages]);
@@ -114,7 +103,7 @@ export default function MessagesConversation({
           {message.id_expediteur_prive === id_utilisateur ? (
             <Col
               xs={{ span: 6, offset: 6 }}
-              className="bg-danger-subtle bg-gradient rounded py-2 mb-1"
+              className="bg-danger-subtle bg-gradient rounded py-2 mb-1 message-conversation"
             >
               {message.contenu_message}
               <br></br>
@@ -123,7 +112,7 @@ export default function MessagesConversation({
           ) : (
             <Col
               xs={6}
-              className="bg-warning-subtle bg-gradient rounded py-2 mb-1"
+              className="bg-warning-subtle bg-gradient rounded py-2 mb-1 message-conversation"
             >
               {message.contenu_message}
               <br></br>

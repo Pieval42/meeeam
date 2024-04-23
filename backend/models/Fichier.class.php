@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `fichier`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class Fichier {
     private $id_type_fichier_fk;
     private $id_fichier;
@@ -45,3 +52,4 @@ class Fichier {
         $this->id_utilisateur_fichier = $id_utilisateur_fichier;
     }
 }
+?>

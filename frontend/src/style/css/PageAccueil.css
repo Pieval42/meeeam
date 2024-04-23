@@ -1,5 +1,5 @@
 .accueil {
-  margin-top: 2rem;
+  margin: 2rem 0;
 }
 .accueil,
 .accueil > .card {
@@ -14,6 +14,10 @@
 .logo:hover {
   filter: drop-shadow(0 0 2em #de0a00);
   
+}
+
+button#urlPrefix.dropdown-toggle::after {
+  display: none;
 }
 
 @keyframes logo-zoom {

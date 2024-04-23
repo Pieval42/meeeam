@@ -1,23 +1,36 @@
 <?php
 
-class PageProfil {
-    private $id_utilisateur_page_profil;
-    private $id_page_profil;
+/**
+ * Représentation de la table SQL `page_profil`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
+class PageProfil
+{
+  private $id_utilisateur_page_profil;
+  private $id_page_profil;
 
-    public function __construct($id_utilisateur_page_profil, $id_page_profil) {
-        $this->id_utilisateur_page_profil = $id_utilisateur_page_profil;
-        $this->id_page_profil = $id_page_profil;
-    }
+  public function __construct($id_utilisateur_page_profil, $id_page_profil)
+  {
+    $this->id_utilisateur_page_profil = $id_utilisateur_page_profil;
+    $this->id_page_profil = $id_page_profil;
+  }
 
-    public function getIdUtilisateurPageProfil() {
-        return $this->id_utilisateur_page_profil;
-    }
+  public function getIdUtilisateurPageProfil()
+  {
+    return $this->id_utilisateur_page_profil;
+  }
 
-    public function setIdUtilisateurPageProfil($id_utilisateur_page_profil) {
-        $this->id_utilisateur_page_profil = $id_utilisateur_page_profil;
-    }
+  public function setIdUtilisateurPageProfil($id_utilisateur_page_profil)
+  {
+    $this->id_utilisateur_page_profil = $id_utilisateur_page_profil;
+  }
 
-    public function getIdPageProfil() {
-        return $this->id_page_profil;
-    }
+  public function getIdPageProfil()
+  {
+    return $this->id_page_profil;
+  }
 }
+?>

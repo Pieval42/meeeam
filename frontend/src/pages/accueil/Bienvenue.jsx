@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 import PropTypes from "prop-types";
-
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -22,7 +21,7 @@ export default function Bienvenue({
           </Row>
           <Row className="h-50 align-items-center">
             <Col>
-              <h2>Lieu d&apos;échanges, de rencontres et de partage.</h2>
+              <h2>Lieu d'échanges, de rencontres et de partage.</h2>
             </Col>
           </Row>
         </Col>

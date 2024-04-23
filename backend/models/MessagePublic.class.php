@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `message_public`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class MessagePublic {
     private $id_expediteur_public;
     private $id_message_public;
@@ -75,3 +82,4 @@ class MessagePublic {
         $this->id_page_profil_msg_pub = $id_page_profil_msg_pub;
     }
 }
+?>

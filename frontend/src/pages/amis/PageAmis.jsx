@@ -1,4 +1,4 @@
-export default function Amis() {
+export default function PageAmis() {
   
     return (
       

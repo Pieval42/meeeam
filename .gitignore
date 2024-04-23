@@ -132,6 +132,10 @@ dist
 # Composer
 backend/vendor/
 
+# phpdoc
+**/.phpdoc/
+backend/docs/
+
 #Fichiers persos
 documentation/suivi_installations.txt
 /.vscode/

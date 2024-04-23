@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `inviter_a`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class InviterA {
     private $id_utilisateur_invitant_evt;
     private $id_utilisateur_invite_evt;

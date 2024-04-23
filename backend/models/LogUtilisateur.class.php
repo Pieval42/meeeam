@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `log_utilisateur`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class LogUtilisateur {
     private $id_log;
     private $date_heure_connexion;
@@ -51,3 +58,4 @@ class LogUtilisateur {
         $this->id_utilisateur_log = $id_utilisateur_log;
     }
 }
+?>

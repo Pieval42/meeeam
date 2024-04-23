@@ -1,19 +1,17 @@
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
-
+import { axiosInstance } from "../../config/axiosConfig";
+import { authContext } from "../../contexts/contexts";
+import { useNavigate } from "react-router-dom";
+import Conversation from "./Conversation";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/esm/Container";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 import ListGroup from "react-bootstrap/esm/ListGroup";
 import Button from "react-bootstrap/esm/Button";
+import "/src/style/css/PageMessages.css";
 
-import "/src/style/css/Messages.css";
-import Conversation from "../components/Conversation";
-import { authContext } from "../contexts/contexts";
-import { useNavigate } from "react-router-dom";
-
-export default function Messages() {
+export default function PageMessages() {
   const [error, setError] = useState("");
   const [listeCorrespondants, setListeCorrespondants] = useState([]);
   const [correspondant, setCorrespondant] = useState([]);
@@ -23,23 +21,17 @@ export default function Messages() {
   const context = useContext(authContext);
   const infosUtilisateurs = context ? context.token : undefined;
   const id_utilisateur = context ? infosUtilisateurs.id_utilisateur : undefined;
-  const pseudo_utilisateur = context ? infosUtilisateurs.pseudo_utilisateur : undefined;
+  const pseudo_utilisateur = context
+    ? infosUtilisateurs.pseudo_utilisateur
+    : undefined;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
 
-    axios
-      .get(
-        "http://localhost:42600/backend/index.php/messages?id_utilisateur=" +
-        encodeURIComponent(id_utilisateur),
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
-          },
-        },
-      )
+    axiosInstance
+      .get("/messages/get?id_utilisateur=" + encodeURIComponent(id_utilisateur))
       .then((response) => {
         if (!ignore) {
           console.log(response);
@@ -62,7 +54,7 @@ export default function Messages() {
         }
       })
       .catch((error) => {
-        if(error.response.status === 498) {
+        if (error.response.status === 498) {
           context.setErreurAuthentification(true);
         } else {
           console.error(error);
@@ -76,7 +68,7 @@ export default function Messages() {
 
   useEffect(() => {
     correspondant.length > 0 && setShowConversation(true);
-  }, [correspondant, setShowConversation])
+  }, [correspondant, setShowConversation]);
 
   function handleShowConversation(id_correspondant, pseudo_correspondant) {
     setCorrespondant([pseudo_correspondant, id_correspondant]);
@@ -85,7 +77,7 @@ export default function Messages() {
   const handleNouvelleConversation = () => {
     setCorrespondant([]);
     setShowConversation(true);
-  } 
+  };
 
   return (
     <>
@@ -95,7 +87,7 @@ export default function Messages() {
           <Col xs={3}>
             <Card className="mb-3 card-correspondants">
               <Card.Header>Conversations</Card.Header>
-              <Card.Body  className="h-100 liste-correspondants">
+              <Card.Body className="h-100 liste-correspondants">
                 <Button
                   onClick={handleNouvelleConversation}
                   className="btn-custom-primary mb-3 w-100"
@@ -121,7 +113,7 @@ export default function Messages() {
                         >
                           {cor[0]}
                         </ListGroup.Item>
-                      ),
+                      )
                     )}
                 </ListGroup>
               </Card.Body>

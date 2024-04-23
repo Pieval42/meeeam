@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `description`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class Description {
     private $id_utilisateur_description;
     private $id_description;
@@ -35,3 +42,4 @@ class Description {
         $this->contenu_description = $contenu_description;
     }
 }
+?>

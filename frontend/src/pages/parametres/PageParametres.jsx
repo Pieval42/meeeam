@@ -1,4 +1,4 @@
-export default function Parametres() {
+export default function PageParametres() {
   
     return (
       

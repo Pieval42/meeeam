@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `demande_ami`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class DemandeAmi {
     private $id_demande_ami;
     private $statut_demande;
@@ -41,3 +48,4 @@ class DemandeAmi {
         $this->id_destinataire_demande = $id_destinataire_demande;
     }
 }
+?>

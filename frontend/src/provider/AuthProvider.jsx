@@ -10,7 +10,8 @@ export default function AuthProvider({ children }) {
   const [motDePasse, setMotDePasse] = useState("");
   const [status, setStatus] = useState("inconnu");
   const [token, setToken] = useState({});
-  const [erreurAuthentification, setErreurAuthentification] = useState(undefined);
+  const [erreurAuthentification, setErreurAuthentification] =
+    useState(undefined);
 
   const contextValue = useMemo(
     () => ({
@@ -27,7 +28,14 @@ export default function AuthProvider({ children }) {
       erreurAuthentification,
       setErreurAuthentification,
     }),
-    [infosUtilisateurs, email, motDePasse, status, token, erreurAuthentification],
+    [
+      infosUtilisateurs,
+      email,
+      motDePasse,
+      status,
+      token,
+      erreurAuthentification,
+    ]
   );
 
   const auth = useAuth();

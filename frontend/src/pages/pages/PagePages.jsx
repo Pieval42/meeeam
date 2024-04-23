@@ -1,4 +1,4 @@
-export default function Pages() {
+export default function PagePages() {
   
     return (
       

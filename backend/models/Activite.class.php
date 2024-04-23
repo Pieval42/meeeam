@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `activite`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class Activite {
     private $id_activite;
     private $libelle_activite;
@@ -25,3 +32,4 @@ class Activite {
         $this->libelle_activite = $libelle_activite;
     }
 }
+?>

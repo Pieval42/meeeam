@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `evenement`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class Evenement {
     private $id_evenement;
     private $nom_evt;
@@ -65,3 +72,4 @@ class Evenement {
         $this->id_createur_evenement = $id_createur_evenement;
     }
 }
+?>

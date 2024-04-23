@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `lister`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class Lister {
     private $id_utilisateur_site_web;
     private $adresse_site_web_liste;

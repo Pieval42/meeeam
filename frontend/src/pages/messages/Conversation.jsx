@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
+import { axiosInstance } from "../../config/axiosConfig";
 
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
@@ -10,7 +10,7 @@ import EnvoiMessage from "./EnvoiMessage";
 import MessagesConversation from "./MessagesConversation";
 import Form from "react-bootstrap/esm/Form";
 import ListGroup from "react-bootstrap/esm/ListGroup";
-import { authContext } from "../contexts/contexts";
+import { authContext } from "../../contexts/contexts";
 
 export default function Conversation({
   correspondant,
@@ -21,7 +21,7 @@ export default function Conversation({
   setChangementListe,
   changementListe,
 }) {
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const scroll = useRef(null);
   const [listeMessages, setListeMessages] = useState([]);
   const [searchItem, setSearchItem] = useState("");
@@ -42,17 +42,12 @@ export default function Conversation({
   const handleInputChange = (e) => {
     const searchTerm = e.target.value;
     setSearchItem(searchTerm);
+    setErrorMessage("");
     if (searchTerm !== ("" && null && undefined)) {
-      axios
+      axiosInstance
         .get(
-          "http://localhost:42600/backend/index.php/listeUtilisateurs?search=" +
+          "/listeUtilisateurs?search=" +
             encodeURIComponent(searchTerm),
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
-              Accept: "application/json",
-            },
-          },
         )
         .then((response) => {
           console.log(response);
@@ -66,14 +61,20 @@ export default function Conversation({
             });
             setListeUtilisateurs(listeRecue);
           } else {
-            setError(JSON.stringify(response.data.message));
+            setErrorMessage(JSON.stringify(response.data.message));
           }
         })
         .catch((error) => {
+          let errorMsg = ""
+          if (error.response) {
+            errorMsg = error.response.status + error.response.data + error.response.headers;
+          } else {
+            errorMsg = `${error.code} ${error.message}`;
+          }
+          console.error(errorMsg);
+          setErrorMessage(errorMsg);
           if(error.response.status === 498) {
             context.setErreurAuthentification(true);
-          } else {
-            console.error(error);
           }
         });
     } else {
@@ -113,11 +114,17 @@ export default function Conversation({
             </Row>
           </Card.Header>
         )}
+        {errorMessage && (
+          <Card className="liste-utilisateurs">
+            <ListGroup>
+              <ListGroup.Item className="text-warning">{errorMessage}</ListGroup.Item>
+            </ListGroup>
+          </Card>
+        )}
         {listeUtilisateurs.length > 0 &&
           searchItem !== ("" && null && undefined) &&
           correspondant.length === 0 && (
             <Card className="liste-utilisateurs">
-              {error && { error }}
               <ListGroup>
                 {listeUtilisateurs.map((user) => {
                   return (
@@ -126,6 +133,7 @@ export default function Conversation({
                       id={user.id_utilisateur}
                       pseudo={user.pseudo_utilisateur}
                       onClick={handleSelectUtilisateur}
+                      className="search-result"
                     >
                       {user.pseudo_utilisateur} {user.prenom_utilisateur}{" "}
                       {user.nom_utilisateur}

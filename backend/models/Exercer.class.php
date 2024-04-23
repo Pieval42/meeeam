@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `exercer`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class Exercer {
     private $id_utilisateur_activite;
     private $id_activite;

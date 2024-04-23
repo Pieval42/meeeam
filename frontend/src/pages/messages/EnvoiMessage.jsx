@@ -1,11 +1,12 @@
 import {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
-import { authContext } from "../contexts/contexts";
+import { authContext } from "../../contexts/contexts";
+import { axiosInstance } from "../../config/axiosConfig";
 
 import Form from "react-bootstrap/esm/Form";
 import InputGroup from "react-bootstrap/esm/InputGroup";
 import Button from "react-bootstrap/esm/Button";
+import { decodeHtmlSpecialChars, encodeHtmlSpecialChars } from "../../utils/htmlSpecialChars";
 
 export default function EnvoiMessage({
   id_utilisateur,
@@ -18,24 +19,35 @@ export default function EnvoiMessage({
   const [error, setError] = useState("");
   const [messageAEnvoyer, setMessageAEnvoyer] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [inputDisabled, setInputDisabled] = useState(true);
 
   useEffect(() => {
     if(correspondant[0]) {
-      setButtonDisabled(false)
+      setInputDisabled(false);
+      messageAEnvoyer ? setButtonDisabled(false) : setButtonDisabled(true);
     } else {
       setButtonDisabled(true);
+      setInputDisabled(true);
       setMessageAEnvoyer("");
     }
-  }, [correspondant])
+  }, [correspondant, messageAEnvoyer])
 
-  const corresp = correspondant[0] ? correspondant[0] : "...";
-  const placeholder = "Écrire à " + corresp;
+  // const corresp = correspondant[0] ? correspondant[0] : "...";
+  const placeholder = correspondant[0]
+    ?
+      "Écrire à " + correspondant[0] + " (500 caractères maximum)"
+    :
+      "Sélectionner un correspondant"
+    ;
 
   const context = useContext(authContext);
 
   const handleMessageChange = (e) => {
-    const msg = e.target.value;
-    setMessageAEnvoyer(msg);
+    const msg = encodeHtmlSpecialChars(e.target.value);
+    if(msg.length > 500) {
+      return;
+    }
+    setMessageAEnvoyer(decodeHtmlSpecialChars(msg));
   };
 
   const handleKeyDown = (e) => {
@@ -51,16 +63,11 @@ export default function EnvoiMessage({
 
   const submitMessage = async (e) => {
     e && e.preventDefault();
-    axios
-      .post("http://localhost:42600/backend/index.php/messages/envoyer", {
+    axiosInstance
+      .post("/messages/envoyer", {
         id_expediteur_prive: id_utilisateur,
-        contenu_message: messageAEnvoyer,
+        contenu_message: messageAEnvoyer.trim(),
         id_destinataire_prive: correspondant[1],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
-        },
       },
     )
       .then((response) => {
@@ -97,6 +104,7 @@ export default function EnvoiMessage({
           value={messageAEnvoyer}
           onChange={handleMessageChange}
           onKeyDown={handleKeyDown}
+          disabled={inputDisabled}
         />
         <Button className="btn-custom-primary" id="button-addon2" type="submit" disabled={buttonDisabled}>
           Envoyer

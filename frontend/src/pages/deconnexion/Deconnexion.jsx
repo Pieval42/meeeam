@@ -1,26 +1,24 @@
 import { useContext, useEffect } from 'react';
-import { authContext } from '../contexts/contexts';
-import { useNavigate } from "react-router-dom";
-import PageDeconnexion from '../pages/PageDeconnexion';
-import PageErreurAuthentification from '../pages/PageErreurAuthentification';
-import PageAccesRefuse from '../pages/PageAccesRefuse';
+import { authContext } from '../../contexts/contexts';
+import PageDeconnexion from './PageDeconnexion';
+import PageErreurAuthentification from './PageErreurAuthentification';
+import PageAccesRefuse from './PageAccesRefuse';
 
 export default function Deconnexion() {
 
   const context = useContext(authContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.removeItem("Bearer");
     const allKeysFromLocalStorage = Object.keys(localStorage);
-    const regexp = new RegExp("^conversation_[0-9]{4}$", "i")
+    const regex = new RegExp("^conversation_[0-9]{4}$", "i")
     allKeysFromLocalStorage.map((item) => {
-      regexp.test(item) && localStorage.removeItem(item)
+      regex.test(item) && localStorage.removeItem(item)
     })
     context.setStatus("nonConnecte");
     context.setToken("");
     context.setInfosUtilisateurs(null);
-  }, [context, navigate])
+  }, [context])
 
   if(context.erreurAuthentification) {
     return (

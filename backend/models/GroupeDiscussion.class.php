@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `groupe_discussion`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class GroupeDiscussion {
     private $id_groupe_discussion;
     private $nom_groupe_discussion;
@@ -35,3 +42,4 @@ class GroupeDiscussion {
         $this->id_createur_groupe_discussion = $id_createur_groupe_discussion;
     }
 }
+?>

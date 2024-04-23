@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `bloquer`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class Bloquer {
     private $id_utilisateur_bloquant;
     private $id_utilisateur_bloque;

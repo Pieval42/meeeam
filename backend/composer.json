@@ -1,5 +1,5 @@
 {
-    "require": {
-        "nowakowskir/php-jwt": "^2.1"
-    }
+  "require": {
+      "nowakowskir/php-jwt": "^2.1"
+  }
 }

@@ -1,14 +1,14 @@
 import { /*useState, */useContext } from "react";
 import { Outlet } from "react-router-dom";
+import { authContext } from "../contexts/contexts";
+import Header from "./Header";
+import "../style/css/MainTemplate.css";
 
-import Header from "../components/Header";
 
 // import Container from "react-bootstrap/esm/Container";
 // import Col from "react-bootstrap/esm/Col";
 // import Row from "react-bootstrap/esm/Row";
 
-import "/src/style/css/MainTemplate.css";
-import { authContext } from "../contexts/contexts";
 
 export default function MainTemplate() {
   // const [apiUsers, setApiUsers] = useState([]);

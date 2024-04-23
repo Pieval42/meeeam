@@ -1,8 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
-
+import { axiosInstance } from "../../config/axiosConfig";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -10,8 +9,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import InputGroup from "react-bootstrap/InputGroup";
+import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleQuestion,
+  faCaretDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Inscription({
   showInscription,
@@ -33,7 +37,8 @@ export default function Inscription({
   const [id_pays, setIdPays] = useState(0);
   const [siteWeb, setSiteWeb] = useState("");
   const [apiResponse, setApiResponse] = useState("");
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [prefixValue, setPrefixValue] = useState("https://www.");
 
   const handlePseudoChange = (event) => {
     setPseudo(event.target.value);
@@ -79,16 +84,21 @@ export default function Inscription({
     setIdPays(event.target.value);
   };
 
+  const handlePrefixChange = (event) => {
+    setPrefixValue(event.target.text);
+  };
+
   const handleSiteWebChange = (event) => {
     setSiteWeb(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setApiResponse("");
+    setErrorMessage("");
     if (password === password_confirm) {
-      setError("");
-      axios
-        .post("http://localhost:42600/backend/index.php/inscription", {
+      axiosInstance
+        .post("/inscription", {
           pseudo: pseudo,
           email: email,
           password: password,
@@ -99,7 +109,7 @@ export default function Inscription({
           code_postal: code_postal,
           nom_ville: ville,
           id_pays: id_pays,
-          site_web: siteWeb,
+          site_web: siteWeb ? prefixValue + siteWeb : "",
         })
         .then((response) => {
           if (response.data.status === "success") {
@@ -110,16 +120,25 @@ export default function Inscription({
               window.location.reload();
             }, 7000);
           } else {
-            setError(response.data.message);
+            setErrorMessage(response.data.message);
           }
         })
         .catch((error) => {
-          console.error(error);
-          setApiResponse(error.response.data.message);
+          let errorMsg = "";
+          if (error.response) {
+            errorMsg =
+              error.response.status +
+              error.response.data +
+              error.response.headers;
+          } else {
+            errorMsg = `${error.code} ${error.message}`;
+          }
+          console.error(errorMsg);
+          setErrorMessage(errorMsg);
         });
     } else {
       setApiResponse("");
-      setError("Les 2 mots de passe ne correspondent pas.");
+      setErrorMessage("Les 2 mots de passe ne correspondent pas.");
     }
   };
 
@@ -144,7 +163,11 @@ export default function Inscription({
                       delay={{ show: 250, hide: 400 }}
                       overlay={
                         <Tooltip id="tooltip-pseudo">
-                          Votre pseudo peut contenir des lettres et chiffres.
+                          Votre pseudo doit commencer par une lettre et peut
+                          contenir des lettres, des chiffres et les symboles -
+                          et _ uniquement.
+                          <br />
+                          Longueur exigée entre 4 et 20 caractères.
                         </Tooltip>
                       }
                     >
@@ -161,6 +184,8 @@ export default function Inscription({
                     placeholder="Votre pseudo"
                     name="pseudo"
                     autoComplete="username"
+                    minLength={4}
+                    maxLength={20}
                     required
                   />
                 </Form.Group>
@@ -180,6 +205,7 @@ export default function Inscription({
                     placeholder="Votre prénom"
                     name="prenom"
                     autoComplete="given-name"
+                    maxLength={50}
                     required
                   />
                 </Form.Group>
@@ -199,6 +225,7 @@ export default function Inscription({
                     placeholder="Votre nom"
                     name="nom"
                     autoComplete="family-name"
+                    maxLength={50}
                     required
                   />
                 </Form.Group>
@@ -271,7 +298,8 @@ export default function Inscription({
                         <Tooltip id="tooltip-mdp">
                           Votre mot de passe doit contenir au moins 10
                           caractères, dont au moins une minuscule, une
-                          majuscule, un chiffre et un caractère spécial.
+                          majuscule, un chiffre et un caractère spécial. Il ne
+                          doit pas commencer ou finir par un espace.
                         </Tooltip>
                       }
                     >
@@ -287,6 +315,8 @@ export default function Inscription({
                     type="password"
                     placeholder="Votre mot de passe"
                     name="password"
+                    minLength={10}
+                    maxLength={64}
                     required
                   />
                 </Form.Group>
@@ -325,6 +355,8 @@ export default function Inscription({
                     placeholder="Votre code postal"
                     name="code_postal"
                     autoComplete="postal-code"
+                    minLength={2}
+                    maxLength={10}
                   />
                 </Form.Group>
                 <Form.Group
@@ -348,7 +380,14 @@ export default function Inscription({
                 {errorPays && (
                   <Form.Text className="text-warning">{errorPays}</Form.Text>
                 )}
-                <Form.Group as={Col} xs={12} sm={6} xl={4} controlId="formPays">
+                <Form.Group
+                  as={Col}
+                  xs={12}
+                  sm={6}
+                  xl={4}
+                  className="mb-3"
+                  controlId="formPays"
+                >
                   <Form.Label>Pays: </Form.Label>
                   <Form.Select
                     aria-label="ListePays"
@@ -415,13 +454,38 @@ export default function Inscription({
                   controlId="formSiteWeb"
                 >
                   <Form.Label>Site Web: </Form.Label>
-                  <Form.Control
-                    value={siteWeb}
-                    onChange={handleSiteWebChange}
-                    type="text"
-                    placeholder="Votre site web"
-                    name="site-web"
-                  />
+                  <InputGroup>
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        variant="custom-secondary"
+                        id="urlPrefix"
+                      >
+                        <FontAwesomeIcon icon={faCaretDown} className="me-2" />
+                        <span>{prefixValue}</span>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick={handlePrefixChange}>
+                          https://www.
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handlePrefixChange}>
+                          http://www.
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handlePrefixChange}>
+                          https://
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={handlePrefixChange}>
+                          http://
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <Form.Control
+                      value={siteWeb}
+                      onChange={handleSiteWebChange}
+                      type="text"
+                      placeholder="Votre site web"
+                      name="site-web"
+                    />
+                  </InputGroup>
                 </Form.Group>
               </Row>
 
@@ -432,9 +496,11 @@ export default function Inscription({
                   </Button>
                 </Col>
                 {apiResponse && <Col xs={12}>{apiResponse}</Col>}
-                {error && (
+                {errorMessage && (
                   <Col xs={12}>
-                    <Form.Text className="text-warning">{error}</Form.Text>
+                    <Form.Text className="text-warning">
+                      {errorMessage}
+                    </Form.Text>
                   </Col>
                 )}
               </Row>

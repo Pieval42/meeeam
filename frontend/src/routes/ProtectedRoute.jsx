@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import MainTemplate from "../pages/MainTemplate";
+import MainTemplate from "../templates/MainTemplate";
 import { useAuth } from "../hooks/useAuth";
 
 export const ProtectedRoute = () => {

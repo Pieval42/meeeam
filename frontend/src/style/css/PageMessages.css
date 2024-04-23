@@ -31,3 +31,7 @@ div.card-correspondants {
 textarea.form-control {
     resize: none;
 }
+
+.message-conversation {
+    white-space: pre-line;
+}

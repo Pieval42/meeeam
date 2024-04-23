@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `etre_ami`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class EtreAmi {
     private $id_expediteur_ami;
     private $id_destinataire_ami;
@@ -23,5 +30,4 @@ class EtreAmi {
         return $this->date_debut_amitie;
     }
 }
-
 ?>

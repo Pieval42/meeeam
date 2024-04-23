@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Représentation de la table SQL `message_prive`
+ * 
+ * @author Pierrick Valentin
+ * 
+ * @since  1.0.0
+ */
 class MessagePrive {
     private $id_expediteur_prive;
     private $id_message_prive;
@@ -45,5 +52,4 @@ class MessagePrive {
         return $this->id_destinataire_prive;
     }
 }
-
 ?>

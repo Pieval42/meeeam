@@ -6,12 +6,14 @@ export function useAuth() {
 
   const tokenPayload = decodeToken();
 
-  tokenPayload && (tokenExpire = JSON.parse(tokenPayload).exp < Math.floor(Date.now()/1000));
-  
+  tokenPayload &&
+    (tokenExpire =
+      JSON.parse(tokenPayload).exp < Math.floor(Date.now() / 1000));
+
   if (tokenExpire) {
-    return {status: "nonConnecte", jsonPayload: tokenPayload}
+    return { status: "nonConnecte", jsonPayload: tokenPayload };
   }
-  switch ((localStorage.getItem("Bearer") || null || undefined)) {
+  switch (localStorage.getItem("Bearer") || null || undefined){
     case null:
       status = "nonConnecte";
       break;
@@ -22,5 +24,5 @@ export function useAuth() {
       status = "connecte";
   }
 
-  return {status: status, jsonPayload: tokenPayload};
+  return { status: status, jsonPayload: tokenPayload };
 }
