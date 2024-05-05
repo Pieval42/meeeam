@@ -25,7 +25,7 @@ abstract class Model
   /**
    * Raccourci de connexion à la BDD.
    *
-   * @return void
+   * @return Object Représentation de la connexion à la BDD.
    */
   protected function getBdd()
   {

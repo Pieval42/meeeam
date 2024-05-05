@@ -106,6 +106,7 @@ class SiteWebManager extends Model
    */
   public function creerSiteWeb($adresse_site_web)
   {
+    if ($adresse_site_web === "") return;
     //  Vérification de l'existence ou non du site web dans la BDD
     $site_web_existant = $this->getSiteWeb($adresse_site_web);
     if ($site_web_existant) {

@@ -69,7 +69,7 @@ class PaysManager extends Model
     {
         $req =
         "SELECT * FROM pays
-          ORDER BY nom_fr ASC";
+          ORDER BY id_pays ASC";
           
         if ($limit) {
             $req .= " LIMIT :limit";

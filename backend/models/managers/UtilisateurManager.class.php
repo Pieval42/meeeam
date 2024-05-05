@@ -152,7 +152,7 @@ class UtilisateurManager extends Model
    * @param  string  $date_naissance
    * @param  string  $email          Ne doit pas déjà exister dans la BDD.
    * @param  string  $mot_de_passe
-   * @param  int     $id_genre
+   * @param  string  $id_genre
    * @param  int     $id_ville
    * 
    * @return object  Objet représentant l'utilisateur créé.
@@ -164,20 +164,21 @@ class UtilisateurManager extends Model
     $date_naissance,
     $email,
     $mot_de_passe,
-    $id_genre = null,
+    $id_genre = "I",
     $id_ville = null
   ) {
     //  Vérifie si le pseudo est déjà utilisé.
     $pseudoAlreadyExists = $this->getUtilisateurByPseudo($pseudo);
     if ($pseudoAlreadyExists) {
-      throw new Exception("Pseudo déjà utilisé.");
+      throw new Exception("Pseudo déjà utilisé. Veuillez en choisir un autre.");
     }
 
     //  Vérifie si l'adresse email est déjà utilisée.
     $emailAlreadyExists = $this->getUtilisateurByEmail($email);
     if ($emailAlreadyExists) {
-      throw new Exception("Adresse e-mail déjà utilisée.");
+      throw new Exception("Adresse e-mail déjà utilisée. Veuillez en choisir une autre.");
     }
+    $id_genre === "" && $id_genre = "I";
     $req =
       "INSERT INTO utilisateur
         (pseudo_utilisateur, nom_utilisateur, prenom_utilisateur, date_naissance, email_utilisateur, mot_de_passe, id_genre_utilisateur, id_ville_utilisateur)
