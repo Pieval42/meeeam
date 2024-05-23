@@ -58,7 +58,7 @@ export default function MessagesConversation({
         }
       })
       .catch((error) => {        
-        if(error.response.status === 498) {
+        if(error.response.status === 401) {
           context.setErreurAuthentification(true);
         } else {
           console.error(error.message);

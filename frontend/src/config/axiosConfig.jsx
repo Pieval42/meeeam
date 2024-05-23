@@ -5,7 +5,7 @@ export const axiosInstance = axios.create({
   // timeout: 1000,
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("Bearer")}`,
+    Authorization: `Bearer ${localStorage.getItem("meeeam_access_token")}`,
     Accept: "application/json",
   },
 });

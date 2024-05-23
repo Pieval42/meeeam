@@ -73,7 +73,7 @@ export default function Conversation({
           }
           console.error(errorMsg);
           setErrorMessage(errorMsg);
-          if(error.response.status === 498) {
+          if(error.response.status === 401) {
             context.setErreurAuthentification(true);
           }
         });

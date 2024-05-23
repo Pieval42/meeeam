@@ -13,7 +13,7 @@ export function useAuth() {
   if (tokenExpire) {
     return { status: "nonConnecte", jsonPayload: tokenPayload };
   }
-  switch (localStorage.getItem("Bearer") || null || undefined){
+  switch (localStorage.getItem("meeeam_access_token") || null || undefined){
     case null:
       status = "nonConnecte";
       break;

@@ -41,13 +41,15 @@ class BaseController
     $status,
     $message,
     $data = new stdClass,
-    $token = null
+    $accessToken = null,
+    $refreshToken = null
   ) {
     $response = [
       "status" => $status,
       "message" => $message,
       "data" => $data,
-      "token" => $token,
+      "access_token" => $accessToken,
+      "refresh_token" => $refreshToken
     ];
     $jsonResponse = json_encode($response);
     $status === "error" && error_log($jsonResponse);
@@ -338,7 +340,7 @@ class BaseController
         "Token invalide : " . $e->getMessage(),
         []
       );
-      header("HTTP/1.1 498 Token expired/invalid");
+      header("HTTP/1.1 401 Unauthorized");
       exit();
     }
 

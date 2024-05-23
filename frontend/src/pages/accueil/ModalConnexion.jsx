@@ -40,7 +40,8 @@ function ModalConnexion({
         console.log(response);
         if (response.data.status === "success") {
           context.setInfosUtilisateurs(response.data.data);
-          localStorage.setItem("Bearer", response.data.token);
+          localStorage.setItem("meeeam_access_token", response.data.access_token);
+          localStorage.setItem("meeeam_refresh_token", response.data.refresh_token);
           window.location.reload();
         } else {
           setError(response.data.message);

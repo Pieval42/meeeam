@@ -9,9 +9,10 @@ export default function Deconnexion() {
   const context = useContext(authContext);
 
   useEffect(() => {
-    localStorage.removeItem("Bearer");
+    localStorage.removeItem("meeeam_access_token");
+    localStorage.removeItem("meeeam_refresh_token");
     const allKeysFromLocalStorage = Object.keys(localStorage);
-    const regex = new RegExp("^conversation_[0-9]{4}$", "i")
+    const regex = new RegExp("^conversation_[0-9]{4,}$", "i")
     allKeysFromLocalStorage.map((item) => {
       regex.test(item) && localStorage.removeItem(item)
     })
