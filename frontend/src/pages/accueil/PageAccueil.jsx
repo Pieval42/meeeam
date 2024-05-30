@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { axiosInstance } from "../../config/axiosConfig";
+import axiosInstance from "../../config/axiosConfig";
 import Bienvenue from "./Bienvenue";
 import Inscription from "./Inscription";
 import ModalConnexion from "./ModalConnexion";

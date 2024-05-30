@@ -106,7 +106,7 @@ class BaseController
         : null;
       if (
         (!$inputContent || $inputContent == "") &&
-        $characteristics["notNull"]
+        (isset($characteristics["notNull"]) && $characteristics["notNull"])
       ) {
         throw new Exception("Champ " . $inputName . " requis.");
       }
@@ -322,7 +322,7 @@ class BaseController
   protected function validateToken($token)
   {
     try {
-      if (preg_match("/Bearer\s(\S+)/", $token, $matches)) {
+      if (preg_match("/Bearer\s(\S+)/", $token, $matches) || preg_match("/Refresh\s(\S+)/", $token, $matches)) {
         $token = $matches[1];
       } else {
         throw new Exception("Token invalide");

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/BaseController.controller.php";
+require_once __DIR__ . "/Authentification.controller.php";
 require_once __DIR__ . "/../models/managers/RequeteManager.class.php";
 require_once __DIR__ . "/../models/managers/PageProfilManager.class.php";
 require_once __DIR__ . "/../models/managers/UtilisateurManager.class.php";
@@ -16,7 +16,7 @@ use Nowakowskir\JWT\TokenDecoded;
  *
  * @since 1.0.0
  */
-class ConnexionController extends BaseController
+class ConnexionController extends AuthentificationController
 {
   private $requeteManager;
   private $pageProfilManager;
@@ -100,61 +100,11 @@ class ConnexionController extends BaseController
           );
           $pseudo_utilisateur = $utilisateur->getPseudoUtilisateur();
 
-          // Création d'un JSON Web Token pour l'authentification de l'utilisateur
-          $accessTokenDecoded = new TokenDecoded(
-            [
-              "iss" => "meeeam_api",
-              "sub" => "access_token",
-              "aud" => "meeeam_user",
-              "iat" => time(),
-              "exp" => time() + 30 * 60,
-              "id_utilisateur" => $id_utilisateur,
-              "id_page_profil" => $id_page_profil,
-              "pseudo_utilisateur" => $pseudo_utilisateur,
-            ],
-            ["alg" => "RS256", "typ" => "JWT"]
-          );
-          try {
-            $accessTokenEncoded = $accessTokenDecoded->encode(
-              PRIVATE_KEY,
-              JWT::ALGORITHM_RS256
-            );
-          } catch (InsecureTokenException $e) {
-            echo $this->createResponse("error", $e, []);
-            exit();
-          } catch (UndefinedAlgorithmException $e) {
-            echo $this->createResponse("error", $e, []);
-            exit();
-          }
+          $accessToken = $this->createAccessToken($id_utilisateur, $id_page_profil, $pseudo_utilisateur);
 
-          $accessToken = $accessTokenEncoded->toString();
+          $refreshToken = $this->createRefreshToken($id_utilisateur);
 
-          // Création d'un refresh token pour maintenir la connexion d'un utilisateur sur un appareil
-          $refreshTokenDecoded = new TokenDecoded(
-            [
-              "iss" => "meeeam_api",
-              "sub" => "refresh",
-              "aud" => "meeeam_user",
-              "iat" => time(),
-              "exp" => time() + 24 * 60 * 60,
-              "id_utilisateur" => $id_utilisateur,
-            ],
-            ["alg" => "RS256", "typ" => "JWT"]
-          );
-          try {
-            $refreshTokenEncoded = $refreshTokenDecoded->encode(
-              PRIVATE_KEY,
-              JWT::ALGORITHM_RS256
-            );
-          } catch (InsecureTokenException $e) {
-            echo $this->createResponse("error", $e, []);
-            exit();
-          } catch (UndefinedAlgorithmException $e) {
-            echo $this->createResponse("error", $e, []);
-            exit();
-          }
-
-          $refreshToken = $refreshTokenEncoded->toString();
+          header("HTTP/1.1 200 OK");
 
           echo $this->createResponse(
             "success",
@@ -175,6 +125,7 @@ class ConnexionController extends BaseController
           exit();
         }
       } else {
+        header("HTTP/1.1 400 Bad Request");
         echo $this->createResponse("error", "Mauvaise requête.", []);
         exit();
       }

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useContext } from "react";
 import PropTypes from "prop-types";
-import { axiosInstance } from "../../config/axiosConfig";
+import axiosInstance from "../../config/axiosConfig";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";

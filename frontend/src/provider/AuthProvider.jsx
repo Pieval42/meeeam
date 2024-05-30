@@ -12,6 +12,7 @@ export default function AuthProvider({ children }) {
   const [token, setToken] = useState({});
   const [erreurAuthentification, setErreurAuthentification] =
     useState(undefined);
+  const [refreshAuth, setRefreshAuth] = useState(false);
 
   const contextValue = useMemo(
     () => ({
@@ -27,6 +28,8 @@ export default function AuthProvider({ children }) {
       setToken,
       erreurAuthentification,
       setErreurAuthentification,
+      refreshAuth,
+      setRefreshAuth,
     }),
     [
       infosUtilisateurs,
@@ -50,7 +53,9 @@ export default function AuthProvider({ children }) {
     auth.status === "connecte" && setErreurAuthentification(false);
   }, [auth, token, erreurAuthentification]);
 
-  // Provide the authentication context to the children components
+  
+
+  // Fournit le contexte d'authentification aux composants enfants
   return (
     <authContext.Provider value={contextValue}>{children}</authContext.Provider>
   );

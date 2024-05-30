@@ -199,6 +199,8 @@ class MessagePriveController extends BaseController
                     $response_message = "Messages trouvés.";
                 }
 
+                header("HTTP/1.1 200 OK");
+                
                 echo $this->createResponse(
                     "success",
                     $response_message,

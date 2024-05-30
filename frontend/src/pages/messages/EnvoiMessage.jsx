@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import { authContext } from "../../contexts/contexts";
-import { axiosInstance } from "../../config/axiosConfig";
+import axiosInstance from "../../config/axiosConfig";
 
 import Form from "react-bootstrap/esm/Form";
 import InputGroup from "react-bootstrap/esm/InputGroup";

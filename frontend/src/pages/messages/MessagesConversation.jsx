@@ -5,7 +5,7 @@ import Col from "react-bootstrap/esm/Col";
 import { authContext } from "../../contexts/contexts";
 import { useNavigate } from "react-router-dom";
 import { decodeHtmlSpecialChars } from "../../utils/htmlSpecialChars";
-import { axiosInstance } from "../../config/axiosConfig";
+import axiosInstance from "../../config/axiosConfig";
 
 export default function MessagesConversation({
   id_utilisateur,
