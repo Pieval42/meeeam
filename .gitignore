@@ -139,3 +139,5 @@ backend/docs/
 #Fichiers persos
 documentation/suivi_installations.txt
 /.vscode/
+/backend/.phpunit.result.cache
+/backend/phpunit.xml

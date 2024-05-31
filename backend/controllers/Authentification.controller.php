@@ -11,13 +11,9 @@ class AuthentificationController extends BaseController
   public function authentification()
   {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      // $accessTokenIsValid = $this->validateToken($_SERVER["HTTP_AUTHORIZATION"]);
-      // if ($accessTokenIsValid)
-      // {
-      //   header("HTTP/1.1 200 OK");
-      //   exit();
-      // } else {
-      $data = json_decode(file_get_contents("php://input"), true);
+
+      $data = $this->getRawRequestBody();
+
       if ($data) {
         $dataFields = [
           "id_utilisateur" => [
@@ -51,34 +47,64 @@ class AuthentificationController extends BaseController
 
         $oldRefreshToken = isset($data["meeeam_refresh_token"]) ? $data["meeeam_refresh_token"] : null;
 
-        $oldRefreshTokenIsValid = $oldRefreshToken ? $this->validateToken($oldRefreshToken) : false;
+        $oldRefreshTokenIsValid = false;
+        $newAccessToken = null;
+        $newRefreshToken = null;
+
+        try {
+          $oldRefreshTokenIsValid = $oldRefreshToken ? $this->validateToken($oldRefreshToken) : false;
+        } catch (Exception $e) {
+          $responseStatus = "error";
+          $responseMessage = "Token invalide : " . $e->getMessage();
+          $responseData = [];
+          $responseHeader = "HTTP/1.1 401 Unauthorized";
+        }
 
         if ($oldRefreshTokenIsValid) {
           $newAccessToken = $this->createAccessToken($id_utilisateur, $id_page_profil, $pseudo_utilisateur);
           $newRefreshToken = $this->createRefreshToken($id_utilisateur);
-          header("HTTP/1.1 200 OK");
-          echo $this->createResponse(
-            "success",
-            "Authentification réussie.",
-            [
-              "id_utilisateur" => $id_utilisateur,
-              "id_page_profil" => $id_page_profil,
-              "pseudo_utilisateur" => $pseudo_utilisateur,
-            ],
-            $newAccessToken,
-            $newRefreshToken
-          );
+          $responseStatus = "success";
+          $responseMessage = "Authentification réussie.";
+          $responseData = [
+            "id_utilisateur" => $id_utilisateur,
+            "id_page_profil" => $id_page_profil,
+            "pseudo_utilisateur" => $pseudo_utilisateur,
+          ];
+          $responseHeader = "HTTP/1.1 200 OK";
         } else {
-          header("HTTP/1.1 498 Token expired/invalid");
-          exit();
+          $responseStatus = "error";
+          $responseMessage = "Refresh token invalide.";
+          $responseData = [];
+          $responseHeader = "HTTP/1.1 498 Token expired/invalid";
         }
-        // }
+
+        echo $this->createResponse(
+          $responseStatus,
+          $responseMessage,
+          $responseData,
+          $newAccessToken,
+          $newRefreshToken,
+        );
+        header($responseHeader);
       }
     } elseif ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
+      echo $this->createResponse(
+        "success",
+        "Requête OPTIONS autorisée.",
+        [],
+        null,
+        null,
+      );
       header("HTTP/1.1 200 OK");
     } else {
+      echo $this->createResponse(
+        "error",
+        "Mauvaise requête.",
+        [],
+        null,
+        null,
+      );
       header("HTTP/1.1 400 Bad Request");
-      exit();
     }
   }
 

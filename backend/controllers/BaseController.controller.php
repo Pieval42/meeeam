@@ -317,34 +317,24 @@ class BaseController
    *
    * @param  string $token        Token à vérifier au format JSON
    *
-   * @return object Token validé
+   * @return object|boolean Token validé ou false par défaut
    */
   protected function validateToken($token)
   {
-    try {
-      if (preg_match("/Bearer\s(\S+)/", $token, $matches) || preg_match("/Refresh\s(\S+)/", $token, $matches)) {
-        $token = $matches[1];
-      } else {
-        throw new Exception("Token invalide");
-      }
-
-      if (isset($token) && $token !== "null") {
-        $tokenEncoded = new TokenEncoded($token);
-        $tokenEncoded->validate(PUBLIC_KEY, JWT::ALGORITHM_RS256);
-      } else {
-        throw new Exception("Token invalide ou expiré");
-      }
-    } catch (Exception $e) {
-      echo $this->createResponse(
-        "error",
-        "Token invalide : " . $e->getMessage(),
-        []
-      );
-      header("HTTP/1.1 401 Unauthorized");
-      exit();
+    if (preg_match("/Bearer\s(\S+)/", $token, $matches) || preg_match("/Refresh\s(\S+)/", $token, $matches)) {
+      $token = $matches[1];
+    } else {
+      throw new Exception("Format du token invalide.");
     }
 
-    return $tokenEncoded;
+    if (isset($token) && $token !== "null") {
+      $tokenEncoded = new TokenEncoded($token);
+      $tokenEncoded->validate(PUBLIC_KEY, JWT::ALGORITHM_RS256);
+      return $tokenEncoded;
+    } else {
+      throw new Exception("Token invalide ou expiré.");
+    }
+    return false;
   }
 
   /**
@@ -361,10 +351,26 @@ class BaseController
   protected function getTokenPayload($token)
   {
     $payload = null;
-    $tokenEncoded = $this->validateToken($token);
+
+    try {
+      $tokenEncoded = $this->validateToken($token);
+    } catch (Exception $e) {
+      echo $this->createResponse(
+        "error",
+        "Token invalide : " . $e->getMessage(),
+        []
+      );
+      header("HTTP/1.1 401 Unauthorized");
+      exit();
+    }
 
     $tokenEncoded && ($payload = $tokenEncoded->decode()->getPayload());
 
     return $payload;
+  }
+
+  protected function getRawRequestBody()
+  {
+    return json_decode(file_get_contents("php://input"), true);
   }
 }

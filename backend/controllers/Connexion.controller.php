@@ -55,7 +55,7 @@ class ConnexionController extends AuthentificationController
       // }
 
       //  Récupération des données de la requête
-      $data = json_decode(file_get_contents("php://input"), true);
+      $data = $this->getRawRequestBody();
 
       if ($data) {
         $email = isset($data["email"]) ? $data["email"] : "";

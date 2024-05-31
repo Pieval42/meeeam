@@ -60,7 +60,7 @@ class InscriptionController extends BaseController
       // }
 
       //  Récupération des données de la requête
-      $data = json_decode(file_get_contents("php://input"), true);
+      $data = $this->getRawRequestBody();
 
       if ($data) {
         try {
