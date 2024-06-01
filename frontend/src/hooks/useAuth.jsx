@@ -1,4 +1,4 @@
-import { decodeToken } from "../utils/decodeToken";
+import { decodeToken } from "../utils/tokenService";
 
 export function useAuth() {
   let status = "inconnu";

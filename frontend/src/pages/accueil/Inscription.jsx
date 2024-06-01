@@ -10,12 +10,8 @@ import Form from "react-bootstrap/Form";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import InputGroup from "react-bootstrap/InputGroup";
-import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleQuestion,
-  faCaretDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 
 export default function Inscription({
   showInscription,
@@ -38,7 +34,6 @@ export default function Inscription({
   const [siteWeb, setSiteWeb] = useState("");
   const [apiResponse, setApiResponse] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [prefixValue, setPrefixValue] = useState("https://www.");
 
   const handlePseudoChange = (event) => {
     setPseudo(event.target.value);
@@ -84,10 +79,6 @@ export default function Inscription({
     setIdPays(event.target.value);
   };
 
-  const handlePrefixChange = (event) => {
-    setPrefixValue(event.target.text);
-  };
-
   const handleSiteWebChange = (event) => {
     setSiteWeb(event.target.value);
   };
@@ -109,7 +100,7 @@ export default function Inscription({
           code_postal: code_postal,
           nom_ville: ville,
           id_pays: id_pays,
-          site_web: siteWeb ? prefixValue + siteWeb : "",
+          site_web: siteWeb,
         })
         .then((response) => {
           if (response.data.status === "success") {
@@ -455,29 +446,6 @@ export default function Inscription({
                 >
                   <Form.Label>Site Web: </Form.Label>
                   <InputGroup>
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        variant="custom-secondary"
-                        id="urlPrefix"
-                      >
-                        <FontAwesomeIcon icon={faCaretDown} className="me-2" />
-                        <span>{prefixValue}</span>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={handlePrefixChange}>
-                          https://www.
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={handlePrefixChange}>
-                          http://www.
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={handlePrefixChange}>
-                          https://
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={handlePrefixChange}>
-                          http://
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
                     <Form.Control
                       value={siteWeb}
                       onChange={handleSiteWebChange}
@@ -491,14 +459,14 @@ export default function Inscription({
 
               <Row className="justify-content-end my-3">
                 <Col xs={12} className="d-grid gap-2">
-                  <Button variant="custom-primary" size="lg" type="submit">
+                  <Button variant="custom-primary" size="lg" type="submit" data-testid="signUpButton">
                     S'inscrire
                   </Button>
                 </Col>
                 {apiResponse && <Col xs={12}>{apiResponse}</Col>}
                 {errorMessage && (
                   <Col xs={12}>
-                    <Form.Text className="text-warning">
+                    <Form.Text className="text-warning" data-testid="signUpErrorMessage">
                       {errorMessage}
                     </Form.Text>
                   </Col>

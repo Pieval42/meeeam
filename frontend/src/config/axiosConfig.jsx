@@ -1,5 +1,5 @@
 import axios from "axios";
-import { decodeToken } from "../utils/decodeToken";
+import { decodeToken } from "../utils/tokenService";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost/meeeam/backend/index.php",

@@ -45,6 +45,7 @@ export default function Bienvenue({
                     <Button
                       variant="custom-primary"
                       onClick={handleShowInscription}
+                      data-testid="goToSignUpPageButton"
                     >
                       Inscription
                     </Button>

@@ -1,5 +1,10 @@
-export function decodeToken() {
-  const tokenEncoded = localStorage.getItem("meeeam_access_token");
+export const getAccessTokenFromLocalStorage = () => {
+  const accessToken = localStorage.getItem("meeeam_access_token");
+  return accessToken;
+}
+
+export const decodeToken = () => {
+  const tokenEncoded = getAccessTokenFromLocalStorage();
   if (tokenEncoded) {
     const base64Url = tokenEncoded.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -16,3 +21,4 @@ export function decodeToken() {
   }
   return null;
 }
+

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { authContext } from "../contexts/contexts";
 import { useAuth } from "../hooks/useAuth";
-import { decodeToken } from "../utils/decodeToken";
+import { decodeToken } from "../utils/tokenService";
 
 export default function AuthProvider({ children }) {
   const [infosUtilisateurs, setInfosUtilisateurs] = useState(undefined);
