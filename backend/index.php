@@ -82,6 +82,16 @@ try {
       }
       break;
 
+    case 'profil':
+      $controllerName = "Profil";
+      if (!isset($uri[5])) {
+        header("HTTP/1.1 404 Not Found");
+        throw new Exception("URL Invalide");
+      } else {
+        $methodName = $uri[5];
+      }
+      break;
+
     default:
       header("HTTP/1.1 404 Not Found");
       throw new Exception("URL Invalide");
