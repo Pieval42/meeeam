@@ -459,7 +459,7 @@ export default function Inscription({
 
               <Row className="justify-content-end my-3">
                 <Col xs={12} className="d-grid gap-2">
-                  <Button variant="custom-primary" size="lg" type="submit" data-testid="signUpButton">
+                  <Button variant="custom-primary" size="lg" type="submit" data-testid="signUpButton" id="btn-submit-signup-form">
                     S'inscrire
                   </Button>
                 </Col>

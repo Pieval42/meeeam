@@ -71,6 +71,7 @@ function ModalConnexion({
                 type="email"
                 placeholder="Votre e-mail"
                 onChange={handleEmailChange}
+                id="login-email-input"
               />
               <Form.Text className="text-muted">
                 E-mail utilisé lors de l&apos;inscription
@@ -83,6 +84,7 @@ function ModalConnexion({
                 type="password"
                 placeholder="Votre mot de passe"
                 onChange={handlePasswordChange}
+                id="login-password-input"
               />
             </Form.Group>
 
@@ -91,12 +93,13 @@ function ModalConnexion({
                 <Button
                   variant="custom-secondary"
                   onClick={handleCloseConnexion}
+                  id="btn-go-back-to-home"
                 >
                   Annuler
                 </Button>
               </Col>
               <Col xs="auto">
-                <Button variant="custom-primary" type="submit">
+                <Button variant="custom-primary" type="submit" id="btn-submit-login-form">
                   Se connecter
                 </Button>
               </Col>
@@ -116,6 +119,7 @@ function ModalConnexion({
             variant="custom-secondary"
             className="ml-4"
             onClick={() => goToInscription()}
+            id="btn-go-to-signup-from-login-modal"
           >
             S'inscrire
           </Button>

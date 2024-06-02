@@ -37,6 +37,8 @@ export default function Bienvenue({
                     <Button
                       variant="custom-secondary"
                       onClick={handleShowConnexion}
+                      id="btn-open-login-modal"
+                      data-testid="goToLoginModalButton"
                     >
                       Connexion
                     </Button>
@@ -45,6 +47,7 @@ export default function Bienvenue({
                     <Button
                       variant="custom-primary"
                       onClick={handleShowInscription}
+                      id="btn-open-signup-page"
                       data-testid="goToSignUpPageButton"
                     >
                       Inscription

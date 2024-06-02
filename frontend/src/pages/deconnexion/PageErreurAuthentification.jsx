@@ -21,7 +21,7 @@ export default function PageErreurAuthentification() {
       <br/>
       Vous allez être redirigé vers l'accueil.
       <div>
-        <Button variant="custom-primary" onClick={handleGoToAccueil}>
+        <Button variant="custom-primary" onClick={handleGoToAccueil} id="btn-back-to-home-after-logout">
           Retourner à l'accueil
         </Button>
       </div>

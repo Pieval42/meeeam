@@ -53,6 +53,7 @@ export default function PageAccueil() {
               src="/images/banniere.svg"
               alt="Banniere Meeeam"
               className="logo h-100 w-100"
+              id="logo-banniere-accueil"
             />
           </Card.Header>
           <Bienvenue
