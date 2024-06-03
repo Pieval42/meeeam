@@ -12,12 +12,14 @@ class Fichier {
     private $id_fichier;
     private $nom_fichier;
     private $id_utilisateur_fichier;
+    private $url_fichier;
 
-    public function __construct($id_type_fichier_fk, $id_fichier, $nom_fichier, $id_utilisateur_fichier) {
+    public function __construct($id_type_fichier_fk, $id_fichier, $nom_fichier, $id_utilisateur_fichier, $url_fichier) {
         $this->id_type_fichier_fk = $id_type_fichier_fk;
         $this->id_fichier = $id_fichier;
         $this->nom_fichier = $nom_fichier;
         $this->id_utilisateur_fichier = $id_utilisateur_fichier;
+        $this->url_fichier = $url_fichier;
     }
 
     public function getIdTypeFichierFk() {
@@ -50,6 +52,14 @@ class Fichier {
 
     public function setIdUtilisateurFichier($id_utilisateur_fichier) {
         $this->id_utilisateur_fichier = $id_utilisateur_fichier;
+    }
+
+    public function getUrlFichier() {
+      return $this->url_fichier;
+    }
+
+    public function setUrlFichier($url_fichier) {
+      $this->url_fichier = $url_fichier;
     }
 }
 ?>

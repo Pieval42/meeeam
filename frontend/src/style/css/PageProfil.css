@@ -1,0 +1,7 @@
+.card-new-pub {
+  height: calc(100vh - 100px);
+}
+
+#image-profil {
+  max-height: 100px;
+}

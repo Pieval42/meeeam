@@ -103,18 +103,7 @@ class ListerManager extends Model
     $liste = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $stmt->closeCursor();
 
-    $listeObjets = [];
-
-    if ($liste) {
-      foreach ($liste as $row) {
-        $this->creerObjetLister(
-          $row["id_utilisateur_site_web"],
-          $row["adresse_site_web_liste"]
-        );
-        $listeObjets[] = $this->lister;
-      }
-    }
-    return $listeObjets;
+    return $liste;
   }
 
   /**

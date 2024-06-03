@@ -2,6 +2,7 @@ import { /*useState, */useContext } from "react";
 import { Outlet } from "react-router-dom";
 import { authContext } from "../contexts/contexts";
 import Header from "./Header";
+import { isEmpty } from "../utils/checkEmptyObject";
 import "../style/css/MainTemplate.css";
 
 
@@ -17,8 +18,10 @@ export default function MainTemplate() {
 
   // const navigate = useNavigate();
   const context = useContext(authContext);
-  const infosUtilisateurs = context ? context.token : null;
-  const pseudo = infosUtilisateurs ? infosUtilisateurs.pseudo_utilisateur : "...";
+  const infosUtilisateur = context ? context.infosUtilisateur : undefined;
+  const pseudo = !isEmpty(infosUtilisateur)
+    ? infosUtilisateur.pseudo_utilisateur
+    : "...";
 
   // useEffect(() => {
   //   const status = context.status;

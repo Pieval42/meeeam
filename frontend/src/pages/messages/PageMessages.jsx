@@ -9,6 +9,7 @@ import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 import ListGroup from "react-bootstrap/esm/ListGroup";
 import Button from "react-bootstrap/esm/Button";
+import { isEmpty } from "../../utils/checkEmptyObject";
 import "/src/style/css/PageMessages.css";
 
 export default function PageMessages() {
@@ -19,28 +20,29 @@ export default function PageMessages() {
   const [changementListe, setChangementListe] = useState(0);
 
   const context = useContext(authContext);
-  const infosUtilisateurs = context ? context.token : undefined;
-  const id_utilisateur = context ? infosUtilisateurs.id_utilisateur : undefined;
-  const pseudo_utilisateur = context
-    ? infosUtilisateurs.pseudo_utilisateur
+  const infosUtilisateur = context ? context.infosUtilisateur : undefined;
+  const idUtilisateur = !isEmpty(infosUtilisateur)
+    ? infosUtilisateur.id_utilisateur
     : undefined;
-
+  const pseudoUtilisateur = !isEmpty(infosUtilisateur)
+    ? infosUtilisateur.pseudo_utilisateur
+    : undefined;
   const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
 
     axiosInstance
-      .get("/messages/get?id_utilisateur=" + encodeURIComponent(id_utilisateur))
+      .get("/messages/get?id_utilisateur=" + encodeURIComponent(idUtilisateur))
       .then((response) => {
         if (!ignore) {
           console.log(response);
           if (response.data.status === "success") {
             let listeCorr = [];
             response.data.data.forEach((row) => {
-              row.id_expediteur !== id_utilisateur &&
+              row.id_expediteur !== idUtilisateur &&
                 listeCorr.push([row.pseudo_expediteur, row.id_expediteur]);
-              row.id_destinataire !== id_utilisateur &&
+              row.id_destinataire !== idUtilisateur &&
                 listeCorr.push([row.pseudo_destinataire, row.id_destinataire]);
             });
             let temp = {};
@@ -64,7 +66,7 @@ export default function PageMessages() {
     return () => {
       ignore = true;
     };
-  }, [id_utilisateur, pseudo_utilisateur, changementListe, context, navigate]);
+  }, [idUtilisateur, pseudoUtilisateur, changementListe, context, navigate]);
 
   useEffect(() => {
     correspondant.length > 0 && setShowConversation(true);
@@ -125,7 +127,7 @@ export default function PageMessages() {
               setCorrespondant={setCorrespondant}
               listeCorrespondants={listeCorrespondants}
               setListeCorrespondants={setListeCorrespondants}
-              id_utilisateur={id_utilisateur}
+              id_utilisateur={idUtilisateur}
               setChangementListe={setChangementListe}
               changementListe={changementListe}
             />

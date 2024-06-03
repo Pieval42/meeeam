@@ -39,10 +39,10 @@ function ModalConnexion({
       .then((response) => {
         console.log(response);
         if (response.data.status === "success") {
-          context.setInfosUtilisateurs(response.data.data);
+          context.setInfosUtilisateur(response.data.data);
+          localStorage.setItem("infos_utilisateur", JSON.stringify(response.data.data));
           localStorage.setItem("meeeam_access_token", response.data.access_token);
           localStorage.setItem("meeeam_refresh_token", response.data.refresh_token);
-          window.location.reload();
         } else {
           setError(response.data.message);
         }
@@ -65,7 +65,7 @@ function ModalConnexion({
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3">
               <Form.Label>Adresse e-mail: </Form.Label>
               <Form.Control
                 type="email"
@@ -78,7 +78,7 @@ function ModalConnexion({
               </Form.Text>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3">
               <Form.Label>Mot de passe: </Form.Label>
               <Form.Control
                 type="password"

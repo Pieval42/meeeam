@@ -78,9 +78,9 @@ h2 {
   box-shadow: 0 0 0 0.15rem rgba(216, 216, 216, 1);
 }
 
-.btn-custom-primary:focus,
-.btn-custom-primary:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button.btn-custom-primary:first-child:active {
+  background-color: rgba(222, 10, 0, .5);
+  border-color: #de0a00;
 }
 
 .btn-custom-secondary {

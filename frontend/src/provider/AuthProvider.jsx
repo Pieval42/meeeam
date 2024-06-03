@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { decodeToken } from "../utils/tokenService";
 
 export default function AuthProvider({ children }) {
-  const [infosUtilisateurs, setInfosUtilisateurs] = useState(undefined);
+  const [infosUtilisateur, setInfosUtilisateur] = useState(undefined);
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
   const [status, setStatus] = useState("inconnu");
@@ -16,8 +16,8 @@ export default function AuthProvider({ children }) {
 
   const contextValue = useMemo(
     () => ({
-      infosUtilisateurs,
-      setInfosUtilisateurs,
+      infosUtilisateur,
+      setInfosUtilisateur,
       email,
       setEmail,
       motDePasse,
@@ -31,29 +31,24 @@ export default function AuthProvider({ children }) {
       refreshAuth,
       setRefreshAuth,
     }),
-    [
-      infosUtilisateurs,
-      email,
-      motDePasse,
-      status,
-      token,
-      erreurAuthentification,
-    ]
+    [infosUtilisateur, email, motDePasse, status, token, erreurAuthentification]
   );
 
   const auth = useAuth();
   const tokenPayload = auth.status === "connecte" ? decodeToken() : null;
 
   useEffect(() => {
+    setInfosUtilisateur(JSON.parse(localStorage.getItem("infos_utilisateur")));
+  }, []);
+
+  useEffect(() => {
     setToken(tokenPayload ? JSON.parse(tokenPayload) : null);
-  }, [tokenPayload, infosUtilisateurs]);
+  }, [tokenPayload, infosUtilisateur]);
 
   useEffect(() => {
     setStatus(auth.status);
     auth.status === "connecte" && setErreurAuthentification(false);
   }, [auth, token, erreurAuthentification]);
-
-  
 
   // Fournit le contexte d'authentification aux composants enfants
   return (

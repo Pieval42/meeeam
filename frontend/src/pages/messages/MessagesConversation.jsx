@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import { authContext } from "../../contexts/contexts";
+import { convertSqlDateTimeToFr } from "../../utils/dateUtils";
 import { useNavigate } from "react-router-dom";
 import { decodeHtmlSpecialChars } from "../../utils/htmlSpecialChars";
 import axiosInstance from "../../config/axiosConfig";
@@ -15,7 +16,7 @@ export default function MessagesConversation({
 }) {
   const [errorMessage, setErrorMessage] = useState("");
   const messagesCache = localStorage.getItem(
-    `conversation_${id_utilisateur}${correspondant[1]}`,
+    `conversation_${id_utilisateur}${correspondant[1]}`
   );
   const [firstRender, setFirstRender] = useState(true);
 
@@ -29,42 +30,47 @@ export default function MessagesConversation({
         "/messages/get?id_utilisateur=" +
           encodeURIComponent(id_utilisateur) +
           "&id_utilisateur_2=" +
-          encodeURIComponent(correspondant[1]),
+          encodeURIComponent(correspondant[1])
       )
       .then((response) => {
         console.log(response);
         if (response.data.status === "success") {
           let messages = response.data.data;
           messages.forEach((msg) => {
-            let dhm = msg.date_heure_message.split(/[- :]/);
-            msg.date_heure_message = new Date(
-              Date.UTC(dhm[0], dhm[1] - 1, dhm[2], dhm[3], dhm[4], dhm[5]),
-            ).toLocaleString("fr-FR", { timeZone: "CET" });
+            msg.date_heure_message = convertSqlDateTimeToFr(
+              msg.date_heure_message
+            );
             msg.contenu_message = decodeHtmlSpecialChars(msg.contenu_message);
           });
 
           if (messagesCache && JSON.stringify(messages) === messagesCache) {
-              return;
-          } 
+            return;
+          }
           setListeMessages(messages);
           localStorage.setItem(
             `conversation_${id_utilisateur}${correspondant[1]}`,
-            JSON.stringify(messages),
+            JSON.stringify(messages)
           );
-          
         } else {
           setErrorMessage(response.data.message);
           console.log(response.data.message);
         }
       })
-      .catch((error) => {        
-        if(error.response.status === 401) {
+      .catch((error) => {
+        if (error.response.status === 401) {
           context.setErreurAuthentification(true);
         } else {
           console.error(error.message);
         }
       });
-  }, [context, correspondant, errorMessage, id_utilisateur, messagesCache, setListeMessages]);
+  }, [
+    context,
+    correspondant,
+    errorMessage,
+    id_utilisateur,
+    messagesCache,
+    setListeMessages,
+  ]);
 
   const autoriserActualisation = useRef(false);
 
@@ -94,7 +100,7 @@ export default function MessagesConversation({
 
   useEffect(() => {
     context.erreurAuthentification === true && navigate("../deconnexion");
-  }, [context.erreurAuthentification, navigate])
+  }, [context.erreurAuthentification, navigate]);
 
   return (
     <>

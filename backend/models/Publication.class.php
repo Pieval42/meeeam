@@ -12,20 +12,18 @@ class Publication
   private $id_publication;
   private $contenu_publication;
   private $date_heure_publication;
-  private $id_type_fichier_publication;
-  private $id_fichier_publication;
+  private $url_fichier_publication;
   private $id_page_publique_publication;
   private $id_page_profil_publication;
   private $id_utilisateur_page_profil;
   private $id_createur_publication;
 
-  public function __construct($id_publication, $contenu_publication, $date_heure_publication, $id_type_fichier_publication, $id_fichier_publication, $id_page_publique_publication, $id_page_profil_publication, $id_utilisateur_page_profil, $id_createur_publication)
+  public function __construct($id_publication, $contenu_publication, $date_heure_publication, $url_fichier_publication, $id_page_publique_publication, $id_page_profil_publication, $id_utilisateur_page_profil, $id_createur_publication)
   {
     $this->id_publication = $id_publication;
     $this->contenu_publication = $contenu_publication;
     $this->date_heure_publication = $date_heure_publication;
-    $this->id_type_fichier_publication = $id_type_fichier_publication;
-    $this->id_fichier_publication = $id_fichier_publication;
+    $this->url_fichier_publication = $url_fichier_publication;
     $this->id_page_publique_publication = $id_page_publique_publication;
     $this->id_page_profil_publication = $id_page_profil_publication;
     $this->id_utilisateur_page_profil = $id_utilisateur_page_profil;
@@ -57,24 +55,14 @@ class Publication
     $this->date_heure_publication = $date_heure_publication;
   }
 
-  public function getIdTypeFichierPublication()
+  public function getUrlFichierPublication()
   {
-    return $this->id_type_fichier_publication;
+    return $this->url_fichier_publication;
   }
 
-  public function setIdTypeFichierPublication($id_type_fichier_publication)
+  public function setUrlFichierPublication($url_fichier_publication)
   {
-    $this->id_type_fichier_publication = $id_type_fichier_publication;
-  }
-
-  public function getIdFichierPublication()
-  {
-    return $this->id_fichier_publication;
-  }
-
-  public function setIdFichierPublication($id_fichier_publication)
-  {
-    $this->id_fichier_publication = $id_fichier_publication;
+    $this->url_fichier_publication = $url_fichier_publication;
   }
 
   public function getIdPagePubliquePublication()

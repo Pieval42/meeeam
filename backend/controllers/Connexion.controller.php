@@ -3,11 +3,11 @@ require_once __DIR__ . "/Authentification.controller.php";
 require_once __DIR__ . "/../models/managers/RequeteManager.class.php";
 require_once __DIR__ . "/../models/managers/PageProfilManager.class.php";
 require_once __DIR__ . "/../models/managers/UtilisateurManager.class.php";
+require_once __DIR__ . "/../models/managers/VilleManager.class.php";
+require_once __DIR__ . "/../models/managers/GenreManager.class.php";
+require_once __DIR__ . "/../models/managers/PaysManager.class.php";
+require_once __DIR__ . "/../models/managers/ListerManager.class.php";
 
-use Nowakowskir\JWT\Exceptions\InsecureTokenException;
-use Nowakowskir\JWT\Exceptions\UndefinedAlgorithmException;
-use Nowakowskir\JWT\JWT;
-use Nowakowskir\JWT\TokenDecoded;
 
 /**
  * Contrôleur de la connexion des utilisateurs à l'application
@@ -21,12 +21,21 @@ class ConnexionController extends AuthentificationController
   private $requeteManager;
   private $pageProfilManager;
   private $utilisateurManager;
+  private $villeManager;
+  private $genreManager;
+  private $paysManager;
+  private $listerManager;
+
 
   public function __construct()
   {
     $this->requeteManager = new RequeteManager();
     $this->pageProfilManager = new PageProfilManager();
     $this->utilisateurManager = new UtilisateurManager();
+    $this->villeManager = new VilleManager();
+    $this->genreManager = new GenreManager();
+    $this->paysManager = new PaysManager();
+    $this->listerManager = new ListerManager();
   }
 
   /**
@@ -39,20 +48,15 @@ class ConnexionController extends AuthentificationController
    */
   public function connexion()
   {
+    $accessToken = null;
+    $refreshToken = null;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
       if (!$this->checkRequestLimit($_SERVER["REMOTE_ADDR"])) {
-        echo $this->createResponse(
-          "error",
-          "Too many requests! Try again later.",
-          []
-        );
-        exit();
+        $responseStatus = "error";
+        $responseMessage = "Trop de requêtes. Réessayez plus tard.";
+        $responseData = [];
+        $responseHeader = "HTTP/1.1 429 Too Many Requests";
       }
-
-      // if (!$this->checkRequestTime($_SERVER['REMOTE_ADDR'])) {
-      //     echo $this->createResponse('error', 'Request too common! Try again later.', []);
-      //     exit;
-      // }
 
       //  Récupération des données de la requête
       $data = $this->getRawRequestBody();
@@ -104,36 +108,53 @@ class ConnexionController extends AuthentificationController
 
           $refreshToken = $this->createRefreshToken($id_utilisateur);
 
-          header("HTTP/1.1 200 OK");
+          $villeUtilisateur = $this->villeManager->getVilleById($utilisateur->getIdVilleUtilisateur());
 
-          echo $this->createResponse(
-            "success",
-            "Connexion réussie.",
-            [
-              "id_utilisateur" => $id_utilisateur,
-              "id_page_profil" => $id_page_profil,
-              "pseudo_utilisateur" => $pseudo_utilisateur,
-            ],
-            $accessToken,
-            $refreshToken
-          );
+          $utilisateurDetails = $utilisateur->toArray($utilisateur);
+          $utilisateurDetails["genre"] = $this->genreManager->getGenreById($utilisateur->getIdGenreUtilisateur());
+          $utilisateurDetails["ville"] = isset($villeUtilisateur) ? $villeUtilisateur->getNomVille() : null;
+          $utilisateurDetails["pays"] = isset($villeUtilisateur) ? $this->paysManager->getPays($villeUtilisateur->getIdPaysVille())->getNomFr() : null;
+          $utilisateurDetails["sites_web"] = $this->listerManager->getAllSitesByUtilisateur($id_utilisateur);
+
+          $responseStatus = "success";
+          $responseMessage = "Connexion réussie.";
+          $responseData = [
+            "id_utilisateur" => $id_utilisateur,
+            "id_page_profil" => $id_page_profil,
+            "pseudo_utilisateur" => $pseudo_utilisateur,
+            "details_utilisateur" => $utilisateurDetails
+          ];
+          $responseHeader = "HTTP/1.1 200 OK";
         } else {
-          echo $this->createResponse(
-            "error",
-            "Adresse e-mail et/ou mot de passe incorrect"
-          );
-          exit();
+          $responseStatus = "error";
+          $responseMessage = "Adresse e-mail et/ou mot de passe incorrect";
+          $responseData = [];
+          $responseHeader = "HTTP/1.1 200 OK";
         }
       } else {
-        header("HTTP/1.1 400 Bad Request");
-        echo $this->createResponse("error", "Mauvaise requête.", []);
-        exit();
+        $responseStatus = "error";
+        $responseMessage = "Mauvaise requête.";
+        $responseData = [];
+        $responseHeader = "HTTP/1.1 400 Bad Request";
       }
     } elseif ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-      header("HTTP/1.1 200 OK");
+      $responseStatus = "success";
+      $responseMessage = "";
+      $responseData = [];
+      $responseHeader = "HTTP/1.1 200 OK";
     } else {
-      header("HTTP/1.1 400 Bad Request");
-      exit();
+      $responseStatus = "error";
+      $responseMessage = "Mauvaise requête.";
+      $responseData = [];
+      $responseHeader = "HTTP/1.1 400 Bad Request";
     }
+    echo $this->createResponse(
+      $responseStatus,
+      $responseMessage,
+      $responseData,
+      $accessToken,
+      $refreshToken
+    );
+    header($responseHeader);
   }
 }

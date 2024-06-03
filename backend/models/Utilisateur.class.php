@@ -19,6 +19,7 @@ class Utilisateur
   private $date_inscription;
   private $id_genre_utilisateur;
   private $id_ville_utilisateur;
+  private $arrayDetailsUtilisateur;
 
   public function __construct($id_utilisateur, $pseudo_utilisateur, $nom_utilisateur, $prenom_utilisateur, $date_naissance, $email_utilisateur, $mot_de_passe, $date_inscription, $id_genre_utilisateur, $id_ville_utilisateur)
   {
@@ -127,6 +128,16 @@ class Utilisateur
   public function setIdVilleUtilisateur($id_ville_utilisateur)
   {
     $this->id_ville_utilisateur = $id_ville_utilisateur;
+  }
+
+  public function toArray($utilisateur) {
+    $this->arrayDetailsUtilisateur["id_utilisateur"] = $utilisateur->getIdUtilisateur();
+    $this->arrayDetailsUtilisateur["pseudo_utilisateur"] = $utilisateur->getPseudoUtilisateur();
+    $this->arrayDetailsUtilisateur["nom_utilisateur"] = $utilisateur->getNomUtilisateur();
+    $this->arrayDetailsUtilisateur["prenom_utilisateur"] = $utilisateur->getPrenomUtilisateur();
+    $this->arrayDetailsUtilisateur["date_naissance"] = $utilisateur->getDateNaissance();
+
+    return $this->arrayDetailsUtilisateur;
   }
 }
 ?>

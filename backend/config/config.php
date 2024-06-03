@@ -28,7 +28,13 @@ define("DB_PASSWORD", $dbPassword);
  *   Définition de la localisation du dossier racine du projet
  */
 
-define("PROJECT_ROOT_PATH", __DIR__ . "/../");
+define("PROJECT_ROOT_PATH", "C:\wamp64\www\meeeam\backend");
+
+/**
+ *  Définition de l'url du serveur de l'API
+ */
+$serverUrl = "http://localhost/meeeam/backend/";
+define("SERVER_URL", $serverUrl);
 
 /**
  *   Définition du port du serveur de l'API

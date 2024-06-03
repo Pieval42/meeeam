@@ -52,7 +52,7 @@ class PublicationManager extends Model
       "SELECT * FROM publication
         WHERE id_createur_publication = :idUtilisateur
         AND id_page_profil_publication = :idPageProfil
-        ORDER BY date_heure_publication ASC";
+        ORDER BY date_heure_publication DESC";
     if ($limit) {
       $req .= " LIMIT :limit";
     }
@@ -70,12 +70,10 @@ class PublicationManager extends Model
         $publication["id_publication"],
         $publication["contenu_publication"],
         $publication["date_heure_publication"],
-        $publication["id_type_fichier_publication"],
-        $publication["id_fichier_publication"],
+        $publication["url_fichier_publication"],
         $publication["id_page_publique_publication"],
         $publication["id_page_profil_publication"],
         $publication["id_utilisateur_page_profil"],
-        $publication["id_genre_publication"],
         $publication["id_createur_publication"]
       );
       $this->ajoutPublication($p);
@@ -108,12 +106,10 @@ class PublicationManager extends Model
         $publication["id_publication"],
         $publication["contenu_publication"],
         $publication["date_heure_publication"],
-        $publication["id_type_fichier_publication"],
-        $publication["id_fichier_publication"],
+        $publication["url_fichier_publication"],
         $publication["id_page_publique_publication"],
         $publication["id_page_profil_publication"],
         $publication["id_utilisateur_page_profil"],
-        $publication["id_genre_publication"],
         $publication["id_createur_publication"]
       );
       $this->ajoutPublication($p);
@@ -136,21 +132,19 @@ class PublicationManager extends Model
    */
   public function creerPublication(
     $contenu,
-    $idTypeFichier = null,
-    $idFichier = null,
-    $idPagePublique = null,
-    $idPageProfil = null,
     $idUtilisateurPageProfil = null,
+    $idPageProfil = null,
     $idCreateurPublication,
+    $urlFichier = null,
+    $idPagePublique = null,
   ) {
     $req =
       "INSERT INTO publication
-        (contenu_publication, id_type_fichier_publication, id_fichier_publication, id_page_publique_publication, id_page_profil_publication, id_utilisateur_page_profil, id_createur_publication)
-        VALUES (:contenu, :idTypeFichier, :idFichier, :idPagePublique, :idPageProfil, :idUtilisateurPageProfil, :idCreateurPublication)";
+        (contenu_publication, url_fichier_publication, id_page_publique_publication, id_page_profil_publication, id_utilisateur_page_profil, id_createur_publication)
+        VALUES (:contenu, :urlFichier, :idPagePublique, :idPageProfil, :idUtilisateurPageProfil, :idCreateurPublication)";
     $stmt = $this->getBdd()->prepare($req);
     $stmt->bindValue(":contenu", $contenu, PDO::PARAM_STR);
-    $stmt->bindValue(":idTypeFichier", $idTypeFichier, PDO::PARAM_INT);
-    $stmt->bindValue(":idFichier", $idFichier, PDO::PARAM_INT);
+    $stmt->bindValue(":urlFichier", $urlFichier, PDO::PARAM_STR);
     $stmt->bindValue(":idPagePublique", $idPagePublique, PDO::PARAM_INT);
     $stmt->bindValue(":idPageProfil", $idPageProfil, PDO::PARAM_INT);
     $stmt->bindValue(":idUtilisateurPageProfil", $idUtilisateurPageProfil, PDO::PARAM_INT);
@@ -178,12 +172,10 @@ class PublicationManager extends Model
       $publication["id_publication"],
       $publication["contenu_publication"],
       $publication["date_heure_publication"],
-      $publication["id_type_fichier_publication"],
-      $publication["id_fichier_publication"],
+      $publication["url_fichier_publication"],
       $publication["id_page_publique_publication"],
       $publication["id_page_profil_publication"],
       $publication["id_utilisateur_page_profil"],
-      $publication["id_genre_publication"],
       $publication["id_createur_publication"]
     );
   }
@@ -192,18 +184,16 @@ class PublicationManager extends Model
   public function updatePublication(
     $id,
     $contenu,
-    $idTypeFichier = null,
-    $idFichier = null,
+    $urlFichier = null,
   ) {
     $req =
       "UPDATE publication
-        SET contenu_publication = :contenu, id_type_fichier_publication  = :idTypeFichier, id_fichier_publication = :idFichier
+        SET contenu_publication = :contenu, url_fichier_publication = :urlFichier
         WHERE id_publication = :id";
     $stmt = $this->getBdd()->prepare($req);
     $stmt->bindValue(":id", $id, PDO::PARAM_INT);
     $stmt->bindValue(":contenu", $contenu, PDO::PARAM_STR);
-    $stmt->bindValue(":idTypeFichier", $idTypeFichier, PDO::PARAM_INT);
-    $stmt->bindValue(":idFichier", $idFichier, PDO::PARAM_INT);
+    $stmt->bindValue(":urlFichier", $urlFichier, PDO::PARAM_INT);
     $stmt->execute();
     $stmt->closeCursor();
   }
