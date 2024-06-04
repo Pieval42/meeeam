@@ -12,6 +12,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import InputGroup from "react-bootstrap/InputGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 export default function Inscription({
   showInscription,
@@ -32,6 +33,7 @@ export default function Inscription({
   const [code_postal, setCodePostal] = useState("");
   const [id_pays, setIdPays] = useState(0);
   const [siteWeb, setSiteWeb] = useState("");
+  const [acceptCgu, setAcceptCgu] = useState(0);
   const [apiResponse, setApiResponse] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -83,11 +85,15 @@ export default function Inscription({
     setSiteWeb(event.target.value);
   };
 
+  const handleAcceptCgu = () => {
+    acceptCgu === 1 ? setAcceptCgu(0) : setAcceptCgu(1);
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setApiResponse("");
     setErrorMessage("");
-    if (password === password_confirm) {
+    if (password === password_confirm && acceptCgu) {
       axiosInstance
         .post("/inscription", {
           pseudo: pseudo,
@@ -101,6 +107,7 @@ export default function Inscription({
           nom_ville: ville,
           id_pays: id_pays,
           site_web: siteWeb,
+          accepte_cgu: acceptCgu.toString(),
         })
         .then((response) => {
           if (response.data.status === "success") {
@@ -127,9 +134,12 @@ export default function Inscription({
           console.error(errorMsg);
           setErrorMessage(errorMsg);
         });
-    } else {
+    } else if (password !== password_confirm) {
       setApiResponse("");
       setErrorMessage("Les 2 mots de passe ne correspondent pas.");
+    } else if (acceptCgu === 0) {
+      setApiResponse("");
+      setErrorMessage("Vous devez accepter les Conditions Générales d'Utilisation.")
     }
   };
 
@@ -457,22 +467,52 @@ export default function Inscription({
                 </Form.Group>
               </Row>
 
-              <Row className="justify-content-end my-3">
-                <Col xs={12} className="d-grid gap-2">
-                  <Button variant="custom-primary" size="lg" type="submit" data-testid="signUpButton" id="btn-submit-signup-form">
+              <Row className="justify-content-start">
+                <Form.Group
+                  as={Col}
+                  xs={12}
+                  sm={6}
+                  xl={4}
+                  className="d-flex flex-column text-center my-3"
+                  controlId="formCgu"
+                >
+                  <Form.Label>
+                    J'accepte les{" "}
+                    <Link to={"/cgu"} target="_blank">Conditions Générales d'Utilisation</Link>{" "}
+                    :{" "}
+                    <Form.Check
+                      onChange={handleAcceptCgu}
+                      inline
+                      type="checkbox"
+                      id="accept-cgu"
+                      name="cgu"
+                    />
+                  </Form.Label>
+                </Form.Group>
+                <Col xs={12} sm={6} xl={8} className="text-end my-3">
+                  <Button
+                    variant="custom-primary"
+                    size="lg"
+                    type="submit"
+                    data-testid="signUpButton"
+                    id="btn-submit-signup-form"
+                  >
                     S'inscrire
                   </Button>
                 </Col>
                 {apiResponse && <Col xs={12}>{apiResponse}</Col>}
                 {errorMessage && (
                   <Col xs={12}>
-                    <Form.Text className="text-warning" data-testid="signUpErrorMessage">
+                    <Form.Text
+                      className="text-warning"
+                      data-testid="signUpErrorMessage"
+                    >
                       {errorMessage}
                     </Form.Text>
                   </Col>
                 )}
               </Row>
-              <Row className="justify-content-between align-items-center mt-4">
+              <Row className="justify-content-between align-items-center mt-1">
                 <Col xs="auto" className="text-start">
                   <Button
                     variant="custom-secondary"

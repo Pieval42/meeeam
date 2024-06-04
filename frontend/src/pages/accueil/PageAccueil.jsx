@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import axiosInstance from "../../config/axiosConfig";
 import Bienvenue from "./Bienvenue";
@@ -6,6 +7,7 @@ import ModalConnexion from "./ModalConnexion";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import "/src/style/css/PageAccueil.css";
+import { Link } from "react-router-dom";
 
 export default function PageAccueil() {
   const [listePays, setListePays] = useState([]);
@@ -68,6 +70,11 @@ export default function PageAccueil() {
             listePays={listePays}
             error={error}
           />
+          <Card.Footer>
+            <Link to={"cgu/"} className="nav-link">
+              Conditions Générales d'Utilisation
+            </Link>
+          </Card.Footer>
         </Card>
       </Container>
     </>

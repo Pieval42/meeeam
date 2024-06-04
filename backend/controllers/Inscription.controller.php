@@ -54,11 +54,6 @@ class InscriptionController extends BaseController
         exit();
       }
 
-      // if (!$this->checkRequestTime($_SERVER["REMOTE_ADDR"])) {
-      //     echo $this->createResponse("error", "Request too common! Try again later.");
-      //     exit;
-      // }
-
       //  Récupération des données de la requête
       $data = $this->getRawRequestBody();
 
@@ -133,21 +128,20 @@ class InscriptionController extends BaseController
               "length" => 100,
               "notNull" => false,
             ],
+            "accepte_cgu" => [
+              "type" => "integer",
+              "range" => [
+                "min" => 0,
+                "max" => 1,
+              ],
+              "notNull" => true,
+            ]
           ];
-
-          // $requiredFields = ["pseudo", "email", "password", "prenom", "nom", "date_de_naissance"];
 
           foreach ($dataFields as $key => $values) {
             ${$key} = isset($data[$key]) ? $data[$key] : "";
             ${$key} = $this->validateInput(${$key}, $key, $values);
           }
-
-          // foreach ($requiredFields as $field) {
-          //     if (empty($field)) {
-          //         echo $this->createResponse("error", "Champs requis manquants.");
-          //         exit;
-          //     }
-          // }
 
           $encrypted_password = password_hash(
             $password,
@@ -218,7 +212,8 @@ class InscriptionController extends BaseController
             $email,
             $encrypted_password,
             $id_genre,
-            $id_ville
+            $id_ville,
+            $accepte_cgu
           );
           $id_utilisateur = $utilisateur->getIdUtilisateur();
           if ($site_web !== "") {

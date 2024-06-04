@@ -64,7 +64,8 @@ class UtilisateurManager extends Model
         $utilisateur["mot_de_passe"],
         $utilisateur["date_inscription"],
         $utilisateur["id_genre_utilisateur"],
-        $utilisateur["id_ville_utilisateur"]
+        $utilisateur["id_ville_utilisateur"],
+        $utilisateur["accepte_cgu"]
       );
       $this->ajoutUtilisateur($u);
     }
@@ -106,7 +107,8 @@ class UtilisateurManager extends Model
         $utilisateur["mot_de_passe"],
         $utilisateur["date_inscription"],
         $utilisateur["id_genre_utilisateur"],
-        $utilisateur["id_ville_utilisateur"]
+        $utilisateur["id_ville_utilisateur"],
+        $utilisateur["accepte_cgu"]
       );
       $this->ajoutUtilisateur($u);
     }
@@ -139,7 +141,8 @@ class UtilisateurManager extends Model
       $utilisateur["mot_de_passe"],
       $utilisateur["date_inscription"],
       $utilisateur["id_genre_utilisateur"],
-      $utilisateur["id_ville_utilisateur"]
+      $utilisateur["id_ville_utilisateur"],
+      $utilisateur["accepte_cgu"]
     );
   }
   
@@ -154,6 +157,7 @@ class UtilisateurManager extends Model
    * @param  string  $mot_de_passe
    * @param  string  $id_genre
    * @param  int     $id_ville
+   * @param  int     $accepte_cgu
    * 
    * @return object  Objet représentant l'utilisateur créé.
    */
@@ -165,7 +169,8 @@ class UtilisateurManager extends Model
     $email,
     $mot_de_passe,
     $id_genre = "I",
-    $id_ville = null
+    $id_ville = null,
+    $accepte_cgu
   ) {
     //  Vérifie si le pseudo est déjà utilisé.
     $pseudoAlreadyExists = $this->getUtilisateurByPseudo($pseudo);
@@ -181,8 +186,8 @@ class UtilisateurManager extends Model
     $id_genre === "" && $id_genre = "I";
     $req =
       "INSERT INTO utilisateur
-        (pseudo_utilisateur, nom_utilisateur, prenom_utilisateur, date_naissance, email_utilisateur, mot_de_passe, id_genre_utilisateur, id_ville_utilisateur)
-        VALUES (:pseudo, :nom, :prenom, :date_naissance, :email, :mot_de_passe, :id_genre, :id_ville)";
+        (pseudo_utilisateur, nom_utilisateur, prenom_utilisateur, date_naissance, email_utilisateur, mot_de_passe, id_genre_utilisateur, id_ville_utilisateur, accepte_cgu)
+        VALUES (:pseudo, :nom, :prenom, :date_naissance, :email, :mot_de_passe, :id_genre, :id_ville, :accepte_cgu)";
     $stmt = $this->getBdd()->prepare($req);
     $stmt->bindValue(":pseudo", $pseudo, PDO::PARAM_STR);
     $stmt->bindValue(":nom", $nom, PDO::PARAM_STR);
@@ -192,6 +197,7 @@ class UtilisateurManager extends Model
     $stmt->bindValue(":mot_de_passe", $mot_de_passe, PDO::PARAM_STR);
     $stmt->bindValue(":id_genre", $id_genre, PDO::PARAM_STR);
     $stmt->bindValue(":id_ville", $id_ville, PDO::PARAM_INT);
+    $stmt->bindValue(":accepte_cgu", $accepte_cgu, PDO::PARAM_INT);
     $stmt->execute();
     $stmt->closeCursor();
     $utilisateur = $this->getLastUtilisateur();
@@ -207,7 +213,8 @@ class UtilisateurManager extends Model
       $mot_de_passe,
       $date_inscription,
       $id_genre,
-      $id_ville
+      $id_ville,
+      $accepte_cgu
     );
   }
   
@@ -236,7 +243,8 @@ class UtilisateurManager extends Model
       $utilisateur["mot_de_passe"],
       $utilisateur["date_inscription"],
       $utilisateur["id_genre_utilisateur"],
-      $utilisateur["id_ville_utilisateur"]
+      $utilisateur["id_ville_utilisateur"],
+      $utilisateur["accepte_cgu"]
     );
   }
   
@@ -268,7 +276,8 @@ class UtilisateurManager extends Model
         $utilisateur["mot_de_passe"],
         $utilisateur["date_inscription"],
         $utilisateur["id_genre_utilisateur"],
-        $utilisateur["id_ville_utilisateur"]
+        $utilisateur["id_ville_utilisateur"],
+        $utilisateur["accepte_cgu"]
       );
     }
   }
@@ -302,7 +311,8 @@ class UtilisateurManager extends Model
         $utilisateur["mot_de_passe"],
         $utilisateur["date_inscription"],
         $utilisateur["id_genre_utilisateur"],
-        $utilisateur["id_ville_utilisateur"]
+        $utilisateur["id_ville_utilisateur"],
+        $utilisateur["accepte_cgu"]
       );
     }
   }

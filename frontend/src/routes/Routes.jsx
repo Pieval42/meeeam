@@ -10,6 +10,7 @@ import PageAmis from "../pages/amis/PageAmis";
 import PageMessages from "../pages/messages/PageMessages";
 import PageParametres from "../pages/parametres/PageParametres";
 import Deconnexion from "../pages/deconnexion/Deconnexion";
+import Cgu from "../pages/cgu/Cgu";
 
 const Routes = () => {
   const auth = useAuth();
@@ -44,6 +45,10 @@ const Routes = () => {
         path: "deconnexion/",
         element: <Deconnexion />,
       },
+      {
+        path: "cgu/",
+        element: <Cgu />
+      }
     ];
   }, []);
 
@@ -80,6 +85,10 @@ const Routes = () => {
           },
         ],
       },
+      {
+        path: "cgu/",
+        element: <Cgu />
+      }
     ];
   }, []);
 

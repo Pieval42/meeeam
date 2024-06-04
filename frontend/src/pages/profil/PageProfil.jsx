@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect, useContext } from "react";
 import axiosInstance from "../../config/axiosConfig";
 import { authContext } from "../../contexts/contexts";
@@ -12,6 +13,7 @@ import CreatePublication from "./CreatePublication";
 import { isEmpty } from "../../utils/checkEmptyObject";
 import { calculateAge } from "../../utils/dateUtils";
 import Image from "react-bootstrap/esm/Image";
+import { Link } from "react-router-dom";
 
 export default function PageProfil() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -170,6 +172,7 @@ export default function PageProfil() {
                     )}
                   </Card.Body>
                 </Card>
+                <Link to={"cgu/"} className="nav-link mt-3"><small>Conditions Générales d'Utilisation</small></Link>
               </Card.Body>
             </Card>
           </Col>

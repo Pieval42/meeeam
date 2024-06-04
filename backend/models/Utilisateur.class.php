@@ -19,9 +19,10 @@ class Utilisateur
   private $date_inscription;
   private $id_genre_utilisateur;
   private $id_ville_utilisateur;
+  private $accepte_cgu;
   private $arrayDetailsUtilisateur;
 
-  public function __construct($id_utilisateur, $pseudo_utilisateur, $nom_utilisateur, $prenom_utilisateur, $date_naissance, $email_utilisateur, $mot_de_passe, $date_inscription, $id_genre_utilisateur, $id_ville_utilisateur)
+  public function __construct($id_utilisateur, $pseudo_utilisateur, $nom_utilisateur, $prenom_utilisateur, $date_naissance, $email_utilisateur, $mot_de_passe, $date_inscription, $id_genre_utilisateur, $id_ville_utilisateur, $accepte_cgu)
   {
     $this->id_utilisateur = $id_utilisateur;
     $this->pseudo_utilisateur = $pseudo_utilisateur;
@@ -33,6 +34,7 @@ class Utilisateur
     $this->date_inscription = $date_inscription;
     $this->id_genre_utilisateur = $id_genre_utilisateur;
     $this->id_ville_utilisateur = $id_ville_utilisateur;
+    $this->accepte_cgu = $accepte_cgu;
   }
 
   public function getIdUtilisateur()
