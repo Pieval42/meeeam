@@ -27,6 +27,9 @@ class GenreManager extends Model
     $stmt->execute();
     $genre = $stmt->fetch(PDO::FETCH_ASSOC);
     $stmt->closeCursor();
-    return $genre["libelle_genre"];
+    if(isset($genre["libelle_genre"])) {
+      return $genre["libelle_genre"];
+    }
+    return false;
   }
 }
