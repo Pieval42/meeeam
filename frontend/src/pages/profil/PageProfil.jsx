@@ -171,8 +171,12 @@ export default function PageProfil() {
                       </>
                     )}
                   </Card.Body>
+                  <Card.Footer>
+                    <Link to={"/cgu/"} className="nav-link">
+                      <small>Conditions Générales d'Utilisation</small>
+                    </Link>
+                  </Card.Footer>
                 </Card>
-                <Link to={"cgu/"} className="nav-link mt-3"><small>Conditions Générales d'Utilisation</small></Link>
               </Card.Body>
             </Card>
           </Col>

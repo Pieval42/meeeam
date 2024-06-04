@@ -46,7 +46,7 @@ export default function Conversation({
     if (searchTerm !== ("" && null && undefined)) {
       axiosInstance
         .get(
-          "/listeUtilisateurs?search=" +
+          "/utilisateur/getAll?search=" +
             encodeURIComponent(searchTerm),
         )
         .then((response) => {

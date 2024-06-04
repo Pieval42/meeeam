@@ -13,6 +13,7 @@ export default function AuthProvider({ children }) {
   const [erreurAuthentification, setErreurAuthentification] =
     useState(undefined);
   const [refreshAuth, setRefreshAuth] = useState(false);
+  const [compteSupprime, setCompteSupprime] = useState(false);
 
   const contextValue = useMemo(
     () => ({
@@ -30,6 +31,8 @@ export default function AuthProvider({ children }) {
       setErreurAuthentification,
       refreshAuth,
       setRefreshAuth,
+      compteSupprime,
+      setCompteSupprime,
     }),
     [infosUtilisateur, email, motDePasse, status, token, erreurAuthentification]
   );

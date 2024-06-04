@@ -31,7 +31,7 @@ export default function MainTemplate() {
   // }, [context.status, navigate]);
 
   // useEffect(() => {
-  //   fetch("http://localhost:42600/backend/index.php/listeUtilisateurs", {
+  //   fetch("http://localhost:42600/backend/index.php/utilisateur/getAll", {
   //     method: "GET",
   //     mode: "cors",
   //   })

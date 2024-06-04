@@ -109,6 +109,11 @@ button.btn-custom-primary:first-child:active {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+button.btn-custom-secondary:first-child:active {
+  background-color: rgba(222, 10, 0, .5);
+  border-color: #de0a00;
+}
+
 button.btn:disabled {
   color: #d8d8d877;
   background-color: #8f8f8f77;

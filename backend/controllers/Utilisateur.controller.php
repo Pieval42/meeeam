@@ -19,13 +19,13 @@ class UtilisateurController extends BaseController
   }
 
   /**
-   * Endpoint listeUtilisateurs
+   * Endpoint getAll
    *
    * Récupére la liste des utilisateurs de l'application selon une chaîne de caractères donnée
    *
    * @return void
    */
-  public function listeUtilisateurs()
+  public function getAll()
   {
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
       //  Récupération des données de la requête
@@ -82,5 +82,65 @@ class UtilisateurController extends BaseController
       header("HTTP/1.1 400 Bad Request");
       exit();
     }
+  }
+
+  public function delete()
+  {
+    if ($_SERVER["REQUEST_METHOD"] === "DELETE") {
+      try {
+        $this->validateToken($_SERVER["HTTP_AUTHORIZATION"]);
+      } catch (Exception $e) {
+        $responseStatus = "error";
+        $responseMessage = "Token invalide : " . $e->getMessage();
+        $responseData = [];
+        $responseHeader = "HTTP/1.1 401 Unauthorized";
+      }
+
+      //  Récupération des données de la requête
+      $data = $_GET;
+
+      if ($data) {
+        $idUtilisateur = $data["id_utilisateur"];
+        $error = false;
+
+        try {
+          $this->utilisateurManager->deleteUtilisateur($idUtilisateur);
+        } catch (Exception $e) {
+          $error = true;
+          $responseStatus = "error";
+          $responseMessage = $e->getMessage();
+          $responseData = [];
+          $responseHeader = "HTTP/1.1 500 Internal Server Error";
+        }
+
+        if (!$error) {
+          $responseStatus = "success";
+          $responseMessage = "Utilisateur $idUtilisateur supprimé.";
+          $responseData = [];
+          $responseHeader = "HTTP/1.1 200 OK";
+        }
+      } else {
+        $responseStatus = "error";
+        $responseMessage = "Mauvaise requête";
+        $responseData = [];
+        $responseHeader = "HTTP/1.1 400 Bad Request";
+      }
+    } elseif ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
+      $responseStatus = "success";
+      $responseMessage = "";
+      $responseData = [];
+      $responseHeader = "HTTP/1.1 200 OK";
+    } else {
+      $responseStatus = "error";
+      $responseMessage = "Mauvaise requête";
+      $responseData = [];
+      $responseHeader = "HTTP/1.1 400 Bad Request";
+    }
+    echo $this->createResponse(
+      $responseStatus,
+      $responseMessage,
+      $responseData,
+    );
+    header($responseHeader);
   }
 }

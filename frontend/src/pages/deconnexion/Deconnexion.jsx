@@ -3,6 +3,7 @@ import { authContext } from "../../contexts/contexts";
 import PageDeconnexion from "./PageDeconnexion";
 import PageErreurAuthentification from "./PageErreurAuthentification";
 import PageAccesRefuse from "./PageAccesRefuse";
+import PageCompteSupprime from "./PageCompteSupprime";
 
 export default function Deconnexion() {
   const context = useContext(authContext);
@@ -21,7 +22,9 @@ export default function Deconnexion() {
     context.setInfosUtilisateur(null);
   }, [context]);
 
-  if (context.erreurAuthentification) {
+  if (context.compteSupprime) {
+    return <PageCompteSupprime />;
+  } else if (context.erreurAuthentification) {
     return <PageErreurAuthentification />;
   } else if (context.erreurAuthentification === false) {
     return <PageDeconnexion />;

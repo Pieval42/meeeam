@@ -54,7 +54,7 @@ export default function Header({ /*searchItem, handleInputChange, */pseudo }) {
               >
                 <Form
                   method="GET"
-                  action="http://localhost:42600/backend/index.php/listeUtilisateurs"
+                  action="http://localhost:42600/backend/index.php/utilisateur/getAll"
                 >
                   <InputGroup>
                     <Form.Control

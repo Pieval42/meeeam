@@ -372,10 +372,15 @@ class UtilisateurManager extends Model
   public function deleteUtilisateur($id)
   {
     $req = "DELETE FROM utilisateur WHERE id_utilisateur = :id";
-    $stmt = $this->getBdd()->prepare($req);
+    $dbh = $this->getBdd();
+    $stmt = $dbh->prepare($req);
     $stmt->bindValue(":id", $id, PDO::PARAM_INT);
-    $stmt->execute();
+    $success = $stmt->execute();
+    $errorInfo = $dbh->errorInfo();
     $stmt->closeCursor();
+    if ($errorInfo[1] != null) {
+      throw new Exception($errorInfo[0] . $errorInfo[1] . $errorInfo[2]);
+    }
   }
 }
 ?>
