@@ -10,7 +10,7 @@
 abstract class Model
 {
   private static $pdo;
-  
+
   /**
    * Paramètre la connexion à la BDD.
    *
@@ -18,10 +18,15 @@ abstract class Model
    */
   private static function setBdd()
   {
-    self::$pdo = new PDO(DB_INFOS, DB_USERNAME, DB_PASSWORD);
+    $dbHost = getenv("DB_HOST"); // Localisation du serveur de la BDD
+    $dbName = getenv("DB_NAME"); // Nom de la BDD
+    $dbUsername = getenv("DB_USER"); // Nom d'utilisateur pour la connexion à la BDD
+    $dbPassword = getenv("DB_PASSWORD"); // Mot de passe de connexion à la BDD
+    $dbCharset = "utf8"; // Type d'encodage de caractère de la BDD
+    self::$pdo = new PDO("mysql:host=" . $dbHost . ";dbname=" . $dbName . ";charset=" . $dbCharset, $dbUsername, $dbPassword);
     self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
   }
-  
+
   /**
    * Raccourci de connexion à la BDD.
    *

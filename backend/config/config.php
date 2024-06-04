@@ -4,27 +4,6 @@
  */
 
 /**
- *   Configuration de la connexion à la base de données (BDD)
- */
-
-$dbHost = "localhost"; // Localisation du serveur de la BDD
-$dbName = "test_meeeam"; // Nom de la BDD
-$dbCharset = "utf8"; // Type d'encodage de caractère de la BDD
-$dbUsername = "root"; // Nom d'utilisateur pour la connexion à la BDD
-$dbPassword = "root"; // Mot de passe de connexion à la BDD
-
-/**
- *   Définition des constantes de connexion à la BDD
- */
-
-define(
-    "DB_INFOS",
-    "mysql:host=" . $dbHost . ";dbname=" . $dbName . ";charset=" . $dbCharset
-);
-define("DB_USERNAME", $dbUsername);
-define("DB_PASSWORD", $dbPassword);
-
-/**
  *   Définition de la localisation du dossier racine du projet
  */
 

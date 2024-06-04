@@ -1,3 +1,6 @@
+#Fichiers persos
+/documentation/suivi_installations.txt
+
 # Logs
 logs
 *.log
@@ -136,9 +139,18 @@ backend/vendor/
 **/.phpdoc/
 backend/docs/
 
-#Fichiers persos
-documentation/suivi_installations.txt
+#VS Code
 /.vscode/
+
+#PhpUnit
 /backend/.phpunit.result.cache
 /backend/phpunit.xml
+
+#Vitest
 /.vite/vitest/results.json
+
+#Configuration accès au serveur et base de données
+/backend/.htaccess
+
+# Script de backup base de données
+/backup_mysql_wsl.sh
