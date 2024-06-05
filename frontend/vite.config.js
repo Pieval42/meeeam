@@ -7,9 +7,17 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    exclude: [
+      '**/node_modules/**',
+      '**/selenium/**'
+    ],
     coverage: {
-      provider: 'v8'
-    },
+      provider: 'v8',
+      exclude: [
+        '**/node_modules/**',
+        '**/selenium/**'
+      ]
+    }
   },
   build: {
     outDir: '../dist'

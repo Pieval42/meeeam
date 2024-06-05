@@ -32,7 +32,6 @@ export default function EnvoiMessage({
     }
   }, [correspondant, messageAEnvoyer])
 
-  // const corresp = correspondant[0] ? correspondant[0] : "...";
   const placeholder = correspondant[0]
     ?
       "Écrire à " + correspondant[0] + " (500 caractères maximum)"

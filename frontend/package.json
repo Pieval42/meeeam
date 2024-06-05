@@ -47,7 +47,7 @@
     "@vitest/coverage-v8": "^1.6.0",
     "babel-jest": "^29.7.0",
     "chromedriver": "^125.0.3",
-    "edgedriver": "^5.5.0",
+    "edgedriver": "^5.6.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.1",

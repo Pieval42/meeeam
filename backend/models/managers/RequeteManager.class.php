@@ -13,7 +13,8 @@ require_once __DIR__ . "/../Requete.class.php";
 class RequeteManager extends Model
 {    
     /**
-     * Récupère le nombre de requêtes effectuées par l'adresse IP fournie dans la dernière heure
+     * Récupère le nombre de requêtes effectuées par l'adresse IP fournie dans les
+     * 15 dernières minutes
      *
      * @param  string $adresse_ip
      * 
@@ -24,7 +25,7 @@ class RequeteManager extends Model
         $req =
         "SELECT COUNT(*) FROM requete
           WHERE adresse_ip_req = :adresse_ip_req AND date_heure_req > DATE_SUB(NOW(), 
-          INTERVAL 1 HOUR)";
+          INTERVAL 15 MINUTE)";
           
         $stmt = $this->getBdd()->prepare($req);
         $stmt->bindValue(":adresse_ip_req", $adresse_ip, PDO::PARAM_STR);

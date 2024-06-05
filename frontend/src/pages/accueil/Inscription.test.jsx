@@ -12,4 +12,3 @@ describe("Test de la page d'inscription", () => {
     fireEvent.click(signUpButton);
   });
 });
-

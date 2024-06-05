@@ -1,9 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Button from "react-bootstrap/esm/Button";
 import Container from "react-bootstrap/esm/Container";
 import Card from "react-bootstrap/esm/Card";
-import { useNavigate } from "react-router-dom";
 
 export default function PageAccesRefuse() {
   const navigate = useNavigate();

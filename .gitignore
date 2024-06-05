@@ -137,7 +137,6 @@ backend/vendor/
 
 # phpdoc
 **/.phpdoc/
-backend/docs/
 
 #VS Code
 /.vscode/

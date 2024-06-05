@@ -19,7 +19,7 @@ class UtilisateurController extends BaseController
   }
 
   /**
-   * Endpoint getAll
+   * Endpoint utilisateur/getAll
    *
    * Récupére la liste des utilisateurs de l'application selon une chaîne de caractères donnée
    *
@@ -83,7 +83,12 @@ class UtilisateurController extends BaseController
       exit();
     }
   }
-
+  
+  /**
+   * Endpoint utilisateur/delete
+   *
+   * @return void
+   */
   public function delete()
   {
     if ($_SERVER["REQUEST_METHOD"] === "DELETE") {
