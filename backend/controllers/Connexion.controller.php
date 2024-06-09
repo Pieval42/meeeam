@@ -111,7 +111,8 @@ class ConnexionController extends AuthentificationController
           $villeUtilisateur = $this->villeManager->getVilleById($utilisateur->getIdVilleUtilisateur());
 
           $utilisateurDetails = $utilisateur->toArray($utilisateur);
-          $utilisateurDetails["genre"] = $this->genreManager->getGenreById($utilisateur->getIdGenreUtilisateur());
+          $genre = $this->genreManager->getGenreById($utilisateur->getIdGenreUtilisateur());
+          $genre == false ? $utilisateurDetails["genre"] = null : $utilisateurDetails["genre"] = $genre;
           $utilisateurDetails["ville"] = isset($villeUtilisateur) ? $villeUtilisateur->getNomVille() : null;
           $utilisateurDetails["pays"] = isset($villeUtilisateur) ? $this->paysManager->getPays($villeUtilisateur->getIdPaysVille())->getNomFr() : null;
           $utilisateurDetails["sites_web"] = $this->listerManager->getAllSitesByUtilisateur($id_utilisateur);
