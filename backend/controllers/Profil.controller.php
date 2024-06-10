@@ -77,7 +77,8 @@ class ProfilController extends BaseController
 
         if ($image) {
           $idTypeFichier = "IMG";
-          $fileExtension = end(explode(".", $_FILES['image']['name']));
+          $extension = explode(".", $_FILES['image']['name']);
+          $fileExtension = end($extension);
           $fileTmpPath = $_FILES['image']['tmp_name'];
           $idFichier = $idTypeFichier . "_" . $id_utilisateur . "_" . time();
           $nomFichier = $_FILES['image']['name'];
