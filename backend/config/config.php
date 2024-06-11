@@ -7,7 +7,7 @@
  *   Définition de la localisation du dossier racine du projet
  */
 
-define("PROJECT_ROOT_PATH", "C:\wamp64\www\meeeam\backend");
+define("PROJECT_ROOT_PATH", "c:/wamp64/www/meeeam/backend");
 
 /**
  *  Définition de l'url du serveur de l'API
@@ -34,10 +34,10 @@ define("FRONT_END_SERVER", $frontEndServer);
  */
 
 try {
-    $privateKey = file_get_contents("C:/Users/pieva/.ssh/private.pem");
+    $privateKey = file_get_contents(getenv("PRIVATE_KEY_PATH"));
     define("PRIVATE_KEY", $privateKey);
 
-    $publicKey = file_get_contents("C:/Users/pieva/.ssh/public.pem");
+    $publicKey = file_get_contents(getenv("PUBLIC_KEY_PATH"));
     define("PUBLIC_KEY", $publicKey);
 } catch (Exception $e) {
     error_log($e->getMessage(), 0);

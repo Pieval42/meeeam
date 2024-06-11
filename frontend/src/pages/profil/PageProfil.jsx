@@ -14,6 +14,7 @@ import { isEmpty } from "../../utils/checkEmptyObject";
 import { calculateAge } from "../../utils/dateUtils";
 import Image from "react-bootstrap/esm/Image";
 import { Link } from "react-router-dom";
+import { apiServerUrl } from "../../config/config";
 
 export default function PageProfil() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -50,14 +51,21 @@ export default function PageProfil() {
             console.log("Réponse du serveur : ", response);
             if (response.data.status === "success") {
               console.log("Données des publications : ", response.data.data);
-              setListePublications(response.data.data);
+              let publications = response.data.data;
+              for(let pub of publications) {
+                pub.url_fichier_publication = pub.url_fichier_publication && apiServerUrl + pub.url_fichier_publication;
+              }
+              setListePublications(publications);
             } else {
               setErrorMessage(response.data.message);
             }
           }
         })
         .catch((error) => {
-          if (error.response.status === 401) {
+          if (error.message) {
+            console.error(error.message);
+          }
+          else if (error.response.status === 401) {
             context.setErreurAuthentification(true);
           } else {
             console.error(error);
@@ -131,13 +139,13 @@ export default function PageProfil() {
                           </Col>
                         </Row>
 
-                        {detailsUtilisateur.genre && (
+                        {detailsUtilisateur.genre && (detailsUtilisateur.genre !== "Inconnu" && (
                           <Row>
                             <Col className="text-start mb-2">
                               {detailsUtilisateur.genre}
                             </Col>
                           </Row>
-                        )}
+                        ))}
 
                         {detailsUtilisateur.ville && (
                           <Row>

@@ -5,3 +5,7 @@
 #image-profil {
   max-height: 100px;
 }
+
+.img-publi>img {
+  max-height: calc(100vh - 220px);
+}

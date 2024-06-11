@@ -90,7 +90,7 @@ class ProfilController extends BaseController
 
           $dest_path = $uploadedImageDir . $idFichier . "." . $fileExtension;
 
-          $urlFichier = SERVER_URL . "uploadedFiles/" . $id_utilisateur . "/publications/images/" . $idFichier . "." . $fileExtension;
+          $urlFichier = "uploadedFiles/" . $id_utilisateur . "/publications/images/" . $idFichier . "." . $fileExtension;
 
           $successfulSave = move_uploaded_file($fileTmpPath, $dest_path);
 

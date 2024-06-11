@@ -196,21 +196,20 @@ class MessagePriveController extends BaseController
             $limit
           );
 
-          foreach ($liste_messages_prives as $key => $message) {
+          $i = 0;
+          foreach ($liste_messages_prives as $message) {
             $pseudos = $this->getPseudos(
               $message["id_expediteur_prive"],
               $message["id_destinataire_prive"]
             );
-            $response_data[$key] = [
-              "pseudo_expediteur" =>
-              $pseudos["pseudo_expediteur"],
-              "id_expediteur" => $message["id_expediteur_prive"],
-              "pseudo_destinataire" =>
-              $pseudos["pseudo_destinataire"],
-              "id_destinataire" =>
-              $message["id_destinataire_prive"],
-            ];
+            $liste_messages_prives[$i]["pseudo_expediteur"] =
+              $pseudos["pseudo_expediteur"];
+            $liste_messages_prives[$i]["pseudo_destinataire"] =
+              $pseudos["pseudo_destinataire"];
+            $i++;
           }
+
+          $response_data = $liste_messages_prives;
         }
 
         if (count($liste_messages_prives) === 0) {

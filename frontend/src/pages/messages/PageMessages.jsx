@@ -40,10 +40,10 @@ export default function PageMessages() {
           if (response.data.status === "success") {
             let listeCorr = [];
             response.data.data.forEach((row) => {
-              row.id_expediteur !== idUtilisateur &&
-                listeCorr.push([row.pseudo_expediteur, row.id_expediteur]);
-              row.id_destinataire !== idUtilisateur &&
-                listeCorr.push([row.pseudo_destinataire, row.id_destinataire]);
+              row.id_expediteur_prive !== idUtilisateur &&
+                listeCorr.push([row.pseudo_expediteur, row.id_expediteur_prive]);
+              row.id_destinataire_prive !== idUtilisateur &&
+                listeCorr.push([row.pseudo_destinataire, row.id_destinataire_prive]);
             });
             let temp = {};
             listeCorr = listeCorr.filter((corr) => {

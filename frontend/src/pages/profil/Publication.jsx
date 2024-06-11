@@ -28,7 +28,7 @@ export default function Publication({ listePublications }) {
                   <Col
                     xs={12}
                     lg={6}
-                    className="d-flex align-items-center justify-content-center p-4"
+                    className="img-publi d-flex align-items-center justify-content-center p-4"
                   >
                     <Image
                       src={publication.url_fichier_publication}

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { decodeToken } from "../utils/tokenService";
+import { apiServerUrl } from "./config";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost/meeeam/backend/index.php",
+  baseURL: apiServerUrl + "index.php",
+
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",

@@ -1,7 +1,7 @@
 export function convertSqlDateTimeToFr(date) {
     const dhm = date.split(/[- :]/);
     const convertedDate = new Date(
-      Date.UTC(dhm[0], dhm[1] - 1, dhm[2], dhm[3] - 2, dhm[4], dhm[5]),
+      Date.UTC(dhm[0], dhm[1] - 1, dhm[2], dhm[3] , dhm[4], dhm[5]),
     ).toLocaleString("fr-FR", { timeZone: "CET" });
     return convertedDate;
 }
